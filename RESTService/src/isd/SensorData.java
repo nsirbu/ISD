@@ -33,7 +33,7 @@ public class SensorData {
 		        
 		
 	        
-		String result = "" + myCustomArray;
+		String result = "" ;//+ myCustomArray;
 		return Response.status(200).entity(result).build();
 	  }
  

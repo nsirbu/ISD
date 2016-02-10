@@ -18,8 +18,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.udp.io.JsonService;
 
 import isd.database.ConnectDatabase;
+import isd.database.DBQuery;
 import isd.model.Message;
  
 @Path("/data")
@@ -29,11 +31,12 @@ public class SensorData {
 	  @Produces("application/json")
 	  public Response getSensorData() throws JSONException {
 		  
-
+	  ArrayList<Message> allData = DBQuery.getAllData();
+	  JsonArray jsonArray = JsonService.createJSArray(allData);
 		        
 		
 	        
-		String result = "" ;//+ myCustomArray;
+		String result = "" + jsonArray;
 		return Response.status(200).entity(result).build();
 	  }
  

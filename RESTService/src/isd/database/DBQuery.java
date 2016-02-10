@@ -6,13 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import com.udp.io.Log4j;
+
 import isd.model.Message;
 
 /**
 *
 * @author Nicolae
+* All methods concerning the access to the database.
 */
 public class DBQuery {
+	
+	static Logger log = Log4j.initLog4j(DBQuery.class);
+	
 	public static ArrayList<Message> getAllData() {
 		ArrayList<Message> dataFromDB = new ArrayList<Message>();
 
@@ -36,7 +44,7 @@ public class DBQuery {
 			rs.close();
 			dbConnection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("Exception in getAllData() function, DBQuery class : " + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -62,7 +70,7 @@ public class DBQuery {
 			rs.close();
 			dbConnection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("Exception in getLastEntry() function, DBQuery class : " + e.getMessage());
 			e.printStackTrace();
 		}
 		

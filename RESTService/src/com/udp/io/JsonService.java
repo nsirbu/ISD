@@ -9,6 +9,13 @@ import com.google.gson.JsonObject;
 
 import isd.model.Message;
 
+/**
+ * 
+ * @author Nicolae
+ *
+ * All methods concerning 
+ *
+ */
 public class JsonService {
 	
 	public static JsonArray createJsonArray(ArrayList<Message> data){

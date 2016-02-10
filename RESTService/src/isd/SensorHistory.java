@@ -18,6 +18,9 @@ import isd.model.Message;
 /**
 *
 * @author Nicolae
+* 
+* Show historical data about sensors' state.
+* Get all entries from database, convert them into a JsonArray and send to client.
 */
 @Path("/history")
 public class SensorHistory {
@@ -26,7 +29,6 @@ public class SensorHistory {
 	public Response getSensorData() throws JSONException {
 		ArrayList<Message> allData = DBQuery.getAllData();
 		JsonArray jsonArray = JsonService.createJsonArray(allData);
-
 		String result = "" + jsonArray;
 		
 		return Response.status(200).entity(result).build();

@@ -15,6 +15,10 @@ import com.udp.io.JsonService;
 import isd.database.DBQuery;
 import isd.model.Message;
 
+/**
+*
+* @author Nicolae
+*/
 @Path("/history")
 public class SensorHistory {
 	@GET
@@ -27,5 +31,4 @@ public class SensorHistory {
 		
 		return Response.status(200).entity(result).build();
 	}
-
 }

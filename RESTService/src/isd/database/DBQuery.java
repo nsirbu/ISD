@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import isd.model.Message;
 
+/**
+*
+* @author Nicolae
+*/
 public class DBQuery {
 	public static ArrayList<Message> getAllData() {
 		ArrayList<Message> dataFromDB = new ArrayList<Message>();

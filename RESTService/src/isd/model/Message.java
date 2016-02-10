@@ -1,9 +1,5 @@
 package isd.model;
 
-/**
- * Encapsulates the information that is being transmitted between client
- * and server side.
- */
 public class Message {
 
     private boolean isHeartbeat;
@@ -90,7 +86,7 @@ public class Message {
             }
             if (tmp[0].toUpperCase().startsWith("H")) {
                 int isHeartbeatMessage = Integer.parseInt(tmp[1]);
-                message.setHeartbeat(isHeartbeatMessage == 0 ? false : true);
+                message.setHeartbeat(true);
             }
         }
         return message;

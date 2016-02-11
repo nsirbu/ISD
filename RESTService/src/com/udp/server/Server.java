@@ -101,13 +101,8 @@ public class Server {
 	public Message readMessage() {
 		try {
 			String receivedString = this.readString();
-			System.out.println("Received data: " + receivedString);
-			String[] splitMessage = receivedString.split("|");
-			Message receivedMessage = new Message(false,
-					Boolean.parseBoolean(splitMessage[1]),
-					Integer.parseInt(splitMessage[3]),
-					TimeHelper.getCurrentTime());
-
+			Message receivedMessage = Message.parse(receivedString);
+			receivedMessage.setTimeReceived(TimeHelper.getCurrentTime());
 			return receivedMessage;
 
 		} catch (Exception ex) {
@@ -134,7 +129,6 @@ public class Server {
 					receivedPacket.getLength());
 
 			String receivedString = new String(this.getReceivedData());
-			System.out.println("Received string: " + receivedString);
 			return receivedString;
 
 		} catch (IOException ioEx) {

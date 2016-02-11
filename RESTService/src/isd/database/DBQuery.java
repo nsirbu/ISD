@@ -73,7 +73,8 @@ public class DBQuery {
 	 * Records the given message object <code>Message</code></b> into
 	 * the Database.
 	 * @param receivedMessage - <code>Message</code>
-	 * @return
+	 * @return <code>Integer</code> - number of rows affected. 
+	 * If the method returns 0 - the query wasn't successful. 
 	 */
 	public static int recordMessage(Message receivedMessage){
 		int affectedRows = 0;

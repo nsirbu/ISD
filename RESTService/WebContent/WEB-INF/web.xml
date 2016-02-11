@@ -22,4 +22,8 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/sensor/*</url-pattern>
 	</servlet-mapping>
+	<!-- Servlet Context Listener -->
+	<listener>
+	    <listener-class>com.udp.server.BackgroundJobManager</listener-class>
+	</listener>
 </web-app>

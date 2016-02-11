@@ -77,8 +77,8 @@ public class Message {
         for (String info:splitMessage) {
             String[] tmp = info.split(" ");
             if(tmp[0].toUpperCase().startsWith("P")){
-                boolean pirSensorValue = Boolean.valueOf(tmp[1]);
-                message.setPirSensorVal(pirSensorValue);
+            	int pirSensorStatus = Integer.parseInt(tmp[1]);
+                message.setPirSensorVal(pirSensorStatus == 1 ? true : false);
             }
             if (tmp[0].toUpperCase().startsWith("L")) {
                 int lightSensorValue = Integer.parseInt(tmp[1]);

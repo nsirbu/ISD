@@ -20,7 +20,14 @@ public class SensorJob implements Runnable{
 	
 	private Server server;
 	private final Logger logger = Log4j.initLog4j(SensorJob.class);
-
+	
+	public SensorJob(){
+		try {
+			server = Server.getInstance();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
 	/**
 	 * Defines the way the data should be received from the
 	 * Arduino Board. The method logs the errors to the log file.
@@ -28,7 +35,6 @@ public class SensorJob implements Runnable{
 	 */
 	public void run() {
 		try {
-			server = Server.getInstance();
 			while(true){
 				try {
 					Message receivedMessage = server.readMessage();

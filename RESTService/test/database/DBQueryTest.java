@@ -1,26 +1,24 @@
 package database;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
-
 import isd.database.DBQuery;
 import isd.model.Message;
 
+/**
+ * 
+ * @author Nicolae
+ *
+ */
 public class DBQueryTest {
 	
 	@Test
-	public void getLastEntryShouldReturnAnMessage() {
-		 DBQuery test = Mockito.mock(DBQuery.class);
-		 Message message = new Message(false, false, 111, "2020-11-30 00:00:00.0");
-		  
-		  // define return value for method getUniqueId()
-		  when(test.getLastEntry()).thenReturn(message);
-		  
-		  // use mock in test.... 
-		  assertEquals(test.getLastEntry(), message);
+	public void getLastEntryShouldReturnTheLastEntryInDB() {
+		Message actualVersion = new Message(false, true, 111, "2020-11-30 00:00:00.0");
+		Message expectedVersion = DBQuery.getLastEntry();
+		Assert.assertEquals(actualVersion.isHeartbeat(), expectedVersion.isHeartbeat()); 
+		Assert.assertEquals(actualVersion.getTimeReceived(), expectedVersion.getTimeReceived()); 
+		Assert.assertEquals(actualVersion.getLightSensorVal(), expectedVersion.getLightSensorVal()); 
+		Assert.assertEquals(actualVersion.getPirSensorVal(), expectedVersion.getPirSensorVal()); 
 	}
 }

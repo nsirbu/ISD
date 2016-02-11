@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * 
+ * Test case for database connection.
  * @author Nicolae
  *
  */

@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import isd.model.Message;
 
 /**
- * 
+ * Test case for JSON creation.
  * @author Nicolae
  *
  */

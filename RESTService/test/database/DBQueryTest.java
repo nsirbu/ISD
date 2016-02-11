@@ -6,7 +6,7 @@ import isd.database.DBQuery;
 import isd.model.Message;
 
 /**
- * 
+ * Test case for query execution on database.
  * @author Nicolae
  *
  */

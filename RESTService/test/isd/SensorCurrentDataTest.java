@@ -14,6 +14,11 @@ import com.eclipsesource.restfuse.annotation.Poll;
 
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
+/**
+ * Test case for REST API.
+ * @author Nicolae
+ *
+ */
 @RunWith( HttpJUnitRunner.class )
 public class SensorCurrentDataTest {
 	

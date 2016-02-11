@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.tableStyle {border:1px solid #000; border-collapse: collapse;}
+.tableStyle td {border:1px solid #000;}
+.alignCenter {text-align:center;}

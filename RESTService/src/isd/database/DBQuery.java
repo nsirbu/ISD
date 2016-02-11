@@ -30,17 +30,16 @@ public class DBQuery {
 			PreparedStatement pst = dbConnection.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 
-			if (rs.next()) {
-				while (rs.next()) {
-					Message message = new Message();
-					message.setHeartbeat(rs.getInt("isHeartbeat") != 0); // Convert Int to Boolean
-					message.setTimeReceived(rs.getString("timeReceived"));
-					message.setLightSensorVal(Integer.parseInt(rs.getString("lightSensorVal")));
-					message.setPirSensorVal(Boolean.valueOf(rs.getString("pirSensorVal")));
+			while (rs.next()) {
+				Message message = new Message();
+				message.setHeartbeat(rs.getInt("isHeartbeat") != 0); // Convert Int to Boolean
+				message.setTimeReceived(rs.getString("timeReceived"));
+				message.setLightSensorVal(Integer.parseInt(rs.getString("lightSensorVal")));
+				message.setPirSensorVal(Boolean.valueOf(rs.getString("pirSensorVal")));
 
-					dataFromDB.add(message);
-				}
+				dataFromDB.add(message);
 			}
+			
 			rs.close();
 			dbConnection.close();
 		} catch (SQLException e) {

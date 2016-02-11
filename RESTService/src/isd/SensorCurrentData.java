@@ -24,16 +24,10 @@ import isd.model.Message;
 public class SensorCurrentData {
 	
 	Logger log = Log4j.initLog4j(SensorCurrentData.class);
-	
-//	static Logger log = Logger.getLogger(SensorCurrentData.class);
 
 	@GET
 	@Produces("application/json")
-	public Response getSensorData() throws JSONException {
-		
-//		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-//		PropertyConfigurator.configure(classLoader.getResourceAsStream("log4j.properties") );
-				
+	public Response getSensorData() throws JSONException {			
 		Message message = DBQuery.getLastEntry();
 		JsonObject jsonObject = JsonService.createJsonObject(message);
 		String result = "" + jsonObject;

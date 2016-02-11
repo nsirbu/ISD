@@ -59,13 +59,11 @@ public class DBQuery {
 			PreparedStatement pst = dbConnection.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 
-			if (rs.next()) {
-				while (rs.next()) {
-					lastMessage.setHeartbeat(rs.getInt("isHeartbeat") != 0); // Convert Int to Boolean
-					lastMessage.setTimeReceived(rs.getString("timeReceived"));
-					lastMessage.setLightSensorVal(Integer.parseInt(rs.getString("lightSensorVal")));
-					lastMessage.setPirSensorVal(Boolean.valueOf(rs.getString("pirSensorVal")));
-				}
+			while (rs.next()) {
+				lastMessage.setHeartbeat(rs.getInt("isHeartbeat") != 0); // Convert Int to Boolean
+				lastMessage.setTimeReceived(rs.getString("timeReceived"));
+				lastMessage.setLightSensorVal(Integer.parseInt(rs.getString("lightSensorVal")));
+				lastMessage.setPirSensorVal(Boolean.valueOf(rs.getString("pirSensorVal")));
 			}
 			rs.close();
 			dbConnection.close();

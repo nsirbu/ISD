@@ -26,8 +26,8 @@ public class ConnectDatabase {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			myConnection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/isd", "root",
-					"7825693425");
+			myConnection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/isd?useSSL=false", "root",
+					"nicolae");
 
 		} catch (ClassNotFoundException | SQLException e) {
 			log.error("Exception in conectToBD() function, ConnectDatabase class : " + e.getMessage());

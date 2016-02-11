@@ -18,10 +18,10 @@
 
 	<table align="center" cellpadding="5" class="tableStyle">
 		<tr bgcolor="#f1f1f1" >
-			<td>Heartbeat</td>
-			<td>TimeReceived</td>
-			<td>LightSensorVal</td>
-			<td>PirSensorVal</td>
+			<td><strong>Heartbeat</strong></td>
+			<td><strong>TimeReceived</strong></td>
+			<td><strong>LightSensorVal</strong></td>
+			<td><strong>PirSensorVal</strong></td>
 		</tr>
 		<%
 		Message message = new DBQuery().getLastEntry(); //Get the latest state of sensors

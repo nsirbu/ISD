@@ -1,16 +1,27 @@
 package isd.database;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.Connection;
+import org.apache.log4j.Logger;
+
+import com.udp.io.Log4j;
 
 /**
 *
 * @author Nicolae
 */
 public class ConnectDatabase {
-	public static Connection ConectToBD() {
+	
+	static Logger log = Log4j.initLog4j(ConnectDatabase.class);
+	
+	/**
+	 * Connect to the database.
+	 * 
+	 * @return a opened connection to database
+	 */
+	public static Connection connectToDB() {
 		Connection myConnection = null;
 
 		try {
@@ -19,7 +30,7 @@ public class ConnectDatabase {
 					"12345");
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("Exception in conectToBD() function, ConnectDatabase class : " + e.getMessage());
 			e.printStackTrace();
 		}
 		

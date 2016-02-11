@@ -70,7 +70,7 @@ public class DBQuery {
 	}
 	
 	/**
-	 * Records the given message object <code>Message</code> into
+	 * Records the given message object <code>Message</code></b> into
 	 * the Database.
 	 * @param receivedMessage - <code>Message</code>
 	 * @return

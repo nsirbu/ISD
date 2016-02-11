@@ -16,7 +16,7 @@ public class ConnectDatabase {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			myConnection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/isd", "root",
-					"nicolae");
+					"7825693425");
 
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

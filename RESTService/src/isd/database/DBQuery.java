@@ -68,4 +68,32 @@ public class DBQuery {
 		
 		return lastMessage;
 	}
+	
+	/**
+	 * Records the given message object <code>Message</code> into
+	 * the Database.
+	 * @param receivedMessage - <code>Message</code>
+	 * @return
+	 */
+	public static int recordMessage(Message receivedMessage){
+		int affectedRows = 0;
+		Connection dbConnection = ConnectDatabase.ConectToBD();
+		try{
+			PreparedStatement stmt = dbConnection.prepareStatement("INSERT INTO "
+					+ "sensor_data (isHeartbeat, timeReceived, lightSensorVal, pirSensorVal) "
+					+ "VALUES (?, ?, ?, ?)");
+			
+			stmt.setBoolean(1,receivedMessage.isHeartbeat());
+			stmt.setString(2,receivedMessage.getTimeReceived());
+			stmt.setInt(3,receivedMessage.getLightSensorVal());
+			stmt.setBoolean(4,receivedMessage.getPirSensorVal());
+			affectedRows = stmt.executeUpdate();
+		}
+		catch( Exception e ){ 
+            e.printStackTrace();
+            return 0;
+		} 
+       return affectedRows;
+	}
+
 }

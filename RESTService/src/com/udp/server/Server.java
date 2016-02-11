@@ -7,11 +7,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import isd.model.Message;
+
 import com.udp.helper.*;
 
 /**
  * Contains all the methods related to the Server and Client side communication.
- * 
  * @author sscerbatiuc
  */
 public class Server {
@@ -127,11 +127,8 @@ public class Server {
 					this.getTempBuffer(), this.getBufferLength());
 			serverSocket.receive(receivedPacket);
 
-			this.receivedData = new byte[receivedPacket.getLength()]; // Initialize
-																		// array
-																		// for
-																		// received
-																		// data
+			// Initialize array for received data
+			this.receivedData = new byte[receivedPacket.getLength()];
 			System.arraycopy(receivedPacket.getData(),
 					receivedPacket.getOffset(), this.getReceivedData(), 0,
 					receivedPacket.getLength());

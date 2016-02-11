@@ -73,4 +73,6 @@ public class DBQuery {
 		
 		return lastMessage;
 	}
+
+	//Comment.
 }

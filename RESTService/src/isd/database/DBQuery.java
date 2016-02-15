@@ -64,6 +64,28 @@ public class DBQuery {
 	}
 	
 	/**
+	 * Get all entries from the database.
+	 * 
+	 * @return a list with objects of <code>Message</code> class.
+	 */
+	public static ArrayList<Message> getAllDataByParameter(String date) {
+		String sqlQuery = "SELECT * FROM sensor_data where DATE(timeReceived)='" + date + "'";
+		
+		return getDataSet(sqlQuery);
+	}
+	
+	/**
+	 * Get all entries from the database.
+	 * 
+	 * @return a list with objects of <code>Message</code> class.
+	 */
+	public static ArrayList<Message> getAllDataBetweenTwoTimeValues(String date_1, String date_2) {
+		String sqlQuery = "SELECT * FROM sensor_data where timeReceived BETWEEN '" + date_1 + "' AND '" + date_2 + "'";
+		
+		return getDataSet(sqlQuery);
+	}
+	
+	/**
 	 * Get the last x elements from database.
 	 * 
 	 * @param  x number of elements to retrieve from the database

@@ -58,7 +58,7 @@ public class Message {
     public String toString() {
         return "Message{" +
         		"isHeartbeat=" + isHeartbeat +
-                "pirSensorVal=" + pirSensorVal +
+                ", pirSensorVal=" + pirSensorVal +
                 ", lightSensorVal=" + lightSensorVal +
                 ", timeReceived='" + timeReceived + '}';
     }

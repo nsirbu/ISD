@@ -1,5 +1,7 @@
 package com.udp.helper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -28,6 +30,20 @@ public class TimeHelper {
 				+ (minutes < 10 ? "0" + minutes : minutes) + ":"
 				+ (seconds < 10 ? "0" + seconds : seconds);
 		return currentTimeString;
+	}
+	
+	/**
+	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd"
+	 * 
+	 * @return String <code>currentTime</code>
+	 */
+	public static String getCurrentDate() {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();		
+		String currentTime = dateFormat.format(calendar.getTime());
+				
+		return currentTime;
 	}
 
 	/**

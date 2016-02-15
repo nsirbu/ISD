@@ -48,7 +48,4 @@ public class BackgroundJobManager implements ServletContextListener{
 	public void contextDestroyed(ServletContextEvent arg0) {
 		scheduler.shutdown();
 	}
-
-	
-
 }

@@ -40,6 +40,7 @@ public class SensorHistoryCriteria {
 		Date date_1 = null;
 		Date date_2 = null;
 		boolean readyForTimeDifferenceCalculation = false;
+		boolean isStartTimeSeted = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");	
 		
 		ArrayList<Message> todayEntries = DBQuery.getAllDataByParameter(requiredDate);
@@ -49,20 +50,22 @@ public class SensorHistoryCriteria {
 		Iterator<Message> itr = todayEntries.iterator();
 		while (itr.hasNext()) {
 			Message message =  itr.next();			
-			if (message.getPirSensorVal()) {					
+			if (message.getPirSensorVal() && !isStartTimeSeted) {					
 				try {
 					detectedMotionAtTime = message.getTimeReceived().substring(message.getTimeReceived().length()-10, message.getTimeReceived().length()-2);				    
 					date_1 = sdf.parse(detectedMotionAtTime);
 					readyForTimeDifferenceCalculation = false;
+					isStartTimeSeted = true;
 				} catch (ParseException e) {
 					log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : " + e.getMessage());
 					e.printStackTrace();
 				}
-			} else {
+			} else if (!message.getPirSensorVal()) {
 				try {
 					endedMotionAtTime = message.getTimeReceived().substring(message.getTimeReceived().length()-10, message.getTimeReceived().length()-2);	
 					date_2 = sdf.parse(endedMotionAtTime);
 					readyForTimeDifferenceCalculation = true;
+					isStartTimeSeted = false;
 				} catch (ParseException e) {
 					log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : " + e.getMessage());
 					e.printStackTrace();
@@ -197,6 +200,7 @@ public class SensorHistoryCriteria {
 		Date l_date_1 = null;
 		Date l_date_2 = null;
 		boolean readyForTimeDifferenceCalculation = false;
+		boolean isStartTimeSeted = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");	
 		
 		String detectedMotionAtTime = "";
@@ -205,20 +209,22 @@ public class SensorHistoryCriteria {
 		Iterator<Message> itr = todayEntries.iterator();
 		while (itr.hasNext()) {
 			Message message =  itr.next();			
-			if (message.getPirSensorVal()) {					
+			if (message.getPirSensorVal() && !isStartTimeSeted) {					
 				try {
 					detectedMotionAtTime = message.getTimeReceived().substring(message.getTimeReceived().length()-10, message.getTimeReceived().length()-2);				    
 					l_date_1 = sdf.parse(detectedMotionAtTime);
 					readyForTimeDifferenceCalculation = false;
+					isStartTimeSeted = true;
 				} catch (ParseException e) {
 					log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : " + e.getMessage());
 					e.printStackTrace();
 				}
-			} else {
+			} else if (!message.getPirSensorVal())  {
 				try {
 					endedMotionAtTime = message.getTimeReceived().substring(message.getTimeReceived().length()-10, message.getTimeReceived().length()-2);	
 					l_date_2 = sdf.parse(endedMotionAtTime);
 					readyForTimeDifferenceCalculation = true;
+					isStartTimeSeted = false;
 				} catch (ParseException e) {
 					log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : " + e.getMessage());
 					e.printStackTrace();

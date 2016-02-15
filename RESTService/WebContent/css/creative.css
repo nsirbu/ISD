@@ -4,12 +4,22 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-@-webkit-keyframes rotate {
+@keyframes rotate {
     from {
+    	transform: rotate(0deg);
+    	transform-origin: 50% 50%;
+    	-moz-transform: rotate(0deg);
+    	-moz-transform-origin: 50% 50%;
         -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: 50% 50%;
     }
     to { 
+    	transform: rotate(0deg);
+    	transform-origin: 50% 50%;
+    	-moz-transform: rotate(360deg);
+    	-moz-transform-origin: 50% 50%;
         -webkit-transform: rotate(360deg);
+        -webkit-transform-origin: 50% 50%;
     }
 }
 
@@ -547,19 +557,35 @@ div#pir_demo {
     margin: 0 auto;
     opacity: 1;
     opacity: 1;
-    -webkit-animation: pulsate 1s;
-    -webkit-animation-iteration-count: 2; 
+    -webkit-animation: rotate 1s;
+    -webkit-animation-iteration-count: infinite; 
     -webkit-border-radius: 30px;
     -webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;
  
 }
 
-i#pir_demo:hover {
-    -webkit-animation: pulsate 2s;
-    -webkit-animation-iteration-count: 5;
+div.indicator_description{
+	padding-top: 3%;
+}
+
+/*--------------- SENSORS' CURRENT STATE SECTION ---------------*/
+
+div#spinner_container{
+	display: inline-block;
+}
+
+i#spinner {
+	animation: rotate 2s infinite;
+	-moz-animation: rotate 2s linear infinite;
+    -webkit-animation: rotate 2s linear infinite;
     /*-webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;*/
+}
+
+h2#current_state{
+	display: inline-block;
+	margin-right: 20px;
 }
 
 div.current_values_container{
@@ -570,4 +596,42 @@ div.current_values_container{
 .current_values {
     position: absolute;
     top: 50%;
+}
+
+span#update_notification {
+	
+	display:none;
+	position:absolute;
+	text-transform: uppercase;
+    margin: 6px;
+    color: #960A31;
+    text-shadow: 0px 0px 1px;
+	-webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;
+}
+
+
+
+/*----------------- RESOURCES & CONTACTS ------------------*/
+
+a.mail_links{
+	
+	-webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;
+}
+
+a.mail_links > i::after{
+	
+	text-color: #FFF;
+	-webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;
+}
+
+.mail_links:hover {
+	
+	color:#FFF;
+	text-decoration: none;
+	-webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;
+	
 }

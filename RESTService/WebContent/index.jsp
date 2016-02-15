@@ -32,8 +32,7 @@
 	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
 		<link rel="stylesheet" href="css/styles.css" type="text/css" /> 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
-		<script type="text/javascript" src="js/currentStateRequest.js"></script>
+		
 	</head>
 <body id="page-top">
 
@@ -67,7 +66,7 @@
                         <a class="page-scroll" href="#current_state">Current State</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#ressources">Ressources</a>
+                        <a class="page-scroll" href="#ressources">Resources</a>
                     </li>
                 </ul>
             </div>
@@ -94,7 +93,7 @@
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Genius stuff is simple!</h2>
                     <hr class="primary">
-                    <p class="text-faded">We've managed to connect the most simple, yet powerful configuration of hardware to monitor the the movement and light levels in a room. Just imagine how far can we get from here? Adjusting the light level automatically, when it reaches a minimal value? Easy! Turning the light off when there is nobody in the room? Yes, sir! In fact, it is a small step for us, but a giant leap for the entire office!</p>
+                    <p class="text-faded">We've managed to connect the most simple, yet powerful configuration of hardware to monitor the the movement and light levels in a room. Just imagine how far can we get from here! Adjusting the light level automatically, when it reaches a minimal value? Easy! Turning the light off when there is nobody in the room? Yes, sir! In fact, it is a small step for us, but a giant leap for the entire office!</p>
                     <a href="#ressources" class="btn btn-default btn-xl" id="know_more">I want to know more!</a>
                 </div>
             </div>
@@ -115,9 +114,9 @@
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-wifi wow bounceIn text-primary"></i>
-                        <h3>Wireless connectivity</h3>
-                        <p class="text-muted">Just imagine: these 2 boards communicate via Wi-fi.</p>
-                        <p class="joke">Are you impressed? We were too <i class="fa fa-smile"></i></p>
+                        <h3>It's small</h3>
+                        <p class="text-muted">This configuration can fit in every workspace.</p>
+                        <p class="joke">We care about the Feng shui of the office</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
@@ -137,9 +136,9 @@
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="service-box">
-                        <i class="fa fa-4x fa-heart wow bounceIn text-primary" data-wow-delay=".3s"></i>
-                        <h3>Made with Love</h3>
-                        <p class="text-muted">That's the only way of doing some pretty awesome stuff.</p>
+                        <i class="fa fa-4x fa-mobile wow bounceIn text-primary" data-wow-delay=".3s"></i>
+                        <h3>It's RESTfull</h3>
+                        <p class="text-muted">3<sup>rd</sup> party clients can easily access sensors data.</p>
                     </div>
                 </div>
             </div>
@@ -151,48 +150,53 @@
         <div class="col-lg-12 text-center">
             <h2 class="section-heading">How it works?</h2>
             <hr class="light">
+            <p class="text-faded">The data received from the sensors is displayed in the section below, accompanied by the respective icons. The server receives data when the sensors' state changes. It will track the minor movement and light value variation and send it to the Raspberry Pi server.</p>
         </div>
-        <div class="col-lg-4 text-center">
-            <div class="service-box action">
-                <i class="fa fa-5x fa-clock-o wow bounceIn text-primary"></i>
-                <h3>Time received</h3>
-                <p>2016-06-12 12:12:12</p>
-            </div>
+        <div class="row">
+        	<div class="col-lg-4 text-center">
+	            <div class="service-box action">
+	                <i class="fa fa-5x fa-clock-o wow bounceIn text-primary"></i>
+	                <h3>Time received</h3>
+	                <p>2016-06-12 12:12:12</p>
+	            </div>
+        	</div>
+	        <div class="col-lg-8 indicator_description">
+	            <p class="text-faded">The time received represents the exact time when the data has been received from the Arduino board. Basically the time format on the left represents the exact format it's been stored in the database. If you have any idea || concerning this value, we can discuss it and include it in the next sprint.</p>
+	        </div>
         </div>
-        <div class="col-lg-8">
-            <p class="text-faded">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-        </div>
-         <div class="col-lg-4 text-center">
-            <div class="service-box action">
-                <i class="fa fa-5x fa-lightbulb-o wow bounceIn text-primary" data-wow-delay=".1s" id="light_demo"></i>
-                <h3>Light level</h3>
-                <p>150 lx</p>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <p class="text-faded">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-        </div>
-         <div class="col-lg-4 text-center">
-            <div class="service-box action">
-                <i class="fa fa-5x fa-spinner wow bounceIn text-primary" data-wow-delay=".1s" id="pir_demo"></i>
-                <h3>PIR Sensor</h3>
-                <p>There is movement in the room</p>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <p class="text-faded">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-        </div>
-
-        
+        <div class="row">
+	        <div class="col-lg-4 text-center">
+	            <div class="service-box action">
+	                <i class="fa fa-5x fa-lightbulb-o wow bounceIn text-primary" data-wow-delay=".1s" id="light_demo"></i>
+	                <h3>Light level</h3>
+	                <p>150 lx</p>
+	            </div>
+	        </div>
+	        <div class="col-lg-8 indicator_description">
+	            <p class="text-faded">The light is a part of the most fun part of this project. The tiny sensor measures the light level and converts it from the analog value to the digital one and sends it to the server. The 'lx' stands for lux and it's a SI unit of illuminance and luminous emittance.</p>
+	        </div>
+	     </div>
+	     <div class="row">
+	         <div class="col-lg-4 text-center">
+	            <div class="service-box action">
+	                <i class="fa fa-5x fa-spinner wow bounceIn text-primary" data-wow-delay=".1s" id="pir_demo"></i>
+	                <h3>PIR Sensor</h3>
+	                <p>There is movement in the room</p>
+	            </div>
+	        </div>
+	        <div class="col-lg-8 indicator_description">
+	            <p class="text-faded">This sensor detects the movement. When someone enters the room, leaves or makes a dance contest with the a colleague, it will track it. You should agree, it's an amazing feature for a 3$ device.</p>
+	        </div>
+	    </div>
     </div>
     </section>
     
     <section  id="current_state">
     <div class="container">
         <div class="col-lg-12 text-center">
-            <h2>Sensor's current state</h2>
-            <p>These are the current sensors' states detected. These fields are updating if the board information about the sensors changes.</p>
-            <p class="joke">Awesome stuff is coming, we promise</p>
+            <h2 id="current_state">Sensor's current state </h2><div id="spinner_container"><i id="spinner" class="fa fa fa-spinner fa-2x wow bounceIn text-primary"></i><span id="update_notification">Information updated</span></div>
+            <p>These are the current sensors' states detected. These fields are updating on each sensor's state change. Watch for the respective inscription to the right </p>
+            <p class="joke">Awesome stuff is coming, please be patient.</p>
             <hr class="primary">
         </div>
         <div class="col-lg-4 text-center">
@@ -213,23 +217,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">More details on the project!</h2>
+                    <h2 class="section-heading">Additional ressources &amp; contacts</h2>
                     <hr class="light">
                     <p>Do you think you have an amazing idea on how to make this project even awesomer? Go on! We would like to discuss it with you. Our purpose is to make a great product, so every step towards it is a must.</p>
                 </div>
                 <div class="col-lg-4 col-lg-offset-2 text-center">
                     <h3>Check it out on GitHub</h3>
                     <i class="fa fa-github fa-3x wow bounceIn"></i>
-                    <p>Links are coming soon</p>
+                    <p>Links are on the way. Somewhere between "ready" and "done".</p>
                 </div>
                 <div class="col-lg-4 text-center">
                     <h3>Send us a letter</h3>
                     <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
-                    <p>Links are coming soon</p>
-                    <!--<p><a href="mailto:osipovvictor1994@gmail.com">osipovvictor1994@gmail.com</a></p>
-                    <p><a href="mailto:scerbatiuc.stas@gmail.com">scerbatiuc.stas@gmail.com</a></p>
-                    <p><a href="mailto:niku.sirbu@gmail.com">niku.sirbu@gmail.com</a></p>
-                    <p><a href="mailto:cobylas@gmail.com">cobylas@gmail.com</a></p>-->
+                    <p>Click on the links below to start writing an ecouraging e-mail.</p>
+                    <div class="col-lg-3 text-center">
+                    	<a class="mail_links" href="mailto:osipovvictor1994@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Victor</a></div>
+                    <div class="col-lg-3 text-center">
+                    	<a class="mail_links" href="mailto:scerbatiuc.stas@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Stas</a>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                    	<a class="mail_links" href="mailto:niku.sirbu@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Nicolae</a>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                    	<a class="mail_links" href="mailto:cobylas@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Adrian</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -249,6 +260,8 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/creative.js"></script>
 
+	<!-- Sensors' state request JavaScript -->
+	<script type="text/javascript" src="js/currentStateRequest.js"></script>
 </body>
 
 </html>

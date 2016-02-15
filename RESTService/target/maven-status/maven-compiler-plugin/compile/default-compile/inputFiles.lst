@@ -1,16 +1,16 @@
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\isd\SensorCurrentData.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\io\LoggerService.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\server\HrtBeatJob.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\server\BackgroundJobManager.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\isd\database\DBQuery.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\io\Log4j.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\io\Recordable.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\io\JsonService.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\helper\TimeHelper.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\server\SensorJob.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\isd\model\Message.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\server\Server.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\helper\Constants.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\isd\database\ConnectDatabase.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\com\udp\helper\FileHelper.java
-P:\Licence Practice\GIT ISD\ISD\RESTService\src\isd\SensorHistory.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/Server.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/FileHelper.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/Constants.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/LoggerService.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/Recordable.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/HrtBeatJob.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/isd/SensorCurrentData.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/isd/database/DBQuery.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/SensorJob.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/Log4j.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/JsonService.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/BackgroundJobManager.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/isd/SensorHistory.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/isd/database/ConnectDatabase.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/isd/model/Message.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/TimeHelper.java

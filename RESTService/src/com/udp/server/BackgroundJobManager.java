@@ -21,8 +21,12 @@ import org.apache.log4j.Logger;
  */
 public class BackgroundJobManager implements ServletContextListener{
 	
-	private final Logger log = Log4j.initLog4j(BackgroundJobManager.class);
+	private Logger log = Log4j.initLog4j(BackgroundJobManager.class);
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+	
+	public BackgroundJobManager(){
+		log = Log4j.initLog4j(BackgroundJobManager.class);
+	}
 	
 	/**
 	 * Initializes the thread responsible for receiving 

@@ -213,6 +213,22 @@
         </div>
     </div>
     </section>
+    <section class="bg-primary">
+    <div class="container">
+    	<div class="col-lg-12 text-center">
+    		<h2>History</h2>
+    		<hr class="light">
+    	</div> 
+    </div>
+    </section>
+    <section>
+    <div class="container">
+    	<div class="col-lg-12 text-center">
+    		<h2>Settings</h2>
+    		<hr class="primary">
+    	</div>
+    </div>
+    </section>
     <section class="bg-primary" id="ressources">
         <div class="container">
             <div class="row">

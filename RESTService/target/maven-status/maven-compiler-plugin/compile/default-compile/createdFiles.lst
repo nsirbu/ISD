@@ -13,4 +13,5 @@ isd/SensorHistory.class
 com/udp/helper/TimeHelper.class
 com/udp/io/Recordable.class
 isd/database/DBQuery.class
+isd/SensorHistoryCriteria.class
 com/udp/helper/FileHelper.class

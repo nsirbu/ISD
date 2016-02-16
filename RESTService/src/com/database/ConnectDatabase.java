@@ -28,7 +28,8 @@ public class ConnectDatabase {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			myConnection = (Connection) DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/" + DatabaseSettings.dbName + "?useSSL=false", DatabaseSettings.dbUser,
+					"jdbc:mysql://localhost:3306/" + DatabaseSettings.dbName + "?useSSL=false", 
+					DatabaseSettings.dbUser,
 					DatabaseSettings.dbPassword);
 
 		} catch (ClassNotFoundException | SQLException e) {

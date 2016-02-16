@@ -229,6 +229,52 @@
     	</div>
     </div>
     </section>
+    <section class="bg-primary" id="history">
+    <div class="container">
+        <div class="col-lg-12 text-center">
+            <h2>History</h2>
+            <p class="text-faded">
+                We've gathered some options that we've thought would be very useful to analyse. The filtered data will be displayed using a nice chart.
+            </p>
+            <hr class="light">
+        </div> 
+        <div class="row" id="statistics_data">
+            <div class="col-lg-12 text-center">
+                <p>What would you like to see? Choose : 
+                <select id="history_option" onchange="drawChart()">
+                    <option value="default" selected disabled="disabled">Select an option</option>
+                    <option value="1">Min/max time spent in a room</option>
+                    <option value="2">Luminosity statistics</option>
+                </select>
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                   <div class="ct-chart ct-perfect-fourth">
+                       
+                   </div>
+                </div>
+                <div>
+                    <div class="col-lg-6">
+                        <h3 class="text-center">Description</h3>
+                        <hr class="light">
+                        <p class="text-faded" id="statistic_description">
+                            Lorem ipsum dolor sit amet, usu illud audire an, at oratio tollit sit. Delenit meliore suscipiantur id has. Ex ius aliquip referrentur, vix an modo numquam inermis. No imperdiet disputando vis, clita ornatus qualisque et qui. Legimus veritus referrentur id nam. Id vim eligendi incorrupte necessitatibus, per et causae intellegebat.Vim justo paulo consequuntur no, in has tamquam facilis philosophia. In mel tota prima justo, quem enim erat mei ei, at probo velit quaerendum nec. Sit ut liber facete adolescens, vis cu tempor pericula, solum animal vix id. Eu per mutat veritus nostrum, odio discere ad quo, ius et prima scaevola. Cetero invidunt eum eu, pro falli consul disputationi eu, ne eam ullum veritus. Choro antiopam per an, an sed appareat praesent.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    <section>
+    <div class="container">
+        <div class="col-lg-12 text-center">
+            <h2>Settings</h2>
+            <hr class="primary">
+        </div>
+    </div>
+    </section>
     <section class="bg-primary" id="ressources">
         <div class="container">
             <div class="row">
@@ -278,6 +324,11 @@
 
 	<!-- Sensors' state request JavaScript -->
 	<script type="text/javascript" src="js/currentStateRequest.js"></script>
+	
+	  <!-- Chartist JS -->
+    <script type="text/javascript" src="js/chartist.js"></script>
+    <script type="text/javascript" src="js/statisticsCharts.js"></script>
+    
 </body>
 
 </html>

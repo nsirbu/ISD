@@ -6,4 +6,5 @@ public class DatabaseSettings {
 	public static String dbPassword = "7825693425";
 	public static String dbName		= "isd";
 
+
 }

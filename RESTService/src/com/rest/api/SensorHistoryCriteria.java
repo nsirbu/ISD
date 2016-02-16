@@ -180,6 +180,9 @@ public class SensorHistoryCriteria {
 //					it.remove();
 //				}
 //			}
+		} else {
+			map.put("maxValue", 0);
+			map.put("avgValue", 0);
 		}
 
 		return map;
@@ -238,7 +241,7 @@ public class SensorHistoryCriteria {
 					log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : " + e.getMessage());
 					e.printStackTrace();
 				}
-			} else if (!message.getPirSensorVal())  {
+			} else if (!message.getPirSensorVal() && !message.isHeartbeat())  {
 				try {
 					endedMotionAtTime = message.getTimeReceived().substring(message.getTimeReceived().length()-10, message.getTimeReceived().length()-2);	
 					l_date_2 = sdf.parse(endedMotionAtTime);

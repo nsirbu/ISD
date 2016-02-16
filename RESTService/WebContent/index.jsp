@@ -31,7 +31,10 @@
 	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
-		<link rel="stylesheet" href="css/styles.css" type="text/css" /> 
+		
+        <!-- Chartist CSS -->
+        <link rel="stylesheet" type="text/css" href="css/chartist.min.css">
+        <link rel="stylesheet" type="text/css" href="css/chartist-custom.css">
 		
 	</head>
 <body id="page-top">
@@ -211,22 +214,6 @@
             <i class="fa fa-5x fa-spinner wow bounceIn text-primary" data-wow-delay=".1s" id="pir_demo"></i>
             <h4 id="pir_value">PIR sensor value</h4>
         </div>
-    </div>
-    </section>
-    <section class="bg-primary">
-    <div class="container">
-    	<div class="col-lg-12 text-center">
-    		<h2>History</h2>
-    		<hr class="light">
-    	</div> 
-    </div>
-    </section>
-    <section>
-    <div class="container">
-    	<div class="col-lg-12 text-center">
-    		<h2>Settings</h2>
-    		<hr class="primary">
-    	</div>
     </div>
     </section>
     <section class="bg-primary" id="history">

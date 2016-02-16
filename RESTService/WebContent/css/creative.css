@@ -6,18 +6,18 @@
 
 @keyframes rotate {
     from {
-    	transform: rotate(0deg);
-    	transform-origin: 50% 50%;
-    	-moz-transform: rotate(0deg);
-    	-moz-transform-origin: 50% 50%;
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+        -moz-transform: rotate(0deg);
+        -moz-transform-origin: 50% 50%;
         -webkit-transform: rotate(0deg);
         -webkit-transform-origin: 50% 50%;
     }
     to { 
-    	transform: rotate(0deg);
-    	transform-origin: 50% 50%;
-    	-moz-transform: rotate(360deg);
-    	-moz-transform-origin: 50% 50%;
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+        -moz-transform: rotate(360deg);
+        -moz-transform-origin: 50% 50%;
         -webkit-transform: rotate(360deg);
         -webkit-transform-origin: 50% 50%;
     }
@@ -566,26 +566,26 @@ div#pir_demo {
 }
 
 div.indicator_description{
-	padding-top: 3%;
+    padding-top: 3%;
 }
 
 /*--------------- SENSORS' CURRENT STATE SECTION ---------------*/
 
 div#spinner_container{
-	display: inline-block;
+    display: inline-block;
 }
 
 i#spinner {
-	animation: rotate 2s infinite;
-	-moz-animation: rotate 2s linear infinite;
+    animation: rotate 2s infinite;
+    -moz-animation: rotate 2s linear infinite;
     -webkit-animation: rotate 2s linear infinite;
     /*-webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;*/
 }
 
 h2#current_state{
-	display: inline-block;
-	margin-right: 20px;
+    display: inline-block;
+    margin-right: 20px;
 }
 
 div.current_values_container{
@@ -599,14 +599,14 @@ div.current_values_container{
 }
 
 span#update_notification {
-	
-	display:none;
-	position:absolute;
-	text-transform: uppercase;
+    
+    display:none;
+    position:absolute;
+    text-transform: uppercase;
     margin: 6px;
     color: #960A31;
     text-shadow: 0px 0px 1px;
-	-webkit-transition: 0.7s all ease;
+    -webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;
 }
 
@@ -615,23 +615,46 @@ span#update_notification {
 /*----------------- RESOURCES & CONTACTS ------------------*/
 
 a.mail_links{
-	
-	-webkit-transition: 0.7s all ease;
+    
+    -webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;
 }
 
 a.mail_links > i::after{
-	
-	text-color: #FFF;
-	-webkit-transition: 0.7s all ease;
+    
+    text-color: #FFF;
+    -webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;
 }
 
 .mail_links:hover {
-	
-	color:#FFF;
-	text-decoration: none;
-	-webkit-transition: 0.7s all ease;
+    
+    color:#FFF;
+    text-decoration: none;
+    -webkit-transition: 0.7s all ease;
     -moz-transition: 0.7s all ease;
-	
+    
+}
+
+/*--------------------- MAIN INPUTS ----------------------- */
+
+select {
+    border-radius: 5px;
+    border-color: #960A31;
+    background-color: #960A31;
+    -webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;
+}
+
+select:hover{
+    box-shadow: 0px 0px 5px #ccc;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+}
+
+select#history_option{
+
+    display: inline-block;
+    width: 255px;
+    height: 25px;
 }

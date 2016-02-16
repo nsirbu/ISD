@@ -20,7 +20,7 @@ public class TimeHelper {
 
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
+		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
@@ -56,7 +56,7 @@ public class TimeHelper {
 		int hours	= calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
-		int month 	= calendar.get(Calendar.MONTH);
+		int month 	= calendar.get(Calendar.MONTH) + 1;
 		int day 	= calendar.get(Calendar.DAY_OF_YEAR);
 
 		String currentTimeStamp = String.valueOf(day) + String.valueOf(month)

@@ -93,7 +93,7 @@ public class SensorHistory {
 	
 	/**
 	 * Get the time spent in the room between two dates.
-	 * Call like http://localhost:8080/RESTService/sensor/history/timespent/2016-02-15%2011:00:00&2016-02-15%2018:00:00
+	 * Call like http://localhost:8080/RESTService/sensor/history/timespent/2016-02-15 11:00:00&2016-02-15 18:00:00
 	 * 
 	 * @param date_1 first calendar date indicating when to begin calculation
 	 * @param date_2 second calendar date indicating when to stop calculation

@@ -19,6 +19,7 @@ public class SensorJob implements Runnable{
 	
 	private Server server;
 	private final Logger logger = Log4j.initLog4j(SensorJob.class);
+	private volatile boolean running = true;
 	
 	public SensorJob(){
 		try {
@@ -34,7 +35,7 @@ public class SensorJob implements Runnable{
 	 */
 	public void run() {
 		try {
-			while(true){
+			while(running){
 				try {
 					Message receivedMessage = server.readMessage();
 					if(receivedMessage != null){
@@ -49,6 +50,7 @@ public class SensorJob implements Runnable{
 					
 				} catch (Exception e) {
 					logger.error(e.getMessage());
+					running = false;
 				}
 			}
 		} catch (Exception e) {

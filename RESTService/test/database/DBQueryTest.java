@@ -2,8 +2,9 @@ package database;
 
 import org.junit.Assert;
 import org.junit.Test;
-import isd.database.DBQuery;
-import isd.model.Message;
+
+import com.database.DBQuery;
+import com.model.Message;
 
 /**
  * Test case for query execution on database.

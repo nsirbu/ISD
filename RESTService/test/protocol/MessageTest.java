@@ -1,9 +1,10 @@
 package protocol;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
-import isd.model.Message;
+import com.model.Message;
+
+import static org.junit.Assert.assertEquals;
 
 public class MessageTest {
 	

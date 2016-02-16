@@ -106,5 +106,6 @@
 		  <artifactId>com.eclipsesource.restfuse</artifactId>
 		  <version>1.2.0</version>
 		</dependency>
+		
 	</dependencies>
 </project>

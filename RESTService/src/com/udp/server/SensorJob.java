@@ -2,10 +2,9 @@ package com.udp.server;
 
 import org.apache.log4j.Logger;
 
+import com.database.DBQuery;
+import com.model.Message;
 import com.udp.io.Log4j;
-
-import isd.database.DBQuery;
-import isd.model.Message;
 
 /**
  * This class is responsible for receiving the 
@@ -40,6 +39,7 @@ public class SensorJob implements Runnable{
 					Message receivedMessage = server.readMessage();
 					if(receivedMessage != null){
 						int queryAffectedRows = DBQuery.recordMessage(receivedMessage);
+						System.out.println(receivedMessage.toString());
 						if(queryAffectedRows <= 0){
 							logger.error("Message couldn't be recorded into the database");
 						}

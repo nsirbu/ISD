@@ -4,8 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
-
-import isd.model.Message;
+import com.model.Message;
 
 /**
  * Test case for JSON creation.

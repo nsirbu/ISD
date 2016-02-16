@@ -1,4 +1,4 @@
-package isd.model;
+package com.model;
 
 public class Message {
 

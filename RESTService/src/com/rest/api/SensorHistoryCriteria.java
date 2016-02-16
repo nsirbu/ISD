@@ -1,20 +1,26 @@
-package isd;
+package com.rest.api;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import com.database.DBQuery;
+import com.model.Message;
 import com.udp.io.Log4j;
-
-import isd.database.DBQuery;
-import isd.model.Message;
 
 /**
  *  
@@ -29,7 +35,7 @@ public class SensorHistoryCriteria {
 	 * Get the maximum and minimum time when somebody was in the room.
 	 * 
 	 * @param requiredDate the calendar date that interest us to view the statistics
-	 * return              a map <code>HashMap<String, Long></code> with data like "11:00:00-20000"
+	 * @return             a map <code>HashMap<String, Long></code> with data like "11:00:00-20000"
 	 *                     where 11:00:00 is the time when the motion was detected and
 	 *                     20000 is the time spent in ms between the moment when the motion was detected
 	 *                     and ended 
@@ -82,10 +88,10 @@ public class SensorHistoryCriteria {
 	}
 	
 	/**
-	 * Remove from the map all the elements that are not equal with the min and max value in the map.
+	 * Remove from the map all the elements that are not equal with the minimum and the maximum value in the map.
 	 * 
-	 * @param HashMap<String, Long> map the map to filter
-	 * return                       a filtered map
+	 * @param  map the map to filter
+	 * @return a filtered map containing the maximum and the minimum value
 	 */
 	public static HashMap<String, Long> filterMotionStatisticsMap(HashMap<String, Long> map) {
 		long maxValueInMap = (Collections.max(map.values()));
@@ -108,7 +114,7 @@ public class SensorHistoryCriteria {
 	 * @param date_2               second time value
 	 * @param time                 the map to put the time difference having as key the <code>detectedMotionAtTime</code> 
 	 * @param detectedMotionAtTime time when the motion was detected
-	 * return 					   time difference in ms
+	 * @return 					   time difference in ms
 	 */
 	public static long calculateTimeDifference(Date date_1, Date date_2, HashMap<String, Long> time, String detectedMotionAtTime) {
 		long difference = 0;
@@ -122,12 +128,12 @@ public class SensorHistoryCriteria {
 	 * Get the maximum and the average value of the light in the room.
 	 * 
 	 * @param requiredDate the calendar date that interest us to view the statistics
-	 * return              a map <code>HashMap<String, Integer></code> with data like "11:00:00-111"
+	 * @return             a map <code>HashMap<String, Integer></code> with data like "11:00:00-111"
 	 *                     where 11:00:00 is the time when the light value was captured and
 	 *                     111 is the value of the light in lux 
 	 * 
 	 */
-	public static HashMap<String, Integer> getLuminosityStatistics(String requiredDate) {
+	public static JSONObject getLuminosityStatisticsForDay(String requiredDate) {
 		HashMap<String, Integer> luminosity = new HashMap<String, Integer>();
 		String detectedLuminosityAtTime = "";
 		
@@ -141,36 +147,49 @@ public class SensorHistoryCriteria {
 	      }
 	      
 	    filterLuminosityStatisticsMap(luminosity);
+	    
+	    JSONObject jsonObject = new JSONObject();
+	    for(Iterator<Map.Entry<String, Integer>> it = luminosity.entrySet().iterator(); it.hasNext(); ) {
+		      Map.Entry<String, Integer> entry = it.next();		      
+		      jsonObject.put(entry.getKey(), entry.getValue());
+		    }
+		jsonObject.put("date", requiredDate);
 		
-		return luminosity;
+		return jsonObject;
 	}
 	
 	/**
 	 * Remove from the map all the elements that are not equal with the max value in the map.
 	 * 
-	 * @param HashMap<String, Integer> map the map to filter
-	 * return                          a filtered map
+	 * @param  map the map to filter
+	 * @return a filtered map containing the maximum and the average value
 	 */
 	public static HashMap<String, Integer> filterLuminosityStatisticsMap(HashMap<String, Integer> map) {
-		Integer maxValueInMap = (Collections.max(map.values()));
-		Integer averageValueInMap = (int) calculateAverage(map);
-		map.put("average", averageValueInMap);
-
-		for (Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator(); it.hasNext();) {
-			Map.Entry<String, Integer> entry = it.next();
-			if (!entry.getValue().equals(maxValueInMap) && !entry.getValue().equals(averageValueInMap)) {
-				it.remove();
-			}
+		if (!map.isEmpty()) {
+			Integer maxValueInMap = (Collections.max(map.values()));
+			Integer averageValueInMap = (int) calculateAverage(map);
+			
+			map.clear();
+			
+			map.put("maxValue", maxValueInMap);
+			map.put("avgValue", averageValueInMap);
+	
+//			for (Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator(); it.hasNext();) {
+//				Map.Entry<String, Integer> entry = it.next();
+//				if (!entry.getValue().equals(maxValueInMap) && !entry.getValue().equals(averageValueInMap)) {
+//					it.remove();
+//				}
+//			}
 		}
 
 		return map;
 	}
 	
 	/**
-	 * Calculate the average of the light value.
+	 * Calculate the average of elements in the map.
 	 * 
-	 * @param HashMap<String, Integer> map the map containing the elements to
-	 * calculate return average value
+	 * @param  map the map containing the elements to calculate 
+	 * @return average value
 	 */
 	public static double calculateAverage(HashMap<String, Integer> map) {
 		double average = 0.0;
@@ -192,7 +211,7 @@ public class SensorHistoryCriteria {
 	 * 
 	 * @param date_1 first calendar date indicating when to begin calculation
 	 * @param date_2 second calendar date indicating when to stop calculation
-	 * return        time spent in ms
+	 * @return       time spent in ms
 	 */
 	public static long getTimeSpentInTheRoom(String date_1, String date_2) {
 		long timeSpent = 0;
@@ -244,10 +263,55 @@ public class SensorHistoryCriteria {
 	 * 
 	 * @param date_1 first time value
 	 * @param date_2 second time value
-	 * return 		 time difference in ms
+	 * @return 		 time difference in ms
 	 */
 	public static long calculateTimeDifference(Date date_1, Date date_2) {
 
 		return date_2.getTime() - date_1.getTime();
+	}
+	
+	/**
+	 * Get average value and the maximum value of the light for each day during the last week.
+	 * 
+	 * @return a <code>JSONArray</code> containing the required "date", the maximum value "maxValue"
+	 *         and the average value "avgValue"
+	 */
+	public static JSONArray getLuminosityStatisticsForLastWeek() {
+		JSONArray jsonArray = new JSONArray();
+		
+		Calendar calendar = Calendar.getInstance(Locale.getDefault());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = dateFormat.format(calendar.getTime());
+		
+		calendar.add(Calendar.DATE, -7);
+		String sevenDaysAgoDate = dateFormat.format(calendar.getTime());
+		
+		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
+		
+		for (LocalDate localDate : totalDates) {
+			JSONObject jsonObject = SensorHistoryCriteria.getLuminosityStatisticsForDay(localDate.toString());
+			jsonArray.put(jsonObject);
+		}
+				
+		return jsonArray;
+	}
+	
+	/**
+	 * Get all the dates between two dates.
+	 * 
+	 * @param sevenDaysAgoDate the date from the past from which to start the identification of the dates
+	 * @param currentDate      the today's date
+	 * @return                 a list with all the dates between the specified interval
+	 */
+	public static List<LocalDate> getDatesBetweenTwoDates(String sevenDaysAgoDate, String currentDate) {
+		LocalDate start = LocalDate.parse(sevenDaysAgoDate);
+		LocalDate end = LocalDate.parse(currentDate);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!start.isAfter(end)) {
+		    totalDates.add(start);
+		    start = start.plusDays(1);
+		}
+		
+		return totalDates;
 	}
 }

@@ -1,4 +1,4 @@
-package isd.database;
+package com.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import com.model.Message;
 import com.udp.io.Log4j;
-
-import isd.model.Message;
 
 /**
 *

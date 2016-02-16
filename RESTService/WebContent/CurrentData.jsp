@@ -1,7 +1,7 @@
 <%@page import="java.util.*" %>
-<%@page import="isd.database.DBQuery"%>
-<%@page import="isd.model.Message"%>
-<jsp:useBean id="sensors" class="isd.model.Message"/>
+<%@page import="com.database.DBQuery"%>
+<%@page import="com.model.Message"%>
+<jsp:useBean id="sensors" class="com.model.Message"/>
 <table class="tableStyle">
 	<tr bgcolor="#f1f1f1" >
 		<td><strong>Heartbeat</strong></td>

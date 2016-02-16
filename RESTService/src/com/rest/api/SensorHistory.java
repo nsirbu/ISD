@@ -1,4 +1,4 @@
-package isd;
+package com.rest.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.database.DBQuery;
 import com.google.gson.JsonArray;
+import com.model.Message;
 import com.udp.io.JsonService;
-
-import isd.database.DBQuery;
-import isd.model.Message;
 
 /**
 *
@@ -35,7 +34,7 @@ public class SensorHistory {
 	 * Get all entries from the database.
 	 * Call like http://localhost:8080/RESTService/sensor/history/
 	 * 
-	 * return a JSONArray
+	 * @return a JSONArray
 	 */
 	@GET
 	@Produces("application/json")
@@ -43,9 +42,7 @@ public class SensorHistory {
 		ArrayList<Message> allData = DBQuery.getAllData();
 		JsonArray jsonArray = JsonService.createJsonArray(allData);
 		String result = "" + jsonArray;
-		
-		
-		
+				
 		return Response.status(200).entity(result).build();
 	}
 	
@@ -54,7 +51,7 @@ public class SensorHistory {
 	 * Call like http://localhost:8080/RESTService/sensor/history/2
 	 * 
 	 * @param limit the last n entries from the database
-	 * return       a JSONArray
+	 * @return       a JSONArray
 	 */
 	@Path("{limit}")
 	@GET
@@ -73,7 +70,7 @@ public class SensorHistory {
 	 * Call like http://localhost:8080/RESTService/sensor/history/motion/2016-02-15
 	 * 
 	 * @param date calendar date to show the statistics
-	 * return      a JSONArray
+	 * @return     a JSONArray
 	 */
 	@GET @Path("/motion/{date}")
 	@Produces("application/json")    
@@ -100,7 +97,7 @@ public class SensorHistory {
 	 * 
 	 * @param date_1 first calendar date indicating when to begin calculation
 	 * @param date_2 second calendar date indicating when to stop calculation
-	 * return      a JSONObject
+	 * @return       a JSONObject
 	 */
 	@GET @Path("/timespent/{date_1}&{date_2}")
 	@Produces("application/json")    
@@ -119,23 +116,28 @@ public class SensorHistory {
 	 * Call like http://localhost:8080/RESTService/sensor/history/luminosity/2016-02-15
 	 * 
 	 * @param date calendar date to show the statistics
-	 * return      a JSONArray
+	 * @return     a <code>JSONArray</code> containing the required "date", the maximum value "maxValue"
+	 *             and the average value "avgValue"
 	 */
 	@GET @Path("/luminosity/{date}")
 	@Produces("application/json")    
-    public Response getLuminosityStatistics(@PathParam("date") String date) {
-		HashMap<String, Integer> time = SensorHistoryCriteria.getLuminosityStatistics(date);
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject;
+    public Response getLuminosityStatistics(@PathParam("date") String date) {	
+		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);;
 		
-		for(Iterator<Map.Entry<String, Integer>> it = time.entrySet().iterator(); it.hasNext(); ) {
-		      Map.Entry<String, Integer> entry = it.next();
-		      jsonObject = new JSONObject();
-		      jsonObject.put(entry.getKey(), entry.getValue());
-		      jsonArray.put(jsonObject);
-		    }
-		
-		String result = "" + jsonArray;
+		return Response.status(200).entity(result).build();
+	}
+	
+	/**
+	 * Get average value and the maximum value of the light for each day during the last week.
+	 * Call like http://localhost:8080/RESTService/sensor/history/luminosity/lastweek
+	 * 
+	 * @return a <code>JSONArray</code> containing the required "date", the maximum value "maxValue"
+	 *         and the average value "avgValue"
+	 */
+	@GET @Path("/luminosity/lastweek")
+	@Produces("application/json")    
+    public Response getLuminosityStatisticsForLastWeek() {		
+		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
 		
 		return Response.status(200).entity(result).build();
 	}

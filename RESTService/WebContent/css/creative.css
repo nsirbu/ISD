@@ -610,6 +610,11 @@ span#update_notification {
     -moz-transition: 0.7s all ease;
 }
 
+/*----------------- HISTORY & STATISTICS ------------------*/
+div#outer{
+	height: 0px;
+	overflow: hidden;
+}
 
 
 /*----------------- RESOURCES & CONTACTS ------------------*/

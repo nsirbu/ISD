@@ -23,3 +23,14 @@ section.bg-primary .ct-label{
     text-shadow: 0px 0px 1px;
 }
 
+.ct-bar {
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+.ct-bar {
+	filter: brightness(1.2);
+	-webkit-filter: brightness(1.2);
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}

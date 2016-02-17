@@ -148,6 +148,7 @@ public class DBQuery {
 			stmt.setInt(3,receivedMessage.getLightSensorVal());
 			stmt.setBoolean(4,receivedMessage.getPirSensorVal());
 			affectedRows = stmt.executeUpdate();
+			dbConnection.close();
 		}
 		catch( Exception e ){ 
             e.printStackTrace();

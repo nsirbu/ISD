@@ -228,27 +228,29 @@
         <div class="row" id="statistics_data">
             <div class="col-lg-12 text-center">
                 <p>What would you like to see? Choose : 
-                <select id="history_option" onchange="drawChart()">
-                    <option value="default" selected disabled="disabled">Select an option</option>
-                    <option value="1">Min/max time spent in a room</option>
-                    <option value="2">Luminosity statistics</option>
+                <select id="history_option" onchange="displayStats()">
+                    <option value="default" disabled="disabled">Select an option</option>
+                    <option value="1" selected>Luminosity statistics (last week)</option>
+                    <option value="2">Activity statistics (last week)</option>
                 </select>
                 </p>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                   <div class="ct-chart ct-perfect-fourth">
-                       
-                   </div>
-                </div>
-                <div>
-                    <div class="col-lg-6">
-                        <h3 class="text-center">Description</h3>
-                        <hr class="light">
-                        <p class="text-faded" id="statistic_description">
-                            Lorem ipsum dolor sit amet, usu illud audire an, at oratio tollit sit. Delenit meliore suscipiantur id has. Ex ius aliquip referrentur, vix an modo numquam inermis. No imperdiet disputando vis, clita ornatus qualisque et qui. Legimus veritus referrentur id nam. Id vim eligendi incorrupte necessitatibus, per et causae intellegebat.Vim justo paulo consequuntur no, in has tamquam facilis philosophia. In mel tota prima justo, quem enim erat mei ei, at probo velit quaerendum nec. Sit ut liber facete adolescens, vis cu tempor pericula, solum animal vix id. Eu per mutat veritus nostrum, odio discere ad quo, ius et prima scaevola. Cetero invidunt eum eu, pro falli consul disputationi eu, ne eam ullum veritus. Choro antiopam per an, an sed appareat praesent.
-                        </p>
-                    </div>
+            <div>
+            </div>
+            <div>
+            	<div>
+	                <div class="col-lg-6">
+	                   <div class="ct-chart ct-perfect-fourth"></div>
+	                </div>
+	                <div>
+	                    <div class="col-lg-6">
+	                        <h3 class="text-center">Description</h3>
+	                        <hr class="light">
+	                        <p class="text-faded" id="statistic_description">
+	                            Lorem ipsum dolor sit amet, usu illud audire an, at oratio tollit sit. Delenit meliore suscipiantur id has. Ex ius aliquip referrentur, vix an modo numquam inermis. No imperdiet disputando vis, clita ornatus qualisque et qui. Legimus veritus referrentur id nam. Id vim eligendi incorrupte necessitatibus, per et causae intellegebat.Vim justo paulo consequuntur no, in has tamquam facilis philosophia. In mel tota prima justo, quem enim erat mei ei, at probo velit quaerendum nec. Sit ut liber facete adolescens, vis cu tempor pericula, solum animal vix id. Eu per mutat veritus nostrum, odio discere ad quo, ius et prima scaevola. Cetero invidunt eum eu, pro falli consul disputationi eu, ne eam ullum veritus. Choro antiopam per an, an sed appareat praesent.
+	                        </p>
+	                    </div>
+	                </div>
                 </div>
             </div>
         </div>
@@ -282,7 +284,7 @@
                     <div class="col-lg-3 text-center">
                     	<a class="mail_links" href="mailto:osipovvictor1994@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Victor</a></div>
                     <div class="col-lg-3 text-center">
-                    	<a class="mail_links" href="mailto:scerbatiuc.stas@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Stas</a>
+                    	<a class="mail_links" href="mailto:scerbatiuc.stas@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Stanislav</a>
                     </div>
                     <div class="col-lg-3 text-center">
                     	<a class="mail_links" href="mailto:niku.sirbu@gmail.com"><i class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Nicolae</a>

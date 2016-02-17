@@ -12,6 +12,11 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
+/**
+ * Set the sensors' configurations to the configuration file config.properties 
+ * @author Nicolae
+ *
+ */
 @Path("/settings")
 public class SensorConfiguration {
 	
@@ -32,7 +37,7 @@ public class SensorConfiguration {
 		String receivedSettings = builder.toString();
 		JSONObject jsonObject = new JSONObject(receivedSettings);
 		System.out.println("LighThreshold " + jsonObject.getInt("lightThreshold"));
-		System.out.println("Data Received: " + builder.toString());
+		System.out.println("Data Received: " + builder.toString());	
 				
 		// return HTTP response 200 in case of success
 		return Response.status(200).entity(builder.toString()).build();		

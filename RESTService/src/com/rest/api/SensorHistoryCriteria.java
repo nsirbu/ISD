@@ -317,4 +317,46 @@ public class SensorHistoryCriteria {
 		
 		return totalDates;
 	}
+	
+	/**
+	 * Get the number of the motions detection during a day.
+	 * 
+	 * @param  requiredDate day that interests us
+	 * @return total number of motions detection
+	 */
+	public static JSONObject getMotionActivityForDay(String requiredDate) {		
+		int todayActivity = DBQuery.getMotionActivityForDay(requiredDate, true);
+	    
+	    JSONObject jsonObject = new JSONObject();  
+	    jsonObject.put("date", requiredDate);
+		jsonObject.put("activity", todayActivity);
+				
+		return jsonObject;		
+	}
+	
+	/**
+	 * Get the number of the motions detection for the last week grouped by day.
+	 * 
+	 * @return a <code>JSONArray</code> containing the day "date" and the total number of the motions 
+	 * 		   detection "activity"
+	 */
+	public static JSONArray getMotionActivityForLastWeek() {
+		JSONArray jsonArray = new JSONArray();
+		
+		Calendar calendar = Calendar.getInstance(Locale.getDefault());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = dateFormat.format(calendar.getTime());
+		
+		calendar.add(Calendar.DATE, -7);
+		String sevenDaysAgoDate = dateFormat.format(calendar.getTime());
+		
+		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
+		
+		for (LocalDate localDate : totalDates) {
+			JSONObject jsonObject = SensorHistoryCriteria.getMotionActivityForDay(localDate.toString());
+			jsonArray.put(jsonObject);
+		}
+		
+		return jsonArray;
+	}
 }

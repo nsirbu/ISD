@@ -56,7 +56,7 @@ public class SensorHistory {
 	@Path("{limit}")
 	@GET
 	@Produces("application/json")
-	public Response getLastXEntries(@PathParam("limit") int limit) {
+	public Response getLastXEntries(@PathParam("limit") int limit) {		
 		ArrayList<Message> allData = DBQuery.getLastXEntries(limit);
 		JsonArray jsonArray = JsonService.createJsonArray(allData);
 		String result = "" + jsonArray;
@@ -138,6 +138,21 @@ public class SensorHistory {
 	@Produces("application/json")    
     public Response getLuminosityStatisticsForLastWeek() {		
 		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
+		
+		return Response.status(200).entity(result).build();
+	}
+	
+	/**
+	 * Get the number of motions detection for each day during the last week.
+	 * Call like http://localhost:8080/RESTService/sensor/history/motion/lastweek
+	 * 
+	 * @return a <code>JSONArray</code> containing the required "date" and the total number of the motions 
+	 * 		   detection "activity"
+	 */
+	@GET @Path("/motion/lastweek")
+	@Produces("application/json")    
+    public Response getMotionActivityForLastWeek() {		
+		String result = "" + SensorHistoryCriteria.getMotionActivityForLastWeek();
 		
 		return Response.status(200).entity(result).build();
 	}

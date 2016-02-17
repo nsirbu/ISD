@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.settings.DatabaseSettings;
+import com.settings.ConfigurationsManager;
 import com.udp.io.Log4j;
 
 /**
@@ -23,14 +23,16 @@ public class ConnectDatabase {
 	 * @return a opened connection to database
 	 */
 	public static Connection connectToDB() {
+		ConfigurationsManager configReader = new ConfigurationsManager();
+		String dbUser = configReader.readConfigValue("dbUser");
+		String dbPassword = configReader.readConfigValue("dbPassword");
+		String dbName = configReader.readConfigValue("dbName");
 		Connection myConnection = null;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			myConnection = (Connection) DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/" + DatabaseSettings.dbName + "?useSSL=false", 
-					DatabaseSettings.dbUser,
-					DatabaseSettings.dbPassword);
+			myConnection = (Connection) DriverManager
+					.getConnection("jdbc:mysql://localhost:3306/" + dbName + "?useSSL=false", dbUser, dbPassword);
 
 		} catch (ClassNotFoundException | SQLException e) {
 			log.error("Exception in conectToBD() function, ConnectDatabase class : " + e.getMessage());

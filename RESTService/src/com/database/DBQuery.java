@@ -41,6 +41,7 @@ public class DBQuery {
 				lastMessage.setPirSensorVal(rs.getBoolean("pirSensorVal"));
 			}
 			
+			pst.close();
 			rs.close();
 			dbConnection.close();
 		} catch (SQLException e) {
@@ -119,6 +120,7 @@ public class DBQuery {
 
 				dataFromDB.add(message);
 			}
+			pst.close();
 			rs.close();
 			dbConnection.close();
 		} catch (SQLException e) {
@@ -148,12 +150,45 @@ public class DBQuery {
 			stmt.setInt(3,receivedMessage.getLightSensorVal());
 			stmt.setBoolean(4,receivedMessage.getPirSensorVal());
 			affectedRows = stmt.executeUpdate();
+			stmt.close();
 			dbConnection.close();
 		}
 		catch( Exception e ){ 
+			log.error("Exception in recordMessage() function, DBQuery class : " + e.getMessage());
             e.printStackTrace();
             return 0;
 		} 
        return affectedRows;
+	}
+	
+	/**
+	 * Get the total number of motion detection during a day. 
+	 * 
+	 * @param date         the day for which to determine
+	 * @param pirSensorVal the state of the sensor that interests us, true or false
+	 * @return             how many motions was detected
+	 */
+	public static int getMotionActivityForDay(String date, boolean pirSensorVal) {
+		String sqlQuery = "SELECT COUNT(*) FROM sensor_data where DATE(timeReceived)='" + date + "' and pirSensorVal='"
+				+ pirSensorVal + "' and isHeartbeat='false'";
+		int count = 0;
+
+		try {
+			Connection dbConnection = ConnectDatabase.connectToDB();
+			PreparedStatement pst = dbConnection.prepareStatement(sqlQuery);
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+			pst.close();
+			rs.close();
+			dbConnection.close();
+		} catch (SQLException e) {
+			log.error("Exception in getMotionActivityForDay() function, DBQuery class : " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 }

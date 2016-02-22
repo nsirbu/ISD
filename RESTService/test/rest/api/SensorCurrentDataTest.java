@@ -1,4 +1,4 @@
-package isd;
+package rest.api;
 
 import org.junit.Rule;
 import org.junit.runner.RunWith;

@@ -411,7 +411,7 @@ public class SensorHistoryCriteria {
 					message.getTimeReceived().length() - 2);
 			date = sdf.parse(timeMoment);
 		} catch (ParseException e) {
-			log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : "
+			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
 					+ e.getMessage());
 			e.printStackTrace();
 		}

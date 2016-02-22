@@ -143,7 +143,7 @@ public class SensorConfiguration {
 	 * 
 	 * @return a <code>JSONObject</code> containing the value of the light threshold
 	 */
-	@GET @Path("/getLightThreshlod")
+	@GET @Path("/getLightThreshold")
 	@Produces("application/json")
 	public Response getLightThreshold() {
 		ConfigurationsManager configManager = new ConfigurationsManager();

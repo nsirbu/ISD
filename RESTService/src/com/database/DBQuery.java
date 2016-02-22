@@ -12,21 +12,21 @@ import com.model.Message;
 import com.udp.io.Log4j;
 
 /**
-*
-* @author Nicolae
-* 
-* All methods concerning the access to the database.
-*/
+ *
+ * @author Nicolaej
+ * 
+ *         All methods concerning the access to the database.
+ */
 public class DBQuery {
-	
+
 	static Logger log = Log4j.initLog4j(DBQuery.class);
-	
+
 	/**
-	 * Get last entry from the database.
+	 * Get the last entry from the database.
 	 * 
 	 * @return a instance of class <code>Message</code>
 	 */
-	public static Message getLastEntry(){
+	public static Message getLastEntry() {
 		Message lastMessage = new Message();
 		try {
 			Connection dbConnection = ConnectDatabase.connectToDB();
@@ -40,7 +40,7 @@ public class DBQuery {
 				lastMessage.setLightSensorVal(rs.getInt("lightSensorVal"));
 				lastMessage.setPirSensorVal(rs.getBoolean("pirSensorVal"));
 			}
-			
+
 			pst.close();
 			rs.close();
 			dbConnection.close();
@@ -48,60 +48,62 @@ public class DBQuery {
 			log.error("Exception in getLastEntry() function, DBQuery class : " + e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		return lastMessage;
 	}
-	
+
 	/**
 	 * Get all entries from the database.
 	 * 
-	 * @return a list with objects of <code>Message</code> class.
+	 * @return a list with objects of <code>Message</code> class
 	 */
 	public static ArrayList<Message> getAllData() {
 		String sqlQuery = "SELECT * FROM sensor_data";
-		
+
 		return getDataSet(sqlQuery);
 	}
-	
+
 	/**
-	 * Get all entries from the database.
+	 * Get all entries from the database by date.
 	 * 
-	 * @return a list with objects of <code>Message</code> class.
+	 * @return a list with objects of <code>Message</code> class
 	 */
 	public static ArrayList<Message> getAllDataByParameter(String date) {
 		String sqlQuery = "SELECT * FROM sensor_data where DATE(timeReceived)='" + date + "'";
-		
+
 		return getDataSet(sqlQuery);
 	}
-	
+
 	/**
-	 * Get all entries from the database.
+	 * Get all entries from the database between two dates.
 	 * 
-	 * @return a list with objects of <code>Message</code> class.
+	 * @return a list with objects of <code>Message</code> class
 	 */
 	public static ArrayList<Message> getAllDataBetweenTwoTimeValues(String date_1, String date_2) {
 		String sqlQuery = "SELECT * FROM sensor_data where timeReceived BETWEEN '" + date_1 + "' AND '" + date_2 + "'";
-		
+
 		return getDataSet(sqlQuery);
 	}
-	
+
 	/**
 	 * Get the last x elements from database.
 	 * 
-	 * @param  x number of elements to retrieve from the database
-	 * @return   a list with objects of <code>Message</code> class
+	 * @param x
+	 *            number of elements to retrieve from the database
+	 * @return a list with objects of <code>Message</code> class
 	 */
 	public static ArrayList<Message> getLastXEntries(int x) {
 		String sqlQuery = "SELECT * FROM sensor_data ORDER BY id DESC LIMIT " + x;
-		
-		return getDataSet(sqlQuery);	
+
+		return getDataSet(sqlQuery);
 	}
-	
+
 	/**
 	 * Get a list of objects from database according to specified query.
 	 * 
-	 * @param sqlQuery query to be executed
-	 * @return         a list with objects of <code>Message</code> class
+	 * @param sqlQuery
+	 *            query to be executed
+	 * @return a list with objects of <code>Message</code> class
 	 */
 	public static ArrayList<Message> getDataSet(String sqlQuery) {
 		ArrayList<Message> dataFromDB = new ArrayList<Message>();
@@ -127,46 +129,49 @@ public class DBQuery {
 			log.error("Exception in getDataSet() function, DBQuery class : " + e.getMessage());
 			e.printStackTrace();
 		}
-		return dataFromDB;	
+		return dataFromDB;
 	}
-	
+
 	/**
-	 * Records the given message object <code>Message</code></b> into
-	 * the Database.
-	 * @param receivedMessage - <code>Message</code>
-	 * @return <code>Integer</code> - number of rows affected. 
-	 * If the method returns 0 - the query wasn't successful. 
+	 * Records the given message object <code>Message</code></b> into the
+	 * database.
+	 * 
+	 * @param receivedMessage
+	 *            the message to store in the database
+	 * @return the number of rows affected. If the method returns 0 - the query
+	 *         wasn't successful.
 	 */
-	public static int recordMessage(Message receivedMessage){
+	public static int recordMessage(Message receivedMessage) {
 		int affectedRows = 0;
 		Connection dbConnection = ConnectDatabase.connectToDB();
-		try{
+		try {
 			PreparedStatement stmt = dbConnection.prepareStatement("INSERT INTO "
-					+ "sensor_data (isHeartbeat, timeReceived, lightSensorVal, pirSensorVal) "
-					+ "VALUES (?, ?, ?, ?)");
-			
-			stmt.setBoolean(1,receivedMessage.isHeartbeat());
-			stmt.setString(2,receivedMessage.getTimeReceived());
-			stmt.setInt(3,receivedMessage.getLightSensorVal());
-			stmt.setBoolean(4,receivedMessage.getPirSensorVal());
+					+ "sensor_data (isHeartbeat, timeReceived, lightSensorVal, pirSensorVal) " + "VALUES (?, ?, ?, ?)");
+
+			stmt.setBoolean(1, receivedMessage.isHeartbeat());
+			stmt.setString(2, receivedMessage.getTimeReceived());
+			stmt.setInt(3, receivedMessage.getLightSensorVal());
+			stmt.setBoolean(4, receivedMessage.getPirSensorVal());
 			affectedRows = stmt.executeUpdate();
+			
 			stmt.close();
 			dbConnection.close();
-		}
-		catch( Exception e ){ 
+		} catch (Exception e) {
 			log.error("Exception in recordMessage() function, DBQuery class : " + e.getMessage());
-            e.printStackTrace();
-            return 0;
-		} 
-       return affectedRows;
+			e.printStackTrace();
+			return 0;
+		}
+		return affectedRows;
 	}
-	
+
 	/**
-	 * Get the total number of motion detection during a day. 
+	 * Get the total number of motion detection during a day.
 	 * 
-	 * @param date         the day for which to determine
-	 * @param pirSensorVal the state of the sensor that interests us, true or false
-	 * @return             how many motions was detected
+	 * @param date
+	 *            the day for which to determine
+	 * @param pirSensorVal
+	 *            the state of the sensor that interests us, true or false
+	 * @return how many motions was detected
 	 */
 	public static int getMotionActivityForDay(String date, boolean pirSensorVal) {
 		String sqlQuery = "SELECT COUNT(*) FROM sensor_data where DATE(timeReceived)='" + date + "' and pirSensorVal='"

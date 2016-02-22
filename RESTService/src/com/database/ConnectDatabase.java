@@ -20,7 +20,7 @@ public class ConnectDatabase {
 	/**
 	 * Connect to the database.
 	 * 
-	 * @return a opened connection to database
+	 * @return a opened connection to the database
 	 */
 	public static Connection connectToDB() {
 		ConfigurationsManager configReader = new ConfigurationsManager();

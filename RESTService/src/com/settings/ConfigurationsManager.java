@@ -8,40 +8,45 @@ import org.apache.log4j.Logger;
 import com.udp.io.Log4j;
 
 /**
- * Read the server's configurations from the file stored in the classpath.
+ * 
  * @author Nicolae
  *
+ *         Read and set the server's configurations from the file stored in the
+ *         classpath.
  */
 public class ConfigurationsManager {
-	
+
 	Logger log = Log4j.initLog4j(ConfigurationsManager.class);
-	
-	String configFile = "config.properties";	
+
+	String configFile = "config.properties";
 	String configValue = "";
 	InputStream inputStream = null;
-	
+
 	/**
 	 * Get from the configuration file the value for the specified field.
 	 * 
-	 * @param field the resource that interests us
-	 * @return      the value of the resource
+	 * @param field
+	 *            the resource that interests us
+	 * @return the value of the resource
 	 */
-	public String readConfigValue(String field) {			
-		try {			
+	public String readConfigValue(String field) {
+		try {
 			PropertiesConfiguration config = new PropertiesConfiguration(configFile);
 			configValue = config.getString(field);
 		} catch (Exception e) {
 			log.error("Exception in readConfigValue() function, ConfigurationsManager class : " + e.getMessage());
-		} 
-		
+		}
+
 		return configValue;
 	}
-	
+
 	/**
 	 * Set configuration data to the configuration file.
 	 * 
-	 * @param field the resource
-	 * @param value the resource value
+	 * @param field
+	 *            the resource that interests us
+	 * @param value
+	 *            the resource value
 	 */
 	public void setConfigValue(String field, String value) {
 		try {

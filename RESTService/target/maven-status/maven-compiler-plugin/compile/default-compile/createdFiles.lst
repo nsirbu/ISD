@@ -1,11 +1,11 @@
 com/database/ConnectDatabase.class
 com/udp/io/LoggerService.class
 com/rest/api/SensorHistoryCriteria.class
-com/settings/SensorSettings.class
+com/rest/api/HeartBeatState.class
+com/udp/server/ConfigurationJob.class
 com/model/Message.class
 com/udp/io/JsonService.class
-com/settings/DatabaseSettings.class
-com/udp/server/HrtBeatJob.class
+com/udp/server/HeartBeatJob.class
 com/udp/server/SensorJob.class
 com/udp/io/Log4j.class
 com/database/DBQuery.class
@@ -15,6 +15,8 @@ com/udp/helper/Constants.class
 com/udp/server/Server.class
 com/udp/helper/TimeHelper.class
 com/udp/io/Recordable.class
+com/settings/ConfigurationsManager.class
+com/app/servlet/StatisticsServlet.class
 com/rest/api/SensorHistory.class
 com/rest/api/SensorConfiguration.class
 com/udp/helper/FileHelper.class

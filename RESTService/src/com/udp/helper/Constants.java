@@ -26,7 +26,9 @@ public class Constants {
     public static final String LIGHT_SENSOR_PREFIX  = "L";
     public static final String HEARTBEAT_MSG_PREFIX = "H";
 
-
+    // ---------- HEARTBEAT CONSTANTS ----------------
+    public static final boolean HEARTBEAT_IS_LATE = false;
+    public static final boolean HEARTBEAT_OK	  = true;
 
     // ---------- INITIALISATION BLOCK ----------------
     static {

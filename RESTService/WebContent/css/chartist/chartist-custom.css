@@ -1,0 +1,109 @@
+/**************************************************************
+ * CUSTOM CSS for charts
+ * Every chart type is presented separately in a section:
+ *
+ * 1.General properties
+ * 2.Line/bar charts
+ * 3.Pie charts
+ * 
+ * Reference: http://goo.gl/z9Ccro
+ **************************************************************
+					1. GENERAL PROPERTIES
+ **************************************************************/
+section line.ct-grid {
+	stroke: rgba(0, 0, 0, 0.2);
+}
+
+section.bg-primary line.ct-grid {
+	stroke: rgba(255, 255, 255, 0.8);
+}
+
+section .ct-label {
+	font-size: 12px;
+	color: rgba(0, 0, 0, 1);
+	fill: rgba(0, 0, 0, 1);
+}
+
+section.bg-primary span.ct-label {
+	font-size: 12px;
+	color: rgba(255, 255, 255, 1);
+	fill: rgba(0, 0, 0, 0.2);
+	text-shadow: 0px 0px 1px;
+}
+
+.ct-bar {
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+.ct-bar {
+	filter: brightness(1.2);
+	-webkit-filter: brightness(1.2);
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+/**************************************************************
+						2.LINE/BAR CHART
+ **************************************************************/
+.ct-series-a .ct-line, .ct-series-a .ct-bar {
+	stroke: #05668D;
+	stroke-width: 10px;
+}
+
+.ct-series-b .ct-line, .ct-series-b .ct-bar {
+	stroke: #028090;
+	stroke-width: 10px;
+}
+
+.ct-series-c .ct-line, .ct-series-c .ct-bar {
+	stroke: #00A896;
+	stroke-width: 10px;
+}
+
+.ct-series-d .ct-line, .ct-series-d .ct-bar {
+	stroke: #02C39A;
+	stroke-width: 10px;
+}
+
+.ct-series-e .ct-line, .ct-series-e .ct-bar {
+	stroke: #70C1B3;
+	stroke-width: 10px;
+}
+
+/**************************************************************
+						3.PIE CHART
+ **************************************************************/
+.ct-series-a .ct-slice-pie {
+	fill: #05668D;
+}
+
+.ct-series-b .ct-slice-pie {
+	fill: #028090;
+}
+
+.ct-series-c .ct-slice-pie {
+	fill: #00A896;
+}
+
+.ct-series-d .ct-slice-pie {
+	fill: #02C39A;
+}
+
+.ct-series-e .ct-slice-pie {
+	fill: #70C1B3;
+}
+
+.ct-series-f .ct-slice-pie {
+	fill: #8AA1B1;
+}
+
+.ct-series-g .ct-slice-pie {
+	fill: #525174;
+}
+
+.ct-series-h .ct-slice-pie {
+	fill: #513B56;
+}
+
+/*********************  END OF FILE ****************************/

@@ -4,9 +4,12 @@
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/FileHelper.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/Constants.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/LoggerService.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/rest/api/HeartBeatState.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/io/Recordable.java
-/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/settings/DatabaseSettings.java
-/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/HrtBeatJob.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/HeartBeatJob.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/ConfigurationJob.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/settings/ConfigurationsManager.java
+/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/app/servlet/StatisticsServlet.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/server/SensorJob.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/database/ConnectDatabase.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/rest/api/SensorConfiguration.java
@@ -17,4 +20,3 @@
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/model/Message.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/udp/helper/TimeHelper.java
 /home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/rest/api/SensorCurrentData.java
-/home/stas/Desktop/INTHER/RESTfull Server/ISD/RESTService/src/com/settings/SensorSettings.java

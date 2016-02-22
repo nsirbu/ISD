@@ -1,0 +1,239 @@
+@CHARSET "UTF-8";
+
+/*ANIMATIONS*/
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+        -moz-transform: rotate(0deg);
+        -moz-transform-origin: 50% 50%;
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: 50% 50%;
+    }
+    to { 
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+        -moz-transform: rotate(360deg);
+        -moz-transform-origin: 50% 50%;
+        -webkit-transform: rotate(360deg);
+        -webkit-transform-origin: 50% 50%;
+    }
+}
+
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+}
+
+
+p.joke {
+	color: #e6e6e6
+}
+
+.bg-action {
+	color: #FFF;
+	background: rgb(241, 93, 34);
+}
+
+.action>i {
+	color: #fff;
+}
+
+hr.white {
+	color: #FFF;
+	border-color: #FFF;
+}
+
+a#know_more {
+	color: #FFF;
+	background-color: rgb(150, 10, 49);
+	border-color: rgb(150, 10, 49);
+	transition: 0.5s all ease;
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+a#know_more:hover {
+	color: #000;
+	background-color: rgb(255, 255, 255);
+	border-color: rgb(150, 10, 49);
+	transition: 0.5s all ease;
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+div#pir_demo {
+	display: inline-block;
+	border-radius: 30px;
+	border: 4px solid #FFF;
+	height: 46px;
+	width: 46px;
+	margin: 0 auto;
+	opacity: 1;
+	opacity: 1;
+	-webkit-animation: rotate 1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-border-radius: 30px;
+	-webkit-transition: 0.7s all ease;
+	-moz-transition: 0.7s all ease;
+}
+
+div.indicator_description {
+	padding-top: 3%;
+}
+
+/*--------------- SENSORS' CURRENT STATE SECTION ---------------*/
+div#spinner_container {
+	display: inline-block;
+}
+
+i#spinner {
+	animation: rotate 2s infinite;
+	-moz-animation: rotate 2s linear infinite;
+	-webkit-animation: rotate 2s linear infinite;
+	/*-webkit-transition: 0.7s all ease;
+    -moz-transition: 0.7s all ease;*/
+}
+
+h2#current_state {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+div.current_values_container {
+	position: relative;
+	display: inline-block;
+}
+
+.current_values {
+	position: absolute;
+	top: 50%;
+}
+
+span#update_notification {
+	display: none;
+	position: absolute;
+	text-transform: uppercase;
+	margin: 6px;
+	color: #960A31;
+	text-shadow: 0px 0px 1px;
+	-webkit-transition: 0.7s all ease;
+	-moz-transition: 0.7s all ease;
+}
+
+div#current_state_notification {
+	margin: 30px;
+}
+
+span.hb_notification_text {
+	margin-right: 10px;
+}
+
+span#notification_title {
+	font-weight: bold;
+}
+
+#current_state_info {
+	margin: 20px;
+}
+
+#current_state_info_button {
+	margin: 10px;
+}
+
+/*---------------------- SETTINGS BOX ---------------------*/
+hr#configuration_separator {
+	-webkit-margin-start: 0;
+}
+
+#settings_panel {
+	margin: 12% 20px 20px 20px;
+}
+
+#settings_body {
+	margin: 10px;
+}
+
+.settings_input {
+	height: 35px;
+}
+
+.update_settings {
+	border-radius: 2px;
+	height: 35px;
+	border: 1px solid #ccc;
+}
+
+/*----------------- HISTORY & STATISTICS ------------------*/
+
+/* Statistics options dropdown */
+div#statistics_options {
+	display: inline-block;
+}
+/* Text before the statistics dropdown */
+p#statistic_select {
+	display: inline-block;
+}
+
+#dropDown_statistics.btn-default {
+	width: 190px;
+	border-color: #fff;
+	color: #FFF;
+	border-radius: 5px;
+	background-color: #960A31;
+	transition: all .35s;
+	-webkit-transition: all 0.35s;
+	-moz-transition: all 0.35s;
+}
+
+#dropDown_statistics.btn-default:hover, #dropDown_statistics.btn-default:focus
+	{
+	border-color: #fff;
+	color: #000;
+	background-color: #FFF;
+	border-radius: 5px;
+	transition: all .35s;
+	-webkit-transition: all 0.35s;
+	-moz-transition: all 0.35s;
+}
+
+#dropDown_statistics.btn-default:focus {
+	width: 285px;
+	transition: all .35s;
+	-webkit-transition: all 0.35s;
+	-moz-transition: all 0.35s;
+}
+
+#dropdown_list>li {
+	color: #000;
+	padding-left: 15px;
+}
+
+#dropdown_list>li>a {
+	cursor: pointer;
+}
+
+/*----------------- RESOURCES & CONTACTS ------------------*/
+a.mail_links {
+	-webkit-transition: 0.7s all ease;
+	-moz-transition: 0.7s all ease;
+}
+
+a.mail_links>i::after {
+	text-color: #FFF;
+	-webkit-transition: 0.7s all ease;
+	-moz-transition: 0.7s all ease;
+}
+
+.mail_links:hover {
+	color: #FFF;
+	text-decoration: none;
+	-webkit-transition: 0.7s all ease;
+	-moz-transition: 0.7s all ease;
+}
+
+/*------------------------ TEXT -----------------------------------*/
+.text-important {
+	font-weight: bold;
+}

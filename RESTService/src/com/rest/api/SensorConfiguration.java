@@ -3,10 +3,11 @@ package com.rest.api;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -39,17 +40,27 @@ public class SensorConfiguration {
 	 * @param incomingSettings
 	 *            the <code>JSON</code> message containing the light threshold
 	 *            value
-	 * @return 200 OK
+	 * @return 200 OK in case of success and 400 Bad Request in case of failure 
 	 */
 	@POST
-	@Path("/luminosity")
+	@Path("/setLightThreshold")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response adjustSensorsThresholdValues(InputStream incomingSettings) {
 		JSONObject jsonObject = new JSONObject(readIncommingMessage(incomingSettings));
-		int lightThreshold = jsonObject.getInt("lightThreshold");
-		configManager.setConfigValue("lightThreshold", lightThreshold + "");
-
-		return Response.status(200).build();
+		int lightThreshold = -1;
+		try {
+			lightThreshold = jsonObject.getInt("lightThreshold");
+		} catch (Exception e) {
+			log.error("Exception in adjustSensorsThresholdValues() function, SensorConfiguration class : " + e.getMessage());
+		}
+		
+		if (lightThreshold >= 0) {
+			configManager.setConfigValue("lightThreshold", lightThreshold + "");
+			return Response.status(200).build();
+		} else {
+			log.error("Wrong input data in adjustSensorsThresholdValues() method");
+			return Response.status(400).build();
+		}		
 	}
 
 	/**
@@ -58,17 +69,27 @@ public class SensorConfiguration {
 	 * 
 	 * @param incomingSettings
 	 *            the JSON message containing the heartbeat frequency value
-	 * @return 200 OK
+	 * @return 200 OK in case of success and 400 Bad Request in case of failure 
 	 */
 	@POST
-	@Path("/heartbeat")
+	@Path("/setHBFrequency")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response adjustHBThresholdValues(InputStream incomingSettings) {
 		JSONObject jsonObject = new JSONObject(readIncommingMessage(incomingSettings));
-		int HBThreshold = jsonObject.getInt("HBThreshold");
-		configManager.setConfigValue("HBThreshold", HBThreshold + "");
-
-		return Response.status(200).build();
+		int HBFrequency = -1;
+		try {
+			HBFrequency = jsonObject.getInt("HBFrequency");
+		} catch (Exception e) {
+			log.error("Exception in adjustHBThresholdValues() function, SensorConfiguration class : " + e.getMessage());
+		}
+		
+		if (HBFrequency >= 0) {
+			configManager.setConfigValue("HBFrequency", HBFrequency + "");
+			return Response.status(200).build();
+		} else {
+			log.error("Wrong input data in adjustSensorsThresholdValues() method");
+			return Response.status(400).build();
+		}
 	}
 
 	/**
@@ -91,5 +112,53 @@ public class SensorConfiguration {
 		}
 
 		return builder.toString();
+	}
+	
+	/**
+	 * Get from configuration file the HB Frequency value.
+	 * 
+	 * @return a <code>JSONObject</code> containing the value of the threshold
+	 */
+	@GET @Path("/getHBFrequency")
+	@Produces("application/json")
+	public Response getHBFrequency() {
+		ConfigurationsManager configManager = new ConfigurationsManager();
+		JSONObject jsonObject = new JSONObject();
+		int HBFrequency = 0;
+		try {
+			HBFrequency = Integer.parseInt(configManager.readConfigValue("HBFrequency"));
+		} catch (Exception e) {
+			log.error("Exception in getHBFrequency() function, SensorConfiguration class : " + e.getMessage());
+		} finally {
+			jsonObject.put("HBFrequency", HBFrequency);
+		}
+		
+		String result = "" + jsonObject;
+
+		return Response.status(200).entity(result).build();
+	}
+	
+	/**
+	 * Get from configuration file the light threshold value.
+	 * 
+	 * @return a <code>JSONObject</code> containing the value of the light threshold
+	 */
+	@GET @Path("/getLightThreshlod")
+	@Produces("application/json")
+	public Response getLightThreshold() {
+		ConfigurationsManager configManager = new ConfigurationsManager();
+		JSONObject jsonObject = new JSONObject();
+		int thresholdValue = 0;
+		try {
+			thresholdValue = Integer.parseInt(configManager.readConfigValue("lightThreshold"));
+		} catch (Exception e) {
+			log.error("Exception in getLightThreshold() function, SensorConfiguration class : " + e.getMessage());
+		} finally {
+			jsonObject.put("lightThreshold", thresholdValue);
+		}
+				
+		String result = "" + jsonObject;
+
+		return Response.status(200).entity(result).build();
 	}
 }

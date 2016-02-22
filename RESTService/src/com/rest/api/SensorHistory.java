@@ -1,5 +1,7 @@
 package com.rest.api;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +17,7 @@ import com.database.DBQuery;
 import com.google.gson.JsonArray;
 import com.model.Message;
 import com.udp.io.JsonService;
+import com.udp.io.Log4j;
 
 /**
  *
@@ -25,6 +29,8 @@ import com.udp.io.JsonService;
  */
 @Path("/history")
 public class SensorHistory {
+	
+	static Logger log = Log4j.initLog4j(SensorHistory.class);
 
 	/**
 	 * Get all entries from the database. Call like
@@ -35,11 +41,17 @@ public class SensorHistory {
 	@GET
 	@Produces("application/json")
 	public Response getSensorData() throws JSONException {
-		ArrayList<Message> allData = DBQuery.getAllData();
-		JsonArray jsonArray = JsonService.createJsonArray(allData);
-		String result = "" + jsonArray;
+		try {
+			ArrayList<Message> allData = DBQuery.getAllData();
+			JsonArray jsonArray = JsonService.createJsonArray(allData);
+			String result = "" + jsonArray;
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getSensorData() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -55,11 +67,17 @@ public class SensorHistory {
 	@Path("{limit}")
 	@Produces("application/json")
 	public Response getLastXEntries(@PathParam("limit") int limit) {
-		ArrayList<Message> allData = DBQuery.getLastXEntries(limit);
-		JsonArray jsonArray = JsonService.createJsonArray(allData);
-		String result = "" + jsonArray;
+		try {
+			ArrayList<Message> allData = DBQuery.getLastXEntries(limit);
+			JsonArray jsonArray = JsonService.createJsonArray(allData);
+			String result = "" + jsonArray;
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getLastXEntries() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -78,13 +96,26 @@ public class SensorHistory {
 	@Produces("application/json")
 	public Response getMinMaxTimeSomebodyInRoom(@PathParam("date_1") String date_1,
 			@PathParam("date_2") String date_2) {
-		long time = SensorHistoryCriteria.getTimeSpentInTheRoom(date_1, date_2);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("timeSpent", time);
+		if (checkForRightDateTimeForamt(date_1) && checkForRightDateTimeForamt(date_2)) {
+			try {
+				long time = SensorHistoryCriteria.getTimeSpentInTheRoom(date_1, date_2);
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("timeSpent", time);
 
-		String result = "" + jsonObject;
+				String result = "" + jsonObject;
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error(
+						"Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
 	}
 
 	/**
@@ -100,9 +131,21 @@ public class SensorHistory {
 	@Path("/luminosity/{date}")
 	@Produces("application/json")
 	public Response getLuminosityStatistics(@PathParam("date") String date) {
-		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);
+		if (checkForRightDateTimeForamt(date)) {
+			try {
+				String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error("Exception in getLuminosityStatistics() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
 	}
 
 	/**
@@ -117,9 +160,16 @@ public class SensorHistory {
 	@Path("/luminosity/lastweek")
 	@Produces("application/json")
 	public Response getLuminosityStatisticsForLastWeek() {
-		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
+		try {
+			String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getLuminosityStatisticsForLastWeek() function, SensorHistory class : "
+					+ e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -134,9 +184,15 @@ public class SensorHistory {
 	@Path("/motion/lastweek")
 	@Produces("application/json")
 	public Response getMotionActivityForLastWeek() {
-		String result = "" + SensorHistoryCriteria.getMotionActivityForLastWeek();
+		try {
+			String result = "" + SensorHistoryCriteria.getMotionActivityForLastWeek();
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getMotionActivityForLastWeek() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -155,11 +211,43 @@ public class SensorHistory {
 	@Path("/lightOn/{date_1}&{date_2}")
 	@Produces("application/json")
 	public Response getLightOnPeriod(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
-		long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("totalTime", totalTime);
-		String result = "" + jsonObject;
+		if (checkForRightDateTimeForamt(date_1) && checkForRightDateTimeForamt(date_2)) {
+			try {
+				long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("totalTime", totalTime);
+				String result = "" + jsonObject;
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error("Exception in getLightOnPeriod() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
+	}
+	
+	/**
+	 * Check if the input date corresponds to the specified format.
+	 * 
+	 * @param dateToCheck
+	 *            the <code>String</code> date to verify its correctness
+	 * @return true or false
+	 */
+	public boolean checkForRightDateTimeForamt(String dateToCheck) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			sdf.parse(dateToCheck);
+
+			return true;
+		} catch (ParseException ex) {
+			log.error("Exception in checkForRightDateTimeForamt() function, SensorHistory class : " + ex.getMessage());
+
+			return false;
+		}
 	}
 }

@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.database.DBQuery;
@@ -12,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.model.Message;
 import com.settings.ConfigurationsManager;
 import com.udp.io.JsonService;
+import com.udp.io.Log4j;
 
 /**
  *
@@ -22,6 +24,8 @@ import com.udp.io.JsonService;
  */
 @Path("/current")
 public class SensorCurrentData {
+	
+	static Logger log = Log4j.initLog4j(SensorCurrentData.class);
 
 	/**
 	 * Get from the database the last entry, ie the last sensors' state.
@@ -32,11 +36,18 @@ public class SensorCurrentData {
 	@GET
 	@Produces("application/json")
 	public Response getLastSensorState() {
-		Message message = DBQuery.getLastEntry();
-		JsonObject jsonObject = JsonService.createJsonObject(message);
-		String result = "" + jsonObject;
+		Message message = new Message();
+		try {
+			message = DBQuery.getLastEntry();
+			JsonObject jsonObject = JsonService.createJSONObject(message);
+			String result = "" + jsonObject;
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getLastSensorState() function, SensorCurrentData class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -55,16 +66,24 @@ public class SensorCurrentData {
 		JSONObject jsonObject = new JSONObject();
 		Message lastMessage = DBQuery.getLastEntry();
 		ConfigurationsManager configManager = new ConfigurationsManager();
-		int lightThreshold = Integer.parseInt(configManager.readConfigValue("lightThreshold"));
+		int lightThreshold = -1;
+		
+		try {
+			lightThreshold = Integer.parseInt(configManager.readConfigValue("lightThreshold"));
 
-		if (lastMessage.getLightSensorVal() > lightThreshold) {
-			jsonObject.put("isMotion", "yes");
-		} else {
-			jsonObject.put("isMotion", "no");
+			if (lastMessage.getLightSensorVal() > lightThreshold) {
+				jsonObject.put("isMotion", "yes");
+			} else {
+				jsonObject.put("isMotion", "no");
+			}
+
+			String result = "" + jsonObject;
+
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getMotionState() function, SensorCurrentData class : " + e.getMessage());
+			
+			return Response.status(500).build();
 		}
-
-		String result = "" + jsonObject;
-
-		return Response.status(200).entity(result).build();
 	}
 }

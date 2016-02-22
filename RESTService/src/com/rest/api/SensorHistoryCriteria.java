@@ -199,7 +199,11 @@ public class SensorHistoryCriteria {
 			counter++;
 		}
 
-		average = sum / counter;
+		try {
+			average = sum / counter;
+		} catch (Exception e) {
+			log.error("Exception in calculateAverage() function, SensorHistory class : " + e.getMessage());
+		}
 
 		return average;
 	}

@@ -199,7 +199,11 @@ public class SensorHistoryCriteria {
 			counter++;
 		}
 
-		average = sum / counter;
+		try {
+			average = sum / counter;
+		} catch (Exception e) {
+			log.error("Exception in calculateAverage() function, SensorHistory class : " + e.getMessage());
+		}
 
 		return average;
 	}
@@ -407,7 +411,7 @@ public class SensorHistoryCriteria {
 					message.getTimeReceived().length() - 2);
 			date = sdf.parse(timeMoment);
 		} catch (ParseException e) {
-			log.error("Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistoryUtils class : "
+			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
 					+ e.getMessage());
 			e.printStackTrace();
 		}

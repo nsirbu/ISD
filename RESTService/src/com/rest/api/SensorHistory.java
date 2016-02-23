@@ -1,19 +1,31 @@
 package com.rest.api;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.database.DBQuery;
 import com.google.gson.JsonArray;
 import com.model.Message;
+import com.udp.helper.TimeHelper;
 import com.udp.io.JsonService;
+import com.udp.io.Log4j;
 
 /**
  *
@@ -25,6 +37,8 @@ import com.udp.io.JsonService;
  */
 @Path("/history")
 public class SensorHistory {
+	
+	static Logger log = Log4j.initLog4j(SensorHistory.class);
 
 	/**
 	 * Get all entries from the database. Call like
@@ -35,11 +49,17 @@ public class SensorHistory {
 	@GET
 	@Produces("application/json")
 	public Response getSensorData() throws JSONException {
-		ArrayList<Message> allData = DBQuery.getAllData();
-		JsonArray jsonArray = JsonService.createJsonArray(allData);
-		String result = "" + jsonArray;
+		try {
+			ArrayList<Message> allData = DBQuery.getAllData();
+			JsonArray jsonArray = JsonService.createJsonArray(allData);
+			String result = "" + jsonArray;
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getSensorData() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -55,11 +75,17 @@ public class SensorHistory {
 	@Path("{limit}")
 	@Produces("application/json")
 	public Response getLastXEntries(@PathParam("limit") int limit) {
-		ArrayList<Message> allData = DBQuery.getLastXEntries(limit);
-		JsonArray jsonArray = JsonService.createJsonArray(allData);
-		String result = "" + jsonArray;
+		try {
+			ArrayList<Message> allData = DBQuery.getLastXEntries(limit);
+			JsonArray jsonArray = JsonService.createJsonArray(allData);
+			String result = "" + jsonArray;
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getLastXEntries() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -78,13 +104,26 @@ public class SensorHistory {
 	@Produces("application/json")
 	public Response getMinMaxTimeSomebodyInRoom(@PathParam("date_1") String date_1,
 			@PathParam("date_2") String date_2) {
-		long time = SensorHistoryCriteria.getTimeSpentInTheRoom(date_1, date_2);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("timeSpent", time);
+		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {
+			try {
+				long time = SensorHistoryCriteria.getTimeSpentInTheRoom(date_1, date_2);
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("timeSpent", time);
 
-		String result = "" + jsonObject;
+				String result = "" + jsonObject;
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error(
+						"Exception in getMinMaxTimeSomebodyInRoom() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
 	}
 
 	/**
@@ -100,9 +139,21 @@ public class SensorHistory {
 	@Path("/luminosity/{date}")
 	@Produces("application/json")
 	public Response getLuminosityStatistics(@PathParam("date") String date) {
-		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);
+		if (checkForRightDateTimeFormat(date)) {
+			try {
+				String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error("Exception in getLuminosityStatistics() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
 	}
 
 	/**
@@ -117,9 +168,16 @@ public class SensorHistory {
 	@Path("/luminosity/lastweek")
 	@Produces("application/json")
 	public Response getLuminosityStatisticsForLastWeek() {
-		String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
+		try {
+			String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForLastWeek();
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getLuminosityStatisticsForLastWeek() function, SensorHistory class : "
+					+ e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -134,9 +192,15 @@ public class SensorHistory {
 	@Path("/motion/lastweek")
 	@Produces("application/json")
 	public Response getMotionActivityForLastWeek() {
-		String result = "" + SensorHistoryCriteria.getMotionActivityForLastWeek();
+		try {
+			String result = "" + SensorHistoryCriteria.getMotionActivityForLastWeek();
 
-		return Response.status(200).entity(result).build();
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			log.error("Exception in getMotionActivityForLastWeek() function, SensorHistory class : " + e.getMessage());
+
+			return Response.status(500).build();
+		}
 	}
 
 	/**
@@ -152,14 +216,111 @@ public class SensorHistory {
 	 *         milliseconds
 	 */
 	@GET
-	@Path("/lightOn/{date_1}&{date_2}")
+	@Path("/lightOnDuringDay/{date_1}&{date_2}")
 	@Produces("application/json")
-	public Response getLightOnPeriod(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
-		long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("totalTime", totalTime);
-		String result = "" + jsonObject;
+	public Response getLightOnDuringDay(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
+		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {
+			try {
+				long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("totalTime", totalTime);
+				String result = "" + jsonObject;
 
-		return Response.status(200).entity(result).build();
+				return Response.status(200).entity(result).build();
+			} catch (Exception e) {
+				log.error("Exception in getLightOnPeriod() function, SensorHistory class : " + e.getMessage());
+
+				return Response.status(500).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
+	}
+	
+	/**
+	 * Get the total time the light was on in the room between two dates. Call
+	 * like http://localhost:8080/RESTService/sensor/history/lightOn/2016-02-15
+	 * 11:00:00&2016-02-15 18:00:00
+	 * 
+	 * @param date_1
+	 *            first calendar date indicating when to begin calculation
+	 * @param date_2
+	 *            second calendar date indicating when to stop calculation
+	 * @return a <code>JSONObject</code> containing the total time in
+	 *         milliseconds
+	 */
+	@GET
+	@Path("/lightOnDuringWeek/{date_1}&{date_2}")
+	@Produces("application/json")
+	public Response getLightOnDuringWeek(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
+		JSONArray jsonArray = new JSONArray();
+		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {			
+			if (checkIfDatesAreInTheSameDay(date_1, date_2)) { 			
+				try {
+					String startDateInterval = TimeHelper.extractStringDateFromString(date_1);
+					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
+					String result = "" + createJSONWithLightOnStatisticsDataDuringDay(startDateInterval, totalTime + "");
+	
+					return Response.status(200).entity(result).build();
+				} catch (Exception e) {
+					log.error("Exception in getLightOnPeriod() function, SensorHistory class : " + e.getMessage());
+	
+					return Response.status(500).build();
+				}
+			} else {
+				String startDateInterval = TimeHelper.extractStringDateFromString(date_1);
+				String endDateInterval = TimeHelper.extractStringDateFromString(date_2);
+				String startHour = TimeHelper.extractStringHourFromString(date_1);
+				String endHour = TimeHelper.extractStringHourFromString(date_2);
+				List<LocalDate> totalDates = SensorHistoryCriteria.getDatesBetweenTwoDates(startDateInterval, endDateInterval);
+				for (LocalDate localDate : totalDates) {
+					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(localDate + " " + startHour, localDate + " " + endHour);					
+					jsonArray.put(createJSONWithLightOnStatisticsDataDuringDay(startDateInterval, totalTime + ""));
+				}
+				String result = "" + jsonArray;
+				return Response.status(200).entity(result).build();
+			}
+		} else {
+			log.error("Wrong date time format");
+
+			return Response.status(400).build();
+		}
+	}
+	
+	public static boolean checkIfDatesAreInTheSameDay(String date_1, String date_2) {
+		Date date1 = TimeHelper.extractDateFromString(date_1);
+		Date date2 = TimeHelper.extractDateFromString(date_2);
+		
+		return DateUtils.isSameDay(date1, date2);
+	}
+	
+	public static JSONObject createJSONWithLightOnStatisticsDataDuringDay(String startDateInterval, String totalTime) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("date", startDateInterval);
+		jsonObject.put("totalTime", totalTime);
+		
+		return jsonObject;
+	}
+	
+	/**
+	 * Check if the input date corresponds to the specified format.
+	 * 
+	 * @param dateToCheck
+	 *            the <code>String</code> date to verify its correctness
+	 * @return true or false
+	 */
+	public boolean checkForRightDateTimeFormat(String dateToCheck) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			sdf.parse(dateToCheck);
+
+			return true;
+		} catch (ParseException ex) {
+			log.error("Exception in checkForRightDateTimeForamt() function, SensorHistory class : " + ex.getMessage());
+
+			return false;
+		}
 	}
 }

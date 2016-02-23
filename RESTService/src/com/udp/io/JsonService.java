@@ -23,7 +23,7 @@ public class JsonService {
 		return gson.toJsonTree(data).getAsJsonArray();
 	}
 	
-	public static JsonObject createJsonObject(Message message) {
+	public static JsonObject createJSONObject(Message message) {
 		Gson gson = new Gson();
 				
 		return gson.toJsonTree(message).getAsJsonObject();		

@@ -60,7 +60,7 @@ public class Message {
         		"isHeartbeat=" + isHeartbeat +
                 ", pirSensorVal=" + pirSensorVal +
                 ", lightSensorVal=" + lightSensorVal +
-                ", timeReceived='" + timeReceived + '}';
+                ", timeReceived=" + timeReceived + "}";
     }
 
 

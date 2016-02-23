@@ -22,7 +22,7 @@ public class JsonServiceTest {
 		actualVersion.addProperty("lightSensorVal", 111);
 		actualVersion.addProperty("pirSensorVal", true);
 		
-		JsonObject expectedVersion = JsonService.createJsonObject(message);
+		JsonObject expectedVersion = JsonService.createJSONObject(message);
 		Assert.assertEquals(actualVersion, expectedVersion); 		
 	}
 }

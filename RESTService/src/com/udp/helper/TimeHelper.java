@@ -6,12 +6,18 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.apache.log4j.Logger;
+
+import com.udp.io.Log4j;
+
 /**
  * Contains static methods for time manipulation operations
  * 
  * @author sscerbatiuc
  */
 public class TimeHelper {
+	
+	static Logger log = Log4j.initLog4j(TimeHelper.class);
 
 	/**
 	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd HH:m:s.S"
@@ -38,10 +44,11 @@ public class TimeHelper {
 	
 	/**
 	 * Returns the current date. <b>Format: </b>"yyyy-MM-dd"
+	 * @param pattern TODO
 	 * 
 	 * @return String <code>currentTime</code>
 	 */
-	public static String getCurrentDate() {
+	public static String getCurrentDate(String pattern) {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();		
@@ -101,5 +108,26 @@ public class TimeHelper {
 		Date inspectedTime = sdtFormat.parse(date2);
 		long difference	   = currentTime.getTime() - inspectedTime.getTime();
 		return difference;
+	}
+	
+	public static String extractStringDateFromString(String dateToProcess) {
+
+		return dateToProcess.substring(0, 10);
+	}
+	
+	public static String extractStringHourFromString(String dateToProcess) {
+		
+		return dateToProcess.substring(dateToProcess.length() - 8, dateToProcess.length()); 
+	}
+	
+	public static Date extractDateFromString(String dateToProcess) {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = fmt.parse(dateToProcess);
+		} catch (ParseException e) {
+			log.error("Exception in extractDateFromString() function, TimeHelper class : " + e.getMessage());
+		}
+		return date;
 	}
 }

@@ -8,15 +8,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test case for database connection.
+ * 
  * @author Nicolae
  *
+ *         Test case for database connection.
  */
 public class ConnectDatabaseTest {
-	
+
 	@Test
 	public void conectToBDShouldReturnAOpenedConnectionToDB() {
-		
+
 		Connection myConnection = null;
 
 		try {
@@ -27,7 +28,7 @@ public class ConnectDatabaseTest {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		
-		Assert.assertEquals(true, !myConnection.equals(null)); 		
+
+		Assert.assertEquals(true, !myConnection.equals(null));
 	}
 }

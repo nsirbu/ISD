@@ -33,94 +33,6 @@ public class SensorHistoryCriteria {
 
 	static Logger log = Log4j.initLog4j(SensorHistoryCriteria.class);
 
-	static ICondition firstCondition = new ICondition() {
-		/**
-		 * Check if the current message contains data indicating whether the
-		 * light was turned on.
-		 * 
-		 * @param message
-		 *            the message to inspect
-		 * @param lightThreshold
-		 *            the light value with which the comparison is made to
-		 *            detect if at the moment there is or not any motion in the
-		 *            room
-		 * @param isStartTimeSeted
-		 *            boolean value that shows if it can calculate the time
-		 *            difference between the time moment when the motion starts
-		 *            and the time moment when the motion ends to determine how
-		 *            long occurred the motion.
-		 * @return true or false
-		 */
-		@Override
-		public boolean isTrueFor(Message message, int lightThreshold, boolean isStartTimeSeted) {
-
-			return ((message.getLightSensorVal() > lightThreshold) && !isStartTimeSeted);
-		}
-
-		/**
-		 * Check if the current message contains data indicating whether the
-		 * motion was detected.
-		 * 
-		 * @param message
-		 *            the message to inspect
-		 * @param isStartTimeSeted
-		 *            boolean value that shows if it can calculate the time
-		 *            difference between the time moment when the motion starts
-		 *            and the time moment when the motion ends to determine how
-		 *            long occurred the motion.
-		 * @return true or false
-		 */
-		@Override
-		public boolean isTrueFor(Message message, boolean isStartTimeSeted) {
-
-			return (message.getPirSensorVal() && !isStartTimeSeted);
-		}
-	};
-
-	static ICondition secondCondition = new ICondition() {
-		/**
-		 * Check if the current message contains data indicating whether the
-		 * light was turned off.
-		 * 
-		 * @param message
-		 *            the message to inspect
-		 * @param lightThreshold
-		 *            the light value with which the comparison is made to
-		 *            detect if at the moment there is or not any motion in the
-		 *            room
-		 * @param isStartTimeSeted
-		 *            boolean value that shows if it can calculate the time
-		 *            difference between the time moment when the motion starts
-		 *            and the time moment when the motion ends to determine how
-		 *            long occurred the motion.
-		 * @return true or false
-		 */
-		@Override
-		public boolean isTrueFor(Message message, int lightThreshold, boolean isStartTimeSeted) {
-
-			return ((message.getLightSensorVal() < lightThreshold) && isStartTimeSeted);
-		}
-
-		/**
-		 * Check if the current message contains data indicating whether the
-		 * motion was ended.
-		 * 
-		 * @param message
-		 *            the message to inspect
-		 * @param isStartTimeSeted
-		 *            boolean value that shows if it can calculate the time
-		 *            difference between the time moment when the motion starts
-		 *            and the time moment when the motion ends to determine how
-		 *            long occurred the motion.
-		 * @return true or false
-		 */
-		@Override
-		public boolean isTrueFor(Message message, boolean isStartTimeSeted) {
-
-			return (!message.getPirSensorVal() && !message.isHeartbeat());
-		}
-	};
-
 	/**
 	 * Get the maximum and the average value of the light in the room.
 	 * 
@@ -229,11 +141,11 @@ public class SensorHistoryCriteria {
 		Iterator<Message> itr = todayEntries.iterator();
 		while (itr.hasNext()) {
 			Message message = itr.next();
-			if (firstCondition.isTrueFor(message, isStartTimeSeted)) {
+			if (message.getPirSensorVal() && !isStartTimeSeted) {
 				l_date_1 = getMessageTime(message);
 				readyForTimeDifferenceCalculation = false;
 				isStartTimeSeted = true;
-			} else if (secondCondition.isTrueFor(message, isStartTimeSeted)) {
+			} else if (!message.getPirSensorVal() && !message.isHeartbeat()) {
 				l_date_2 = getMessageTime(message);
 				readyForTimeDifferenceCalculation = true;
 				isStartTimeSeted = false;
@@ -376,11 +288,11 @@ public class SensorHistoryCriteria {
 		Iterator<Message> itr = todayEntries.iterator();
 		while (itr.hasNext()) {
 			Message message = itr.next();
-			if (firstCondition.isTrueFor(message, lightThreshold, isStartTimeSeted)) {
+			if ((message.getLightSensorVal() > lightThreshold) && !isStartTimeSeted) {
 				l_date_1 = getMessageTime(message);
 				isStartTimeSeted = true;
 				readyForTimeDifferenceCalculation = false;
-			} else if (secondCondition.isTrueFor(message, lightThreshold, isStartTimeSeted)) {
+			} else if ((message.getLightSensorVal() < lightThreshold) && isStartTimeSeted) {
 				l_date_2 = getMessageTime(message);
 				isStartTimeSeted = false;
 				readyForTimeDifferenceCalculation = true;

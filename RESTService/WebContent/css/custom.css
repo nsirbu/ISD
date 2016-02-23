@@ -165,6 +165,14 @@ hr#configuration_separator {
 	border: 1px solid #ccc;
 }
 
+#hb_update_status{
+	opacity: 0;
+}
+
+#light_update_status{
+	opacity: 0;
+}
+
 /*----------------- HISTORY & STATISTICS ------------------*/
 
 /* Statistics options dropdown */

@@ -39,7 +39,7 @@ public class BackgroundJobManager implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		log.info("BACKGROUND MANAGER STARTED");
 		System.out.println("\nBACKGROUND MANAGER STARTED\n");
-		scheduler.scheduleAtFixedRate(new SensorJob(), 0, 5, TimeUnit.SECONDS);
+//		scheduler.scheduleAtFixedRate(new SensorJob(), 0, 5, TimeUnit.SECONDS);
 //		scheduler.scheduleAtFixedRate(new HeartBeatJob(), 0,
 //				Long.parseLong(confManager.readConfigValue("HBFrequency")),
 //				TimeUnit.SECONDS);

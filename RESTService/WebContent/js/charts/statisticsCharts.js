@@ -1,4 +1,4 @@
-/* This file contains the methods necessary for displaying
+/** This file contains the methods necessary for displaying
  * the sensors' statistic data using charts
  * 
  * @author: sscerbatiuc
@@ -11,11 +11,13 @@
  */
 function displayStats(type) {
 
-	
 	switch (type) {
 	case "lws": /* lws - Light levels week statistic */
-		lightBarChartWeek();
+		lightBarChartWeek(); 
 		$('#statDescription').collapse('toggle');
+		setTimeout(function() {
+          document.querySelector('.ct-chart').__chartist__.update();
+        }, 400);
 		break;
 	case "aws": /* aws - Activity week statistic */
 		motionPieChartWeek();
@@ -25,7 +27,10 @@ function displayStats(type) {
 	}
 
 }
+
+// ----------------------------------------------------------------------------
 // --------------------- HELPER METHODS --------------------------------------
+// ----------------------------------------------------------------------------
 /**
  * Parses the date String and returns the request
  * 
@@ -54,8 +59,9 @@ function parseDate(mySqlDate, format) {
 		return day + "/" + month;
 	}
 }
-
+// ----------------------------------------------------------------------------
 // ------------------ SENSORS' DATA PARSERS ----------------------------------
+// ----------------------------------------------------------------------------
 /**
  * Parses the received information into a chart data object
  * 
@@ -107,18 +113,20 @@ function parseMotionData(receivedData) {
 	for (var int = 0; int < recDataLength; int++) {
 
 		var recDataObject = receivedData[int];
-		if(recDataObject.activity !== 0){
+		if (recDataObject.activity !== 0) {
 			chartLabels.push(parseDate(recDataObject.date, "dd/MM"));
 			chartSeries.push(recDataObject.activity);
 		}
 	}
 	chartDataObject.labels = chartLabels;
 	chartDataObject.series = chartSeries;
-	console.log(chartDataObject);
 	return chartDataObject;
 }
 
+// ----------------------------------------------------------------------------
 // ---------------------- CHART DRAWERS --------------------------------------
+// ----------------------------------------------------------------------------
+
 /**
  * Draws a bar chart
  * 
@@ -127,7 +135,7 @@ function parseMotionData(receivedData) {
  *            displayed on the chart.
  */
 function drawBarChart(chartData, customOptions) {
-	
+
 	var barChart = new Chartist.Bar('.ct-chart', chartData, customOptions);
 	return barChart;
 
@@ -169,10 +177,12 @@ function lightBarChartWeek() {
 		type : "GET",
 		dataType : "json",
 		success : function(receivedData) {
-			var barChart = drawBarChart(parseLightMaxAvgData(receivedData), chartOptions);
-			barChart.update();
+			var barChart = drawBarChart(parseLightMaxAvgData(receivedData),
+					chartOptions);
+			
 		}
 	});
+	
 }
 
 /**
@@ -193,3 +203,4 @@ function motionPieChartWeek() {
 
 // -------------------------------------------------------------------------
 // -------------------------- END OF FILE ----------------------------------
+// --------------------------------------------------------------------------

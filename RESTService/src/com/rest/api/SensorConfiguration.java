@@ -65,8 +65,8 @@ public class SensorConfiguration {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response adjustHBThresholdValues(InputStream incomingSettings) {
 		JSONObject jsonObject = new JSONObject(readIncommingMessage(incomingSettings));
-		int HBThreshold = jsonObject.getInt("HBThreshold");
-		configManager.setConfigValue("HBThreshold", HBThreshold + "");
+		int HBThreshold = jsonObject.getInt("HBFrequency");
+		configManager.setConfigValue("HBFrequency", HBThreshold + "");
 
 		return Response.status(200).build();
 	}

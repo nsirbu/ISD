@@ -240,11 +240,6 @@
 		<div class="row">
 			<div class="col-lg-12 text-center">
 				<h2 id="current_state">Sensor's current state</h2>
-				<!-- <div id="spinner_container">
-					<i id="spinner"
-						class="fa fa fa-spinner fa-2x wow bounceIn text-primary"></i><span
-						id="update_notification">Information updated</span>
-				</div> -->
 				<p>These are the current sensors' states detected.</p>
 				<hr class="primary">
 			</div>
@@ -272,9 +267,10 @@
 					<span aria-hidden="true">&times;</span>
 				</button> -->
 				<i class="fa fa-info-circle" id="notification_icon"></i> <span
-					id="notification_title" class="hb_notification_text">Hey there!</span><span
-					id="notification_text" class="hb_notification_text"> If something goes wrong, you will
-					see a message in this box. For now, you can just ignore it.</span>
+					id="notification_title" class="hb_notification_text">Hey
+					there!</span><span id="notification_text" class="hb_notification_text">
+					If something goes wrong, you will see a message in this box. For
+					now, you can just ignore it.</span>
 			</div>
 		</div>
 
@@ -308,9 +304,13 @@
 											placeholder="seconds" id="hb_frequency_input"> <span
 											class="input-group-btn">
 											<button class="btn btn-default update_settings" type="button"
-												id="hb_change_button">Update</button>
+												id="hb_change_button" onclick="updateHbRate()">Update</button>
 										</span>
+
 									</div>
+								</div>
+								<div class="col-lg-1">
+									<i class="fa fa-check fa-2x" id="hb_update_status"></i>
 								</div>
 							</div>
 							<div class="row">
@@ -325,12 +325,14 @@
 											placeholder="lx" id="light_threshold_input"> <span
 											class="input-group-btn">
 											<button class="btn btn-default update_settings" type="button"
-												id="light_change_button">Update</button>
+												id="light_change_button" onclick="updateLightTreshVal()">Update</button>
 										</span>
 									</div>
 								</div>
+								<div class="col-lg-1">
+									<i class="fa fa-check fa-2x" id="light_update_status"></i>
+								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -344,17 +346,8 @@
 		</div>
 		<div class="row">
 			<div class="collapse" id="current_state_info">
-				<div class="alert alert-info" role="alert">Well, just in case
-					you've skipped the last section, or just got here by mistake, we'll
-					cover this once again for you. Because of power consumption, we've
-					made the board send us a message only when the sensors' value
-					changes. Here are 3 main values, which are important for us: PIR
-					sensor value, light level and when these values have been
-					registered. In fact, the time is for information purpose only.
-					We've took care that the board sends a simple message once in a
-					while (you can set this "while" in the settings section). If you
-					think that the page is not working and the data is not refreshed,
-					you can click on this button and check the state of the system.</div>
+				<div class="alert alert-info" role="alert">Description coming
+					soon, stay tuned.</div>
 
 			</div>
 		</div>
@@ -425,7 +418,7 @@
 		</div>
 	</div>
 	</section>
-
+	<!-- / stats -->
 	<section id="ressources">
 	<div class="container">
 		<div class="row">
@@ -443,6 +436,7 @@
 				<i class="fa fa-github fa-3x wow bounceIn"></i>
 				<p>Links are on the way. Somewhere between "ready" and "done".</p>
 			</div>
+			<!-- / col-lg-4 -->
 			<div class="col-lg-4 text-center">
 				<h3>Send us a letter</h3>
 				<i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
@@ -464,10 +458,12 @@
 					<a class="mail_links" href="mailto:cobylas@gmail.com"><i
 						class="fa fa-envelope fa-2x wow bounceIn" data-wow-delay=".1s"></i>Adrian</a>
 				</div>
+				<!-- / col-lg-4 -->
 			</div>
 		</div>
 	</div>
 	</section>
+	<!-- / resources-->
 	<!-- jQuery -->
 	<script src="js/jquery/jquery.js"></script>
 
@@ -483,7 +479,7 @@
 	<script src="js/bootstrap/creative.js"></script>
 
 	<!-- Sensors' state request JavaScript -->
-	<script type="text/javascript" src="js/currentStateRequest.js"></script>
+	<script type="text/javascript" src="js/sensor.js"></script>
 
 	<!-- Chartist JS -->
 	<script type="text/javascript" src="js/charts/chartist.js"></script>

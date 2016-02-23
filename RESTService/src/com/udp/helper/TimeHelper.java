@@ -1,10 +1,10 @@
 package com.udp.helper;
 
-import java.util.Date;
-import java.util.Calendar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -17,11 +17,11 @@ import com.udp.io.Log4j;
  * @author sscerbatiuc
  */
 public class TimeHelper {
-
+	
 	static Logger log = Log4j.initLog4j(TimeHelper.class);
 
 	/**
-	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd HH:m:s.S"
+	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd HH:MM:SS"
 	 * 
 	 * @return String <code>currentTime</code>
 	 */
@@ -34,50 +34,18 @@ public class TimeHelper {
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
-		int milliseconds = calendar.get(Calendar.MILLISECOND);
 		String currentTimeString = year + "-" + month + "-" + day + " "
 				+ (hours < 10 ? "0" + hours : hours) + ":"
 				+ (minutes < 10 ? "0" + minutes : minutes) + ":"
-				+ (seconds < 10 ? "0" + seconds : seconds) + "."
-				+ (milliseconds);
+				+ (seconds < 10 ? "0" + seconds : seconds);
 		return currentTimeString;
-	}
-
-	/**
-	 * Returns the current date.
-	 * 
-	 * @param pattern
-	 *            String - representing the date format. If <b>null</b> 
-	 *            "yyyy-MM-dd" pattern will be used
-	 * 
-	 * @return String <code>currentDate</code>
-	 */
-	public static String getCurrentDateString(String pattern) {
-		// "yyyy-MM-dd"
-		if(pattern == null) pattern = "yyyy-MM-dd";
-		DateFormat dateFormat = new SimpleDateFormat(pattern);
-		Calendar calendar = Calendar.getInstance();
-		String currentDate = dateFormat.format(calendar.getTime());
-		return currentDate;
 	}
 	
 	/**
-	 * Parses the given String and returns a <code>Date</code> object
-	 * @param date - String
-	 * @return Date object
+	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd"
+	 * 
+	 * @return String <code>currentTime</code>
 	 */
-	public static Date getCurrentDate(String date){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			Date currentDate = new Date();
-			currentDate = dateFormat.parse(date);
-			return currentDate;
-		} catch (Exception e) {
-			log.error("Couldn't parse the given date");
-			return null;
-		}
-	}
-
 	public static String getCurrentDate() {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -88,7 +56,7 @@ public class TimeHelper {
 	}
 
 	/**
-	 * Returns a textual representation of the current time (<code>String</code>).
+	 * Returns a textual representation of the current time.
 	 *
 	 * @return String currentTimeStamp - day + month + hours + minutes
 	 */
@@ -104,51 +72,6 @@ public class TimeHelper {
 				+ String.valueOf(minutes) + String.valueOf(seconds);
 
 		return currentTimeStamp;
-	}
-
-	/**
-	 * Returns the number of milliseconds that have passed since a given date.
-	 * 
-	 * @param inspectedDateString
-	 *            <code>String</code> - The inspected date
-	 * @return difference <code>long</code> - How much time has passed since the
-	 *         inspected date
-	 * @throws ParseException
-	 *             if the provided date string is not an acceptable format
-	 */
-	public static long howMuchMillisSince(String inspectedDateString)
-			throws ParseException {
-
-		SimpleDateFormat sdtFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss.S");
-		Date currentTime = sdtFormat.parse(TimeHelper.getCurrentTime());
-		Date inspectedTime = sdtFormat.parse(inspectedDateString);
-		long difference = currentTime.getTime() - inspectedTime.getTime();
-		return difference;
-
-	}
-
-	/**
-	 * Returns the number of milliseconds between 2 given dates
-	 * 
-	 * @param date1
-	 * @param date2
-	 * @return difference <code>long</code> - How much time has passed between 2
-	 *         given dates
-	 * @throws ParseException
-	 *             if the provided date string is not an acceptable format
-	 */
-	public static long getDifference(String date1, String date2)
-			throws ParseException {
-
-		SimpleDateFormat sdtFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss.S");
-		Date currentTime = sdtFormat.parse(date1);
-		Date inspectedTime = sdtFormat.parse(date2);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(currentTime);;
-		long difference = currentTime.getTime() - inspectedTime.getTime();
-		return difference;
 	}
 	
 	/**
@@ -188,8 +111,7 @@ public class TimeHelper {
 		try {
 			date = fmt.parse(dateToProcess);
 		} catch (ParseException e) {
-			log.error("Exception in extractDateFromString() function, TimeHelper class : "
-					+ e.getMessage());
+			log.error("Exception in extractDateFromString() function, TimeHelper class : " + e.getMessage());
 		}
 		return date;
 	}

@@ -1,11 +1,7 @@
 package com.rest.api;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -14,7 +10,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +32,8 @@ import com.udp.io.Log4j;
  */
 @Path("/history")
 public class SensorHistory {
+	
+	// TODO Check if dates are in correct order
 	
 	static Logger log = Log4j.initLog4j(SensorHistory.class);
 
@@ -104,7 +101,8 @@ public class SensorHistory {
 	@Produces("application/json")
 	public Response getMinMaxTimeSomebodyInRoom(@PathParam("date_1") String date_1,
 			@PathParam("date_2") String date_2) {
-		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {
+		if (TimeHelper.checkForRightDateTimeFormat(date_1) && TimeHelper.checkForRightDateTimeFormat(date_2)
+				&& TimeHelper.checkIfDateOneIsBeforeDateTwo(date_1, date_2)) {
 			try {
 				long time = SensorHistoryCriteria.getTimeSpentInTheRoom(date_1, date_2);
 				JSONObject jsonObject = new JSONObject();
@@ -139,7 +137,7 @@ public class SensorHistory {
 	@Path("/luminosity/{date}")
 	@Produces("application/json")
 	public Response getLuminosityStatistics(@PathParam("date") String date) {
-		if (checkForRightDateTimeFormat(date)) {
+		if (TimeHelper.checkForRightDateTimeFormat(date)) {
 			try {
 				String result = "" + SensorHistoryCriteria.getLuminosityStatisticsForDay(date);
 
@@ -202,42 +200,6 @@ public class SensorHistory {
 			return Response.status(500).build();
 		}
 	}
-
-	/**
-	 * Get the total time the light was on in the room between two dates. Call
-	 * like http://localhost:8080/RESTService/sensor/history/lightOn/2016-02-15
-	 * 11:00:00&2016-02-15 18:00:00
-	 * 
-	 * @param date_1
-	 *            first calendar date indicating when to begin calculation
-	 * @param date_2
-	 *            second calendar date indicating when to stop calculation
-	 * @return a <code>JSONObject</code> containing the total time in
-	 *         milliseconds
-	 */
-	@GET
-	@Path("/lightOnDuringDay/{date_1}&{date_2}")
-	@Produces("application/json")
-	public Response getLightOnDuringDay(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
-		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {
-			try {
-				long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("totalTime", totalTime);
-				String result = "" + jsonObject;
-
-				return Response.status(200).entity(result).build();
-			} catch (Exception e) {
-				log.error("Exception in getLightOnPeriod() function, SensorHistory class : " + e.getMessage());
-
-				return Response.status(500).build();
-			}
-		} else {
-			log.error("Wrong date time format");
-
-			return Response.status(400).build();
-		}
-	}
 	
 	/**
 	 * Get the total time the light was on in the room between two dates. Call
@@ -252,21 +214,24 @@ public class SensorHistory {
 	 *         milliseconds
 	 */
 	@GET
-	@Path("/lightOnDuringWeek/{date_1}&{date_2}")
+	@Path("/lightOn/{date_1}&{date_2}")
 	@Produces("application/json")
 	public Response getLightOnDuringWeek(@PathParam("date_1") String date_1, @PathParam("date_2") String date_2) {
 		JSONArray jsonArray = new JSONArray();
-		if (checkForRightDateTimeFormat(date_1) && checkForRightDateTimeFormat(date_2)) {			
-			if (checkIfDatesAreInTheSameDay(date_1, date_2)) { 			
+		if (TimeHelper.checkForRightDateTimeFormat(date_1) && TimeHelper.checkForRightDateTimeFormat(date_2)
+				&& TimeHelper.checkIfDateOneIsBeforeDateTwo(date_1, date_2)) {
+			if (TimeHelper.checkIfDatesAreInTheSameDay(date_1, date_2)) {
 				try {
 					String startDateInterval = TimeHelper.extractStringDateFromString(date_1);
 					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
-					String result = "" + createJSONWithLightOnStatisticsDataDuringDay(startDateInterval, totalTime + "");
-	
+					jsonArray.put(JsonService.createJSONWithLightOnStatisticsDataDuringDay(startDateInterval,
+							totalTime + ""));
+					String result = "" + jsonArray;
+
 					return Response.status(200).entity(result).build();
 				} catch (Exception e) {
 					log.error("Exception in getLightOnPeriod() function, SensorHistory class : " + e.getMessage());
-	
+
 					return Response.status(500).build();
 				}
 			} else {
@@ -274,10 +239,13 @@ public class SensorHistory {
 				String endDateInterval = TimeHelper.extractStringDateFromString(date_2);
 				String startHour = TimeHelper.extractStringHourFromString(date_1);
 				String endHour = TimeHelper.extractStringHourFromString(date_2);
-				List<LocalDate> totalDates = SensorHistoryCriteria.getDatesBetweenTwoDates(startDateInterval, endDateInterval);
+				List<LocalDate> totalDates = SensorHistoryCriteria.getDatesBetweenTwoDates(startDateInterval,
+						endDateInterval);
 				for (LocalDate localDate : totalDates) {
-					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(localDate + " " + startHour, localDate + " " + endHour);					
-					jsonArray.put(createJSONWithLightOnStatisticsDataDuringDay(startDateInterval, totalTime + ""));
+					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(localDate + " " + startHour,
+							localDate + " " + endHour);
+					jsonArray.put(JsonService.createJSONWithLightOnStatisticsDataDuringDay(startDateInterval,
+							totalTime + ""));
 				}
 				String result = "" + jsonArray;
 				return Response.status(200).entity(result).build();
@@ -286,41 +254,6 @@ public class SensorHistory {
 			log.error("Wrong date time format");
 
 			return Response.status(400).build();
-		}
-	}
-	
-	public static boolean checkIfDatesAreInTheSameDay(String date_1, String date_2) {
-		Date date1 = TimeHelper.extractDateFromString(date_1);
-		Date date2 = TimeHelper.extractDateFromString(date_2);
-		
-		return DateUtils.isSameDay(date1, date2);
-	}
-	
-	public static JSONObject createJSONWithLightOnStatisticsDataDuringDay(String startDateInterval, String totalTime) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("date", startDateInterval);
-		jsonObject.put("totalTime", totalTime);
-		
-		return jsonObject;
-	}
-	
-	/**
-	 * Check if the input date corresponds to the specified format.
-	 * 
-	 * @param dateToCheck
-	 *            the <code>String</code> date to verify its correctness
-	 * @return true or false
-	 */
-	public boolean checkForRightDateTimeFormat(String dateToCheck) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			sdf.parse(dateToCheck);
-
-			return true;
-		} catch (ParseException ex) {
-			log.error("Exception in checkForRightDateTimeForamt() function, SensorHistory class : " + ex.getMessage());
-
-			return false;
 		}
 	}
 }

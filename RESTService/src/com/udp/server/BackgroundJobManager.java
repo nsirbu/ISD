@@ -7,48 +7,42 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.settings.ConfigurationsManager;
 import com.udp.io.Log4j;
-
 import org.apache.log4j.Logger;
 
+
 /**
- * Defines the business logic for receiving messages from the Arduino board and
- * recording them into the Database
+ * Defines the business logic for receiving messages 
+ * from the Arduino board and recording them into
+ * the Database
  * 
  * @author sscerbatiuc
  *
  */
-public class BackgroundJobManager implements ServletContextListener {
-
+public class BackgroundJobManager implements ServletContextListener{
+	
 	private Logger log = Log4j.initLog4j(BackgroundJobManager.class);
-	private ConfigurationsManager confManager = new ConfigurationsManager();
-	private final ScheduledExecutorService scheduler = Executors
-			.newScheduledThreadPool(2);
-
-	public BackgroundJobManager() {
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+	
+	public BackgroundJobManager(){
 		log = Log4j.initLog4j(BackgroundJobManager.class);
 	}
-
+	
 	/**
-	 * Initializes the thread responsible for receiving messages from the
-	 * Arduino board and configures it to run once in a specified interval.
-	 * 
+	 * Initializes the thread responsible for receiving 
+	 * messages from the Arduino board and configures it to 
+	 * run once in a specified interval.
 	 * @Override
 	 */
 	public void contextInitialized(ServletContextEvent arg0) {
 		log.info("BACKGROUND MANAGER STARTED");
 		System.out.println("\nBACKGROUND MANAGER STARTED\n");
-//		scheduler.scheduleAtFixedRate(new SensorJob(), 0, 5, TimeUnit.SECONDS);
-//		scheduler.scheduleAtFixedRate(new HeartBeatJob(), 0,
-//				Long.parseLong(confManager.readConfigValue("HBFrequency")),
-//				TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(new SensorJob(), 0, 5, TimeUnit.SECONDS);
 	}
-
+	
 	/**
-	 * Shuts down the <code>ScheduledExecutorService</code> when the
-	 * <code>Servlet</code> context is being destroyed
-	 * 
+	 * Shuts down the <code>ScheduledExecutorService</code> when
+	 * the <code>Servlet</code> context is being destroyed
 	 * @Override
 	 */
 	public void contextDestroyed(ServletContextEvent arg0) {

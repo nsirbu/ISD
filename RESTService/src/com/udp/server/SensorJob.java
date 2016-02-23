@@ -18,10 +18,9 @@ import com.udp.io.Log4j;
 public class SensorJob implements Runnable{
 	
 	private Server server;
-	private volatile boolean running = true;
 	private final Logger logger = Log4j.initLog4j(SensorJob.class);
+	private volatile boolean running = true;
 	
-	// Default Constructor
 	public SensorJob(){
 		try {
 			server = Server.getInstance();
@@ -29,7 +28,6 @@ public class SensorJob implements Runnable{
 			logger.error(e.getMessage());
 		}
 	}
-	
 	/**
 	 * Defines the way the data should be received from the
 	 * Arduino Board. The method logs the errors to the log file.
@@ -37,7 +35,7 @@ public class SensorJob implements Runnable{
 	 */
 	public void run() {
 		try {
-			if(running){
+			while(running){
 				try {
 					Message receivedMessage = server.readMessage();
 					if(receivedMessage != null){

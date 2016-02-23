@@ -1,0 +1,36 @@
+/* Custom CSS for charts */
+section line.ct-grid {
+
+	stroke: rgba(0,0,0,0.2);
+}
+
+section.bg-primary line.ct-grid {
+
+	stroke: rgba(255,255,255,0.8);
+}
+
+section .ct-label{
+
+	font-size: 12px;
+	color: rgba(0,0,0,0.2);
+	fill: rgba(0,0,0,0.2);
+}
+
+section.bg-primary .ct-label{
+	font-size: 12px;
+	color: rgba(255,255,255,1);
+	fill: rgba(0,0,0,0.2);
+    text-shadow: 0px 0px 1px;
+}
+
+.ct-bar {
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}
+
+.ct-bar {
+	filter: brightness(1.2);
+	-webkit-filter: brightness(1.2);
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+}

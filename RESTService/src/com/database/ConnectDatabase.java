@@ -24,9 +24,9 @@ public class ConnectDatabase {
 	 */
 	public static Connection connectToDB() {
 		ConfigurationsManager configReader = new ConfigurationsManager();
-		String dbUser 	  = configReader.readConfigValue("dbUser");
+		String dbUser = configReader.readConfigValue("dbUser");
 		String dbPassword = configReader.readConfigValue("dbPassword");
-		String dbName     = configReader.readConfigValue("dbName");
+		String dbName = configReader.readConfigValue("dbName");
 		Connection myConnection = null;
 
 		try {

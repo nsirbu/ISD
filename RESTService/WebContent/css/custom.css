@@ -1,32 +1,61 @@
 @CHARSET "UTF-8";
 
 /*ANIMATIONS*/
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-        transform-origin: 50% 50%;
-        -moz-transform: rotate(0deg);
-        -moz-transform-origin: 50% 50%;
-        -webkit-transform: rotate(0deg);
-        -webkit-transform-origin: 50% 50%;
-    }
-    to { 
-        transform: rotate(0deg);
-        transform-origin: 50% 50%;
-        -moz-transform: rotate(360deg);
-        -moz-transform-origin: 50% 50%;
-        -webkit-transform: rotate(360deg);
-        -webkit-transform-origin: 50% 50%;
-    }
+@
+keyframes rotate {from { transform:rotate(0deg);
+	transform-origin: 50% 50%;
+	-moz-transform: rotate(0deg);
+	-moz-transform-origin: 50% 50%;
+	-webkit-transform: rotate(0deg);
+	-webkit-transform-origin: 50% 50%;
 }
 
-@-webkit-keyframes pulsate {
-    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
-    50% {opacity: 1.0;}
-    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+to {
+	transform: rotate(0deg);
+	transform-origin: 50% 50%;
+	-moz-transform: rotate(360deg);
+	-moz-transform-origin: 50% 50%;
+	-webkit-transform: rotate(360deg);
+	-webkit-transform-origin: 50% 50%;
 }
 
+}
+@
+-webkit-keyframes pulsate { 0% {
+	-webkit-transform: scale(0.1, 0.1);
+	opacity: 0.0;
+}
 
+50%
+{
+opacity
+:
+ 
+1
+.0
+;
+}
+100%
+{
+-webkit-transform
+:
+ 
+scale
+(1
+.2
+,
+1
+.2
+);
+ 
+opacity
+:
+ 
+0
+.0
+;
+}
+}
 p.joke {
 	color: #e6e6e6
 }
@@ -142,7 +171,11 @@ span#notification_title {
 	margin: 10px;
 }
 
-/*---------------------- SETTINGS BOX ---------------------*/
+/*---------------------- SETTINGS ---------------------*/
+section#settings{
+	/*padding: 2px 0px;*/
+}
+
 hr#configuration_separator {
 	-webkit-margin-start: 0;
 }
@@ -165,11 +198,11 @@ hr#configuration_separator {
 	border: 1px solid #ccc;
 }
 
-#hb_update_status{
+#hb_update_status {
 	opacity: 0;
 }
 
-#light_update_status{
+#light_update_status {
 	opacity: 0;
 }
 
@@ -244,4 +277,9 @@ a.mail_links>i::after {
 /*------------------------ TEXT -----------------------------------*/
 .text-important {
 	font-weight: bold;
+}
+
+/*------------------------- BADGES --------------------------------*/
+.badge:hover {
+	cursor: help;
 }

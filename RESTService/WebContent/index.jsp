@@ -232,6 +232,21 @@
 					feature for a 3$ device.</p>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-4 text-center">
+				<div class="service-box action">
+					<i class="fa fa-5x fa-male wow bounceIn text-primary"
+						data-wow-delay=".1s"></i>
+					<h3>Presence detection</h3>
+					<p>There is somebody in the room</p>
+				</div>
+			</div>
+			<div class="col-lg-8 indicator_description">
+				<p class="text-faded">Using the data described above, we've
+					created an algorythm which detects if there is somebody in the room
+					or not.</p>
+			</div>
+		</div>
 	</div>
 	</section>
 
@@ -245,19 +260,24 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-4 text-center">
+			<div class="col-lg-3 text-center">
 				<i class="fa fa-5x fa-clock-o wow bounceIn text-primary"></i>
 				<p id="time_value" class="sensor_values">Time value</p>
 			</div>
-			<div class="col-lg-4 text-center">
+			<div class="col-lg-3 text-center">
 				<i class="fa fa-5x fa-lightbulb-o wow bounceIn text-primary"
 					data-wow-delay=".1s" id="light_demo"></i>
 				<p id="light_value" class="sensor_values">Light value</p>
 			</div>
-			<div class="col-lg-4 text-center">
+			<div class="col-lg-3 text-center">
 				<i class="fa fa-5x fa-spinner wow bounceIn text-primary"
 					data-wow-delay=".1s" id="pir_demo"></i>
 				<p id="pir_value" class="sensor_values">PIR sensor value</p>
+			</div>
+			<div class="col-lg-3 text-center">
+				<i class="fa fa-5x fa-male wow bounceIn text-primary"
+					data-wow-delay=".1s"></i>
+				<p id="presence_value" class="sensor_values">Presence detection</p>
 			</div>
 		</div>
 		<div class="row">
@@ -273,7 +293,6 @@
 					now, you can just ignore it.</span>
 			</div>
 		</div>
-
 		<div class="row">
 			<div class="col-lg-4">
 				<h2>Configuration</h2>
@@ -291,53 +310,56 @@
 						</h3>
 					</div>
 					<div class="panel-body" id="settings_body">
-						<div class="container">
-							<div class="row">
-								<div class="col-lg-4">
-									<h4>
-										<i class="fa fa-heart"></i> Heart-beat frequency
-									</h4>
-								</div>
-								<div class="col-lg-2">
-									<div class="input-group" id="hb_frequency_settings">
-										<input type="text" class="form-control settings_input"
-											placeholder="seconds" id="hb_frequency_input"> <span
-											class="input-group-btn">
-											<button class="btn btn-default update_settings" type="button"
-												id="hb_change_button" onclick="updateHbRate()">Update</button>
-										</span>
+						<div class="row">
+							<div class="col-lg-6">
+								<h4>
+									<i class="fa fa-heart"></i> Heart-beat frequency <span
+										class="badge" data-toggle="tooltip" title="Current frequency"
+										id="hb_thresh_val">- s.</span>
+								</h4>
+							</div>
+							<div class="col-lg-4">
+								<div class="input-group" id="hb_frequency_settings">
+									<input type="text" class="form-control settings_input"
+										placeholder="seconds" id="hb_frequency_input"> <span
+										class="input-group-btn">
+										<button class="btn btn-default update_settings" type="button"
+											id="hb_change_button" onclick="updateHbRate()">Update</button>
+									</span>
 
-									</div>
-								</div>
-								<div class="col-lg-1">
-									<i class="fa fa-check fa-2x" id="hb_update_status"></i>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-lg-4">
-									<h4>
-										<i class="fa fa-lightbulb-o"></i> Light levels threshold
-									</h4>
+							<div class="col-lg-1">
+								<i class="fa fa-check fa-2x" id="hb_update_status"></i>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<h4>
+									<i class="fa fa-lightbulb-o"></i> Light levels threshold <span
+										class="badge" id="light_thresh_val" data-toggle="tooltip"
+										title="Current light level threshold">- lx</span>
+								</h4>
+							</div>
+							<div class="col-lg-4">
+								<div class="input-group " id="light_level_settings">
+									<input type="text" class="form-control settings_input"
+										placeholder="lx" id="light_threshold_input"> <span
+										class="input-group-btn">
+										<button class="btn btn-default update_settings" type="button"
+											id="light_change_button" onclick="updateLightTreshVal()">Update</button>
+									</span>
 								</div>
-								<div class="col-lg-2">
-									<div class="input-group " id="light_level_settings">
-										<input type="text" class="form-control settings_input"
-											placeholder="lx" id="light_threshold_input"> <span
-											class="input-group-btn">
-											<button class="btn btn-default update_settings" type="button"
-												id="light_change_button" onclick="updateLightTreshVal()">Update</button>
-										</span>
-									</div>
-								</div>
-								<div class="col-lg-1">
-									<i class="fa fa-check fa-2x" id="light_update_status"></i>
-								</div>
+							</div>
+							<div class="col-lg-1">
+								<i class="fa fa-check fa-2x" id="light_update_status"></i>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div class="row text-center">
 			<a class="btn btn-info" id="current_state_info_button"
 				data-toggle="collapse" aria-expanded="false"
@@ -351,20 +373,24 @@
 
 			</div>
 		</div>
+	</div>
 	</section>
 	<section class="bg-primary" id="stats">
 	<div class="container">
-		<div class="col-lg-12 text-center">
-			<h2>Statistics</h2>
-			<hr class="light">
-			<p class="text-faded">Let's face it: everything that is awesome
-				have also the same amount of utility. In fact, you could imagine
-				what all this project is about? Well, one of its uses is the
-				statistics gathering. Let's say one would like to see the light
-				levels in this room in order to analyse how well does the room meet
-				the working conditions. I think you get the point. We've gathered
-				some options that we've thought would be very useful to analyse. The
-				filtered data will be displayed using a nice chart. Isn't it cool?</p>
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h2>Statistics</h2>
+				<hr class="light">
+				<p class="text-faded">Let's face it: everything that is awesome
+					have also the same amount of utility. In fact, you could imagine
+					what all this project is about? Well, one of its uses is the
+					statistics gathering. Let's say one would like to see the light
+					levels in this room in order to analyse how well does the room meet
+					the working conditions. I think you get the point. We've gathered
+					some options that we've thought would be very useful to analyse.
+					The filtered data will be displayed using a nice chart. Isn't it
+					cool?</p>
+			</div>
 		</div>
 		<div class="row" id="statistics_data">
 			<div class="col-lg-12 text-center">

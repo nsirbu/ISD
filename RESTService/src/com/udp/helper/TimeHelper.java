@@ -115,6 +115,29 @@ public class TimeHelper {
 	}
 	
 	/**
+	 * Returns the number of milliseconds between 2 given dates
+	 * 
+	 * @param date1
+	 * @param date2
+	 * @return difference <code>long</code> - How much time has passed between 2
+	 *         given dates
+	 * @throws ParseException
+	 *             if the provided date string is not an acceptable format
+	 */
+	public static long getDifference(String date1, String date2)
+			throws ParseException {
+
+		SimpleDateFormat sdtFormat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss.S");
+		Date currentTime = sdtFormat.parse(date1);
+		Date inspectedTime = sdtFormat.parse(date2);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentTime);;
+		long difference = currentTime.getTime() - inspectedTime.getTime();
+		return difference;
+	}
+	
+	/**
 	 * Check if the two calendar dates are in the same day.
 	 * 
 	 * @param date_1

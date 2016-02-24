@@ -181,6 +181,18 @@ public class TimeHelper {
 		}
 	}
 	
+	/**
+	 * Extract from a <code>Date String</code> the value in the specified
+	 * format.
+	 * 
+	 * @param format
+	 *            the format to create the date like "2016-02-24" or the time
+	 *            like "08:00:00"
+	 * @param dateToProcess
+	 *            the <code>String</code> containing the <code>DateTime</code>
+	 *            value
+	 * @return the date or the hour according to the specified format
+	 */
 	public static String createDateTimeWithFormat(String format, String dateToProcess) {
 		Date date = null;
 		try {
@@ -188,45 +200,39 @@ public class TimeHelper {
 		} catch (ParseException e) {
 			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
 		}
-		
+
 		return new SimpleDateFormat(format).format(date);
 	}
 	
-	// TODO
-	///
-	///
-	///
-	///
-	public static Date createDateTimeWithFormat(String format, Message message) {
-		Date date = null;
+	/**
+	 * Extract from a <code>Message</code> the <code>DateTime</code> value in
+	 * the specified format.
+	 * 
+	 * @param format
+	 *            the format to create the date like "2016-02-24" or the time
+	 *            like "08:00:00"
+	 * @param message
+	 *            the <code>Message</code> containing the <code>DateTime</code>
+	 *            value
+	 * @return the date or the hour according to the specified format
+	 */
+	public static Date getMessageTime(String format, Message message) {
+		Date messageDate = null;
 		try {
-			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(message.getTimeReceived());
+			messageDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(message.getTimeReceived());
 		} catch (ParseException e) {
 			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
 		}
-		
-		String date1 = new SimpleDateFormat(format).format(date);
-		Date d = null;
+
+		String stringDate = new SimpleDateFormat(format).format(messageDate);
+		Date date = null;
 		try {
-			d = new SimpleDateFormat(format).parse(date1);
+			date = new SimpleDateFormat(format).parse(stringDate);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
 			e.printStackTrace();
 		}
-		return d;
-		
-//		Date date = null;
-//		String timeMoment = "";
-//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//		try {
-//			timeMoment = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
-//			date = sdf.parse(timeMoment);
-//		} catch (ParseException e) {
-//			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
-//					+ e.getMessage());
-//			e.printStackTrace();
-//		}
-//
-//		return date;
+
+		return date;
 	}
 }

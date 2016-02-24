@@ -242,7 +242,7 @@ public class SensorHistory {
 				for (LocalDate localDate : totalDates) {
 					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(localDate + " " + startHour,
 							localDate + " " + endHour);
-					jsonArray.put(JsonService.createJSONWithLightOnStatisticsDataDuringDay(startDateInterval,
+					jsonArray.put(JsonService.createJSONWithLightOnStatisticsDataDuringDay(localDate.toString(),
 							totalTime + ""));
 				}
 				String result = "" + jsonArray;

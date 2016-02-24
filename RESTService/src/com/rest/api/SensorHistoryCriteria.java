@@ -138,11 +138,11 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if (message.getPirSensorVal() && !isStartTimeSeted) {
-				l_date_1 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+				l_date_1 = TimeHelper.getMessageTime("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = false;
 				isStartTimeSeted = true;
 			} else if (!message.getPirSensorVal() && !message.isHeartbeat()) {
-				l_date_2 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+				l_date_2 = TimeHelper.getMessageTime("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = true;
 				isStartTimeSeted = false;
 			}
@@ -277,11 +277,11 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if ((message.getLightSensorVal() > lightThreshold) && !isStartTimeSeted) {
-				l_date_1 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+				l_date_1 = TimeHelper.getMessageTime("HH:mm:ss", message);
 				isStartTimeSeted = true;
 				readyForTimeDifferenceCalculation = false;
 			} else if ((message.getLightSensorVal() < lightThreshold) && isStartTimeSeted) {
-				l_date_2 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+				l_date_2 = TimeHelper.getMessageTime("HH:mm:ss", message);
 				isStartTimeSeted = false;
 				readyForTimeDifferenceCalculation = true;
 			}
@@ -293,27 +293,4 @@ public class SensorHistoryCriteria {
 
 		return timeSpent;
 	}
-
-//	/**
-//	 * Extract from the message the time in HH:MM:SS format.
-//	 * 
-//	 * @param message
-//	 *            the message to process
-//	 * @return the value of the time
-//	 */
-//	public static Date getMessageTime(Message message) {
-//		Date date = null;
-//		String timeMoment = "";
-//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//		try {
-//			timeMoment = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
-//			date = sdf.parse(timeMoment);
-//		} catch (ParseException e) {
-//			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
-//					+ e.getMessage());
-//			e.printStackTrace();
-//		}
-//
-//		return date;
-//	}
 }

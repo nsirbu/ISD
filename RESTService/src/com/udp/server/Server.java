@@ -100,6 +100,7 @@ public class Server {
 	public Message readMessage() {
 		try {
 			String receivedString = this.readString();
+			System.out.println(receivedString);
 			Message receivedMessage = Message.parse(receivedString);
 			receivedMessage.setTimeReceived(TimeHelper.getCurrentTime());
 			return receivedMessage;

@@ -97,19 +97,19 @@ public class SensorHistoryCriteriaTest {
 		Assert.assertEquals(expectedTotalDates.get(2), LocalDate.parse("2016-02-16"));
 	}
 
-	@Test
-	public void getMessageTimeShouldReturnTheTimeFromTheMessageField() {
-		Message message = new Message(false, false, 100, "2016-02-22 18:00:00.0");
-		Date actualDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-		try {
-			actualDate = sdf.parse("18:00:00");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		Date expectedDate = SensorHistoryCriteria.getMessageTime(message);
-
-		Assert.assertEquals(expectedDate, actualDate);
-	}
+//	@Test
+//	public void getMessageTimeShouldReturnTheTimeFromTheMessageField() {
+//		Message message = new Message(false, false, 100, "2016-02-22 18:00:00.0");
+//		Date actualDate = null;
+//		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+//		try {
+//			actualDate = sdf.parse("18:00:00");
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		Date expectedDate = SensorHistoryCriteria.getMessageTime(message);
+//
+//		Assert.assertEquals(expectedDate, actualDate);
+//	}
 }

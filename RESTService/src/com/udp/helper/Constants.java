@@ -17,6 +17,10 @@ public class Constants {
 
     // ---------- SERVER CONSTANTS --------------------
     public static final int SERVER_PORT;
+    
+    // ---------- ARDUINO BOARD CONSTANTS -------------
+    public static final String ARDUINO_IP;
+    public static final int ARDUINO_PORT;
 
     // ---------  SENSOR GENERAL STATES ---------------
     public static final int SENSOR_ON;
@@ -26,13 +30,17 @@ public class Constants {
     public static final String LIGHT_SENSOR_PREFIX  = "L";
     public static final String HEARTBEAT_MSG_PREFIX = "H";
 
-
+    // ---------- HEARTBEAT CONSTANTS ----------------
+    public static final boolean HEARTBEAT_IS_LATE = false;
+    public static final boolean HEARTBEAT_OK	  = true;
 
     // ---------- INITIALISATION BLOCK ----------------
     static {
         SENSOR_ON    = 1;
         SENSOR_OFF   = 0;
         SERVER_PORT  = 9876;
+        ARDUINO_IP = "172.17.41.54";
+        ARDUINO_PORT = 9876;
     }
 
 }

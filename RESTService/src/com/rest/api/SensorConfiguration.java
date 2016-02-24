@@ -1,8 +1,12 @@
 package com.rest.api;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.settings.ConfigurationsManager;
+import com.udp.helper.Constants;
 import com.udp.io.Log4j;
 
 /**
@@ -85,6 +90,9 @@ public class SensorConfiguration {
 		
 		if (HBFrequency >= 0) {
 			configManager.setConfigValue("HBFrequency", HBFrequency + "");
+			
+			sendConfigurationToArduino(HBFrequency);			
+			
 			return Response.status(200).build();
 		} else {
 			log.error("Wrong input data in adjustSensorsThresholdValues() method");
@@ -112,6 +120,30 @@ public class SensorConfiguration {
 		}
 
 		return builder.toString();
+	}
+	
+	/**
+	 * Send a UDP message to the Arduino board with the value for the heartbeat
+	 * frequency.
+	 * 
+	 * @param HBFrequency
+	 *            the value of the heartbeat frequency to set on the Arduino
+	 *            board
+	 */
+	public static void sendConfigurationToArduino(int HBFrequency) {
+		String valueToArduino = HBFrequency + "";
+
+		byte[] message = valueToArduino.getBytes();
+		try {
+			InetAddress address = InetAddress.getByName(Constants.ARDUINO_IP);
+			DatagramPacket packet = new DatagramPacket(message, message.length, address, Constants.ARDUINO_PORT);
+
+			DatagramSocket socket = new DatagramSocket();
+			socket.send(packet);
+			socket.close();
+		} catch (IOException e) {
+			log.error("Exception in sendConfigurationToArduino() function, SensorConfiguration class : " + e.getMessage());
+		}
 	}
 	
 	/**

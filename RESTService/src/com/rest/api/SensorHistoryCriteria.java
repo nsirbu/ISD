@@ -1,17 +1,12 @@
 package com.rest.api;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,6 +16,7 @@ import org.json.JSONObject;
 import com.database.DBQuery;
 import com.model.Message;
 import com.settings.ConfigurationsManager;
+import com.udp.helper.TimeHelper;
 import com.udp.io.Log4j;
 
 /**
@@ -142,11 +138,11 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if (message.getPirSensorVal() && !isStartTimeSeted) {
-				l_date_1 = getMessageTime(message);
+				l_date_1 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = false;
 				isStartTimeSeted = true;
 			} else if (!message.getPirSensorVal() && !message.isHeartbeat()) {
-				l_date_2 = getMessageTime(message);
+				l_date_2 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = true;
 				isStartTimeSeted = false;
 			}
@@ -183,12 +179,8 @@ public class SensorHistoryCriteria {
 	public static JSONArray getLuminosityStatisticsForLastWeek() {
 		JSONArray jsonArray = new JSONArray();
 
-		Calendar calendar = Calendar.getInstance(Locale.getDefault());
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String currentDate = dateFormat.format(calendar.getTime());
-
-		calendar.add(Calendar.DATE, -7);
-		String sevenDaysAgoDate = dateFormat.format(calendar.getTime());
+		String currentDate = TimeHelper.getCurrentDate();
+		String sevenDaysAgoDate = TimeHelper.getXDayAgoDateCurrentDate(7);
 
 		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
 
@@ -248,12 +240,8 @@ public class SensorHistoryCriteria {
 	public static JSONArray getMotionActivityForLastWeek() {
 		JSONArray jsonArray = new JSONArray();
 
-		Calendar calendar = Calendar.getInstance(Locale.getDefault());
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String currentDate = dateFormat.format(calendar.getTime());
-
-		calendar.add(Calendar.DATE, -7);
-		String sevenDaysAgoDate = dateFormat.format(calendar.getTime());
+		String currentDate = TimeHelper.getCurrentDate();
+		String sevenDaysAgoDate = TimeHelper.getXDayAgoDateCurrentDate(7);
 
 		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
 
@@ -289,11 +277,11 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if ((message.getLightSensorVal() > lightThreshold) && !isStartTimeSeted) {
-				l_date_1 = getMessageTime(message);
+				l_date_1 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
 				isStartTimeSeted = true;
 				readyForTimeDifferenceCalculation = false;
 			} else if ((message.getLightSensorVal() < lightThreshold) && isStartTimeSeted) {
-				l_date_2 = getMessageTime(message);
+				l_date_2 = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
 				isStartTimeSeted = false;
 				readyForTimeDifferenceCalculation = true;
 			}
@@ -306,28 +294,26 @@ public class SensorHistoryCriteria {
 		return timeSpent;
 	}
 
-	/**
-	 * Extract from the message the time in HH:MM:SS format.
-	 * 
-	 * @param message
-	 *            the message to process
-	 * @return the value of the time
-	 */
-	public static Date getMessageTime(Message message) {
-		Date date = null;
-		String timeMoment = "";
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-
-		try {
-			timeMoment = message.getTimeReceived().substring(message.getTimeReceived().length() - 10,
-					message.getTimeReceived().length() - 2);
-			date = sdf.parse(timeMoment);
-		} catch (ParseException e) {
-			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
-					+ e.getMessage());
-			e.printStackTrace();
-		}
-
-		return date;
-	}
+//	/**
+//	 * Extract from the message the time in HH:MM:SS format.
+//	 * 
+//	 * @param message
+//	 *            the message to process
+//	 * @return the value of the time
+//	 */
+//	public static Date getMessageTime(Message message) {
+//		Date date = null;
+//		String timeMoment = "";
+//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//		try {
+//			timeMoment = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+//			date = sdf.parse(timeMoment);
+//		} catch (ParseException e) {
+//			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
+//					+ e.getMessage());
+//			e.printStackTrace();
+//		}
+//
+//		return date;
+//	}
 }

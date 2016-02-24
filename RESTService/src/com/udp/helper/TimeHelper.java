@@ -5,10 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 
+import com.model.Message;
 import com.udp.io.Log4j;
 
 /**
@@ -47,12 +49,25 @@ public class TimeHelper {
 	 * @return String <code>currentTime</code>
 	 */
 	public static String getCurrentDate() {
-
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(Locale.getDefault());
 		String currentTime = dateFormat.format(calendar.getTime());
 
 		return currentTime;
+	}
+	
+	/**
+	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd"
+	 * 
+	 * @return String <code>currentTime</code>
+	 */
+	public static String getXDayAgoDateCurrentDate(int daysAgo) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance(Locale.getDefault());
+		calendar.add(Calendar.DATE, - daysAgo);
+		String xDaysAgoDate = dateFormat.format(calendar.getTime());
+
+		return xDaysAgoDate;
 	}
 
 	/**
@@ -75,45 +90,25 @@ public class TimeHelper {
 	}
 	
 	/**
-	 * Get from a String the date in format yyyy-MM-dd.
+	 * Returns the number of milliseconds that have passed since a given date.
 	 * 
-	 * @param dateToProcess
-	 *            the date from which to extract
-	 * @return the date <code>String</code> in specified format
+	 * @param inspectedDateString
+	 *            <code>String</code> - The inspected date
+	 * @return difference <code>long</code> - How much time has passed since the
+	 *         inspected date
+	 * @throws ParseException
+	 *             if the provided date string is not an acceptable format
 	 */
-	public static String extractStringDateFromString(String dateToProcess) {
+	public static long howMuchMillisSince(String inspectedDateString)
+			throws ParseException {
 
-		return dateToProcess.substring(0, 10);
-	}
-	
-	/**
-	 * Get from a String the hour in format hh-mm-ss.
-	 * 
-	 * @param dateToProcess
-	 *            the date from which to extract
-	 * @return the hour <code>String</code> in specified format
-	 */
-	public static String extractStringHourFromString(String dateToProcess) {
+		SimpleDateFormat sdtFormat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss.S");
+		Date currentTime = sdtFormat.parse(TimeHelper.getCurrentTime());
+		Date inspectedTime = sdtFormat.parse(inspectedDateString);
+		long difference = currentTime.getTime() - inspectedTime.getTime();
+		return difference;
 
-		return dateToProcess.substring(dateToProcess.length() - 8, dateToProcess.length());
-	}
-	
-	/**
-	 * Get from a String the date in format yyyy-MM-dd.
-	 * 
-	 * @param dateToProcess
-	 *            the date from which to extract
-	 * @return the date <code>Date</code> in specified format
-	 */
-	public static Date extractDateFromString(String dateToProcess) {
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = null;
-		try {
-			date = fmt.parse(dateToProcess);
-		} catch (ParseException e) {
-			log.error("Exception in extractDateFromString() function, TimeHelper class : " + e.getMessage());
-		}
-		return date;
 	}
 	
 	/**
@@ -126,8 +121,15 @@ public class TimeHelper {
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean checkIfDatesAreInTheSameDay(String date_1, String date_2) {
-		Date date1 = TimeHelper.extractDateFromString(date_1);
-		Date date2 = TimeHelper.extractDateFromString(date_2);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = null;
+		Date date2 = null;
+		try {
+			date1 = formatter.parse(TimeHelper.createDateTimeWithFormat("yyyy-MM-dd", date_1));
+			date2 = formatter.parse(TimeHelper.createDateTimeWithFormat("yyyy-MM-dd", date_2));
+		} catch (ParseException e) {
+			log.error("Exception in checkIfDatesAreInTheSameDay() function, TimeHelper class : " + e.getMessage());
+		}
 
 		return DateUtils.isSameDay(date1, date2);
 	}
@@ -141,7 +143,7 @@ public class TimeHelper {
 	 */
 	public static boolean checkForRightDateTimeFormat(String dateToCheck) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			sdf.parse(dateToCheck);
 
 			return true;
@@ -162,7 +164,7 @@ public class TimeHelper {
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean checkIfDateOneIsBeforeDateTwo(String date_1, String date_2) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date1 = null;
 		Date date2 = null;
 		try {
@@ -177,5 +179,54 @@ public class TimeHelper {
 		} else {
 			return false;
 		}
+	}
+	
+	public static String createDateTimeWithFormat(String format, String dateToProcess) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateToProcess);
+		} catch (ParseException e) {
+			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
+		}
+		
+		return new SimpleDateFormat(format).format(date);
+	}
+	
+	// TODO
+	///
+	///
+	///
+	///
+	public static Date createDateTimeWithFormat(String format, Message message) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(message.getTimeReceived());
+		} catch (ParseException e) {
+			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
+		}
+		
+		String date1 = new SimpleDateFormat(format).format(date);
+		Date d = null;
+		try {
+			d = new SimpleDateFormat(format).parse(date1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return d;
+		
+//		Date date = null;
+//		String timeMoment = "";
+//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//		try {
+//			timeMoment = TimeHelper.createDateTimeWithFormat("HH:mm:ss", message);
+//			date = sdf.parse(timeMoment);
+//		} catch (ParseException e) {
+//			log.error("Exception in getMessageTime() function, SensorHistoryUtils class : "
+//					+ e.getMessage());
+//			e.printStackTrace();
+//		}
+//
+//		return date;
 	}
 }

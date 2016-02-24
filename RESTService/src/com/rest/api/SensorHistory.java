@@ -33,8 +33,6 @@ import com.udp.io.Log4j;
 @Path("/history")
 public class SensorHistory {
 	
-	// TODO Check if dates are in correct order
-	
 	static Logger log = Log4j.initLog4j(SensorHistory.class);
 
 	/**
@@ -222,7 +220,7 @@ public class SensorHistory {
 				&& TimeHelper.checkIfDateOneIsBeforeDateTwo(date_1, date_2)) {
 			if (TimeHelper.checkIfDatesAreInTheSameDay(date_1, date_2)) {
 				try {
-					String startDateInterval = TimeHelper.extractStringDateFromString(date_1);
+					String startDateInterval = TimeHelper.createDateTimeWithFormat("yyyy-mm-dd", date_1);
 					long totalTime = SensorHistoryCriteria.getTotalTimeLightOnInTheRoom(date_1, date_2);
 					jsonArray.put(JsonService.createJSONWithLightOnStatisticsDataDuringDay(startDateInterval,
 							totalTime + ""));
@@ -235,10 +233,10 @@ public class SensorHistory {
 					return Response.status(500).build();
 				}
 			} else {
-				String startDateInterval = TimeHelper.extractStringDateFromString(date_1);
-				String endDateInterval = TimeHelper.extractStringDateFromString(date_2);
-				String startHour = TimeHelper.extractStringHourFromString(date_1);
-				String endHour = TimeHelper.extractStringHourFromString(date_2);
+				String startDateInterval = TimeHelper.createDateTimeWithFormat("yyyy-MM-dd", date_1);
+				String endDateInterval = TimeHelper.createDateTimeWithFormat("yyyy-MM-dd", date_2);
+				String startHour = TimeHelper.createDateTimeWithFormat("HH:mm:ss", date_1);
+				String endHour = TimeHelper.createDateTimeWithFormat("HH:mm:ss", date_2);
 				List<LocalDate> totalDates = SensorHistoryCriteria.getDatesBetweenTwoDates(startDateInterval,
 						endDateInterval);
 				for (LocalDate localDate : totalDates) {

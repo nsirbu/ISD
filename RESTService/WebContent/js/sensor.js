@@ -50,6 +50,14 @@ $.fx.step.textShadowBlur = function(fx) {
 };
 
 // ----------------------------------------------------------------------------
+// ------------------------ PAGE ONLOAD Event --------------------------------
+// ----------------------------------------------------------------------------
+$(document).ready(function() {
+	displayHbFrequencyValue();
+	displayLightThresholdValue();
+});
+
+// ----------------------------------------------------------------------------
 // ------------------ Checking SENSORS' CURRENT VALUES ------------------------
 // ----------------------------------------------------------------------------
 
@@ -199,6 +207,40 @@ function showHbNotification(status) {
 	}
 }
 
+/**
+ * Checks the current frequency value stored on the server and displays it in
+ * the page, to the right of the label in the settings box.
+ */
+function displayHbFrequencyValue() {
+	$.ajax({
+		url : 'sensor/settings/getHBFrequency',
+		type : 'GET',
+		dataType : 'json',
+		success : function(hbState) {
+			$('#hb_thresh_val').html(hbState.HBFrequency + " s.");
+			console.log(hbState.HBFrequency);
+			return hbState.HBFrequency;
+		}
+	});
+}
+
+//----------------------------------------------------------------------------
+//----------------- Checking LIGHT LEVEL THRESHOLD VAL -----------------------
+//----------------------------------------------------------------------------
+
+function displayLightThresholdValue(){
+	$.ajax({
+		url : 'sensor/settings/getLightThreshold',
+		type : 'GET',
+		dataType : 'json',
+		success : function(lightThresh) {
+			$('#light_thresh_val').html(lightThresh.lightThreshold + " lx");
+			console.log(lightThresh.HBFrequency);
+			return lightThresh.HBFrequency;
+		}
+	});
+}
+
 // ----------------------------------------------------------------------------
 // ----------------- Updating SERVER'S THRESHOLD VALUES -----------------------
 // ----------------------------------------------------------------------------
@@ -217,7 +259,7 @@ function updateHbRate() {
 				'Accept' : 'application/json',
 				'Content-Type' : 'application/json'
 			},
-			url : "sensor/settings/heartbeat",
+			url : "sensor/settings/setHBFrequency",
 			data : JSON.stringify(object),
 			contentType : "application/json",
 			statusCode : {
@@ -250,7 +292,8 @@ function updateHbRate() {
 function updateLightTreshVal() {
 	var statusIcon = '#light_update_status';
 	var lightLevel = $('#light_threshold_input').val();
-	if (validateNumberInput(lightLevel)) {
+	console.log("Checking: " + validateNumberInput(lightLevel));
+	if (validateNumberInput(lightLevel) === true) {
 		var object = {};
 		object.lightThreshold = lightLevel;
 		$.ajax({
@@ -259,7 +302,7 @@ function updateLightTreshVal() {
 				'Accept' : 'application/json',
 				'Content-Type' : 'application/json'
 			},
-			url : "sensor/settings/luminosity",
+			url : "sensor/settings/setLightThreshold",
 			data : JSON.stringify(object),
 			contentType : "application/json",
 			statusCode : {
@@ -268,7 +311,7 @@ function updateLightTreshVal() {
 				}
 			},
 			success : function(data) {
-				console.log(data);
+				// console.log(data);
 			},
 			error : function() {
 				console.log("error");
@@ -319,14 +362,14 @@ function displayUpdateStatus(elementId, requestStatus) {
 }
 
 // ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
+// ---------------------- VALIDATORS -----------------------------------------
+// -----------------------------------------------------------------------------
 /**
  * Validates the user input values for heart-beat & light levels threshold
  * 
  */
 function validateNumberInput(value) {
-	var numberRegex = new RegExp("^[1-9]\\d{1,2}","g");
-	var integ = parseInt(value);
+	var numberRegex = new RegExp("^[1-9]\\d{1,2}");
 	return numberRegex.test(parseInt(value));
 }
 

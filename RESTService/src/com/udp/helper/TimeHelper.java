@@ -36,10 +36,13 @@ public class TimeHelper {
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
+		int milliseconds = calendar.get(Calendar.MILLISECOND);
 		String currentTimeString = year + "-" + month + "-" + day + " "
 				+ (hours < 10 ? "0" + hours : hours) + ":"
 				+ (minutes < 10 ? "0" + minutes : minutes) + ":"
-				+ (seconds < 10 ? "0" + seconds : seconds);
+				+ (seconds < 10 ? "0" + seconds : seconds) + "."
+				+ (milliseconds);
+		
 		return currentTimeString;
 	}
 	

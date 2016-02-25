@@ -1,31 +1,135 @@
-/** This file contains the methods necessary for displaying
- * the sensors' statistic data using charts
+/**
+ * This file contains the methods necessary for displaying the sensors'
+ * statistic data using charts
  * 
  * @author: sscerbatiuc
  */
+// ---------------------------------------------------------------------
+// -------------------- GLOBAL VARIABLES -------------------------------
+// ---------------------------------------------------------------------
+var LIGHT_LEVEL_CHART = "light_levels";
+var ACTIVITY_LEVEL_CHART = "activity_chart";
+var LIGHT_DURATION_CHART = "light_duration";
+
+var STATISTIC_AREA_VISIBLE = false;
+
+// --------------------- TIME VARIABLES --------------------------------
+var TIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
+
+// ------------------- CLEAR HELPER VARIABLES ---------------------------
+var CLEAR_DATE_TIME_PICKERS = "date_time_pickers";
+
+// ---------------------------------------------------------------------
 
 /**
- * This method is used for determining which chart user has requested to
- * display. It is called on "<code>onChange</code>" event of the select
- * element displayed on the home-page.
+ * INITIALISATION CODE block
  */
-function displayStats(type) {
+$(document).ready(function() {
 
-	switch (type) {
-	case "lws": /* lws - Light levels week statistic */
-		lightBarChartWeek(); 
-		$('#statDescription').collapse('toggle');
-		setTimeout(function() {
-          document.querySelector('.ct-chart').__chartist__.update();
-        }, 400);
+	$("#dtpickerStart").datetimepicker();
+	$("#dtpickerStart").data("DateTimePicker").options({
+		format : TIME_FORMAT
+	});
+	$("#dtpickerStart").on("dp.change", function() {
+		displayChart();
+	})
+	$("#dtpickerEnd").datetimepicker();
+	$("#dtpickerEnd").data("DateTimePicker").options({
+		format : TIME_FORMAT
+	});
+	$("#dtpickerEnd").on("dp.change", function() {
+		displayChart();
+	})
+});
+
+/**
+ * Displays the selected value in the drop-down element.
+ */
+$(function() {
+	$(".dropdown-menu li a").click(function() {
+
+		$(".btn:first-child").text($(this).text())
+		$(".btn:first-child").attr("data-chart", $(this).attr("data-chart"));
+		$(".btn:first-child").val($(this).text());
+		displayStatisticsControls();
+	});
+});
+
+/**
+ * Displays the statistics area, date-time pickers for selecting the interval
+ * and statistic's description.
+ */
+function displayStatisticsControls() {
+
+	showStatisticArea();
+	var chartType = $("#dropDown_statistics").attr("data-chart");
+	switch (chartType) {
+	case LIGHT_LEVEL_CHART: { /* lws - Light levels week statistic */
+
+		clear(CLEAR_DATE_TIME_PICKERS);
+		$("#statistic_description")
+				.html(
+						"This is a light level statistic chart. More description coming soon.");
+		// setTimeout(function() {
+		// document.querySelector('.ct-chart').__chartist__.update();
+		// }, 400);
 		break;
-	case "aws": /* aws - Activity week statistic */
-		motionPieChartWeek();
+	}
+	case ACTIVITY_LEVEL_CHART: {
+
+		$("#statistic_description")
+				.html(
+						"This is the activity level statistic chart. More description coming soon.");
+		clear(CLEAR_DATE_TIME_PICKERS);
+		// motionPieChartWeek();
 		break;
+	}
+	case LIGHT_DURATION_CHART: {
+
+		clear(CLEAR_DATE_TIME_PICKERS);
+		$("#statistic_description").html(
+				"This is the light duration statistic chart");
+		break;
+	}
 	default:
 		break;
 	}
 
+}
+
+/**
+ * Checks if the selected time interval is correct, gets the chart data from the
+ * server and displays it.
+ */
+function displayChart() {
+
+	var startDate = $("#dtpicker_start_date").val();
+	var endDate = $("#dtpicker_end_date").val();
+	var datesSelected = ((startDate !== "") && (endDate !== ""));
+	var dateIntervalValid = false;
+	if (datesSelected) {
+		/**
+		 * Check if the selected interval is correct (start date IS EARLIER than
+		 * the end date)
+		 */
+		dateIntervalValid = validateDateInterval(startDate, endDate);
+		console.log(dateIntervalValid);
+	}
+	if (dateIntervalValid) {
+		drawChart(startDate, endDate);
+	}
+}
+
+/**
+ * Displays the statistics' section, which is expanded when the user selects a
+ * value from the drop-down.
+ */
+
+function showStatisticArea() {
+	if (!STATISTIC_AREA_VISIBLE) {
+		$('#statDescription').collapse('toggle');
+		STATISTIC_AREA_VISIBLE = true;
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -59,6 +163,41 @@ function parseDate(mySqlDate, format) {
 		return day + "/" + month;
 	}
 }
+
+/**
+ * Verifies if the start date is earlier than the end date in a given interval.
+ * 
+ * @param startDate
+ *            {String} - the first date of a given interval
+ * @param endDate
+ *            {String} - the last date of a given interval
+ */
+function validateDateInterval(startDate, endDate) {
+	return moment(startDate).isBefore(endDate);
+}
+
+/**
+ * Clears the value stored in the HTML element. This method accepts short-codes
+ * for clearing a given set of elements: clear("date_time_pickers") will clear
+ * the value of date-time-pickers
+ * 
+ * @param element
+ *            {String}
+ */
+function clear(element) {
+	switch (element) {
+	case CLEAR_DATE_TIME_PICKERS: {
+		$("#dtpickerStart").val('');
+		$("#dtpickerEnd").val('');
+		break;
+	}
+	default:
+		$(element).val('');
+		break;
+	}
+
+}
+
 // ----------------------------------------------------------------------------
 // ------------------ SENSORS' DATA PARSERS ----------------------------------
 // ----------------------------------------------------------------------------
@@ -126,6 +265,26 @@ function parseMotionData(receivedData) {
 // ----------------------------------------------------------------------------
 // ---------------------- CHART DRAWERS --------------------------------------
 // ----------------------------------------------------------------------------
+/**
+ * Checks the type of chart to be drawn and displays it on the page
+ */
+function drawChart(startDate, endDate) {
+	var chartType = $("#dropDown_statistics").attr("data-chart");
+	switch(chartType){
+	case LIGHT_LEVEL_CHART:{
+		
+		break;
+	}
+	case LIGHT_DURATION_CHART:{
+		
+		break;
+	}
+	case ACTIVITY_LEVEL_CHART:{
+		
+		break;
+	}
+	}
+}
 
 /**
  * Draws a bar chart
@@ -179,10 +338,10 @@ function lightBarChartWeek() {
 		success : function(receivedData) {
 			var barChart = drawBarChart(parseLightMaxAvgData(receivedData),
 					chartOptions);
-			
+
 		}
 	});
-	
+
 }
 
 /**

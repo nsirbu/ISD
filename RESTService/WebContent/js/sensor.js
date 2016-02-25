@@ -43,6 +43,11 @@ var ERROR_MESSAGE = "The last message was late. The board is not sending message
 // ----------------------------------------------------------------------------
 
 // ------------------- Animating TEXT-SHADOW property -------------------------
+/**
+ * This method is called when the values displayed in the "Current State
+ * Section" change. New values are animated by modifying the CSS 'text-shadow'
+ * property.
+ */
 $.fx.step.textShadowBlur = function(fx) {
 	$(fx.elem).prop('textShadowBlur', fx.now).css({
 		textShadow : '0 0 ' + Math.floor(fx.now) + 'px #960A31'
@@ -52,10 +57,15 @@ $.fx.step.textShadowBlur = function(fx) {
 // ----------------------------------------------------------------------------
 // ------------------------ PAGE ONLOAD Event --------------------------------
 // ----------------------------------------------------------------------------
+/**
+ * Calling the necessary methods on page load event
+ */
 $(document).ready(function() {
 	displayHbFrequencyValue();
 	displayLightThresholdValue();
 });
+
+
 
 // ----------------------------------------------------------------------------
 // ------------------ Checking SENSORS' CURRENT VALUES ------------------------
@@ -224,11 +234,14 @@ function displayHbFrequencyValue() {
 	});
 }
 
-//----------------------------------------------------------------------------
-//----------------- Checking LIGHT LEVEL THRESHOLD VAL -----------------------
-//----------------------------------------------------------------------------
-
-function displayLightThresholdValue(){
+// ----------------------------------------------------------------------------
+// ----------------- Checking LIGHT LEVEL THRESHOLD VAL -----------------------
+// ----------------------------------------------------------------------------
+/**
+ * Checks the current light threshold value stored on the server and displays it in
+ * the page, to the right of the label in the settings box.
+ */
+function displayLightThresholdValue() {
 	$.ajax({
 		url : 'sensor/settings/getLightThreshold',
 		type : 'GET',
@@ -265,6 +278,7 @@ function updateHbRate() {
 			statusCode : {
 				200 : function() {
 					displayUpdateStatus(statusIcon, SUCCESS_STATUS);
+					displayHbFrequencyValue();
 				},
 				404 : function() {
 					displayUpdateStatus(statusIcon, ERROR_STATUS);
@@ -288,7 +302,6 @@ function updateHbRate() {
  * Updates the light level threshold specified by the user. This method executes
  * an asynchronous POST request, containing the new value to the server.
  */
-
 function updateLightTreshVal() {
 	var statusIcon = '#light_update_status';
 	var lightLevel = $('#light_threshold_input').val();
@@ -308,10 +321,10 @@ function updateLightTreshVal() {
 			statusCode : {
 				200 : function() {
 					displayUpdateStatus(statusIcon, SUCCESS_STATUS);
+					displayLightThresholdValue();
 				}
 			},
 			success : function(data) {
-				// console.log(data);
 			},
 			error : function() {
 				console.log("error");
@@ -335,7 +348,6 @@ function updateLightTreshVal() {
  *            {Integer} Representing the status of the operation: -1 - error; 1
  *            success;
  */
-
 function displayUpdateStatus(elementId, requestStatus) {
 	switch (requestStatus) {
 	case SUCCESS_STATUS: {
@@ -361,9 +373,16 @@ function displayUpdateStatus(elementId, requestStatus) {
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------------------- VALIDATORS -----------------------------------------
 // -----------------------------------------------------------------------------
+// ---------------------- HELPERS ----------------------------------------------
+// -----------------------------------------------------------------------------
+/**
+ * 
+ */
+function clearInput(elementId){
+	$(elementId).val()
+}
+
 /**
  * Validates the user input values for heart-beat & light levels threshold
  * 

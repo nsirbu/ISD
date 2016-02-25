@@ -1,11 +1,15 @@
 package com.rest.api;
 
+import java.util.Iterator;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
+
 import com.database.DBQuery;
 import com.google.gson.JsonObject;
 import com.model.Message;
@@ -29,14 +33,24 @@ public class SensorCurrentData {
 	 * @return a <code>JSONObject</code> containing the light sensor value, PIR
 	 *         sensor value and the heartbeat value.
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Produces("application/json")
 	public Response getLastSensorState() {
 		Message message = new Message();
 		try {
 			message = DBQuery.getLastEntry();
-			JsonObject jsonObject = JsonService.createJSONObject(message);
-			String result = "" + jsonObject;
+			JsonObject lastSensorState = JsonService.createJSONObject(message);
+			JSONObject analyzedData = SensorHistoryCriteria.checkForSomeoneInTheRoom();
+			
+			Iterator<String> keys = analyzedData.keys();
+			while( keys.hasNext() ){
+				 String key = (String)keys.next();
+			     String value = analyzedData.getString(key);
+				 lastSensorState.addProperty(key, value);;
+			}
+			
+			String result = "" + lastSensorState;
 
 			return Response.status(200).entity(result).build();
 		} catch (Exception e) {

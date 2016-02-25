@@ -187,8 +187,8 @@ function validateDateInterval(startDate, endDate) {
 function clear(element) {
 	switch (element) {
 	case CLEAR_DATE_TIME_PICKERS: {
-		$("#dtpickerStart").val('');
-		$("#dtpickerEnd").val('');
+		$("#dtpicker_start_date").val('');
+		$("#dtpicker_end_date").val('');
 		break;
 	}
 	default:

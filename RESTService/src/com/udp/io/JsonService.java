@@ -44,21 +44,23 @@ public class JsonService {
 
 		return gson.toJsonTree(message).getAsJsonObject();
 	}
-
+	
 	/**
-	 * Create a <code>JSONObject</code> from <code>String</code>.
+	 * Create <code>JSONObject</code> from the input data.
 	 * 
-	 * @param startDateInterval
-	 *            the value for the first key
-	 * @param totalTime
-	 *            the value for the second key
+	 * @param date
+	 *            the value for the first pair of key-value
+	 * @param key
+	 *            the key for the second pair of key-value
+	 * @param value
+	 *            the value for the second pair of key-value
 	 * @return a <code>JSONObject</code>
 	 */
-	public static JSONObject createJSONWithLightOnStatisticsDataDuringDay(String startDateInterval, String totalTime) {
+	public static JSONObject createJSONObject(String date, String key, long value) {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("date", startDateInterval);
-		jsonObject.put("totalTime", totalTime);
-
+		jsonObject.put("date", date);
+		jsonObject.put(key, value);
+		
 		return jsonObject;
 	}
 }

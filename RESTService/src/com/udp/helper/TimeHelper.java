@@ -3,8 +3,11 @@ package com.udp.helper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -19,7 +22,7 @@ import com.udp.io.Log4j;
  * @author sscerbatiuc
  */
 public class TimeHelper {
-	
+
 	static Logger log = Log4j.initLog4j(TimeHelper.class);
 
 	/**
@@ -37,15 +40,13 @@ public class TimeHelper {
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
 		int milliseconds = calendar.get(Calendar.MILLISECOND);
-		String currentTimeString = year + "-" + month + "-" + day + " "
-				+ (hours < 10 ? "0" + hours : hours) + ":"
-				+ (minutes < 10 ? "0" + minutes : minutes) + ":"
-				+ (seconds < 10 ? "0" + seconds : seconds) + "."
+		String currentTimeString = year + "-" + month + "-" + day + " " + (hours < 10 ? "0" + hours : hours) + ":"
+				+ (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds) + "."
 				+ (milliseconds);
-		
+
 		return currentTimeString;
 	}
-	
+
 	/**
 	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd"
 	 * 
@@ -57,20 +58,6 @@ public class TimeHelper {
 		String currentTime = dateFormat.format(calendar.getTime());
 
 		return currentTime;
-	}
-	
-	/**
-	 * Returns the current time. <b>Format: </b>"yyyy-MM-dd"
-	 * 
-	 * @return String <code>currentTime</code>
-	 */
-	public static String getXDayAgoDateCurrentDate(int daysAgo) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar calendar = Calendar.getInstance(Locale.getDefault());
-		calendar.add(Calendar.DATE, - daysAgo);
-		String xDaysAgoDate = dateFormat.format(calendar.getTime());
-
-		return xDaysAgoDate;
 	}
 
 	/**
@@ -91,7 +78,7 @@ public class TimeHelper {
 
 		return currentTimeStamp;
 	}
-	
+
 	/**
 	 * Returns the number of milliseconds that have passed since a given date.
 	 * 
@@ -102,18 +89,16 @@ public class TimeHelper {
 	 * @throws ParseException
 	 *             if the provided date string is not an acceptable format
 	 */
-	public static long howMuchMillisSince(String inspectedDateString)
-			throws ParseException {
+	public static long howMuchMillisSince(String inspectedDateString) throws ParseException {
 
-		SimpleDateFormat sdtFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss.S");
+		SimpleDateFormat sdtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 		Date currentTime = sdtFormat.parse(TimeHelper.getCurrentTime());
 		Date inspectedTime = sdtFormat.parse(inspectedDateString);
 		long difference = currentTime.getTime() - inspectedTime.getTime();
 		return difference;
 
 	}
-	
+
 	/**
 	 * Returns the number of milliseconds between 2 given dates
 	 * 
@@ -124,19 +109,39 @@ public class TimeHelper {
 	 * @throws ParseException
 	 *             if the provided date string is not an acceptable format
 	 */
-	public static long getDifference(String date1, String date2)
-			throws ParseException {
-
-		SimpleDateFormat sdtFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss.S");
-		Date currentTime = sdtFormat.parse(date1);
-		Date inspectedTime = sdtFormat.parse(date2);
+	public static long getDifference(String format, String date1, String date2) throws ParseException {
+		SimpleDateFormat sdtFormat = new SimpleDateFormat(format);
+		Date timeValueOne = sdtFormat.parse(date1);
+		Date timeValueTwo = sdtFormat.parse(date2);
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(currentTime);;
-		long difference = currentTime.getTime() - inspectedTime.getTime();
+		cal.setTime(timeValueOne);
+		long difference = timeValueTwo.getTime() - timeValueOne.getTime();
+
 		return difference;
 	}
-	
+
+	/**
+	 * Get all the calendar dates between two dates.
+	 * 
+	 * @param sevenDaysAgoDate
+	 *            the date from the past from which to start the identification
+	 *            of the dates
+	 * @param currentDate
+	 *            the today's date
+	 * @return a list with all the dates between the specified interval
+	 */
+	public static List<LocalDate> getDatesBetweenTwoDates(String sevenDaysAgoDate, String currentDate) {
+		LocalDate start = LocalDate.parse(sevenDaysAgoDate);
+		LocalDate end = LocalDate.parse(currentDate);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!start.isAfter(end)) {
+			totalDates.add(start);
+			start = start.plusDays(1);
+		}
+
+		return totalDates;
+	}
+
 	/**
 	 * Check if the two calendar dates are in the same day.
 	 * 
@@ -159,7 +164,7 @@ public class TimeHelper {
 
 		return DateUtils.isSameDay(date1, date2);
 	}
-	
+
 	/**
 	 * Check if the input date corresponds to the specified format.
 	 * 
@@ -179,7 +184,7 @@ public class TimeHelper {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check if the one calendar date is before the other.
 	 * 
@@ -206,7 +211,7 @@ public class TimeHelper {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Extract from a <code>Date String</code> the value in the specified
 	 * format.
@@ -229,7 +234,7 @@ public class TimeHelper {
 
 		return new SimpleDateFormat(format).format(date);
 	}
-	
+
 	/**
 	 * Extract from a <code>Message</code> the <code>DateTime</code> value in
 	 * the specified format.
@@ -242,23 +247,14 @@ public class TimeHelper {
 	 *            value
 	 * @return the date or the hour according to the specified format
 	 */
-	public static Date getMessageTime(String format, Message message) {
+	public static String getMessageTime(String format, Message message) {
 		Date messageDate = null;
 		try {
 			messageDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(message.getTimeReceived());
 		} catch (ParseException e) {
-			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
+			log.error("Exception in getMessageTime() function, TimeHelper class : " + e.getMessage());
 		}
 
-		String stringDate = new SimpleDateFormat(format).format(messageDate);
-		Date date = null;
-		try {
-			date = new SimpleDateFormat(format).parse(stringDate);
-		} catch (ParseException e) {
-			log.error("Exception in createDateTimeWithFormat() function, TimeHelper class : " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return date;
+		return new SimpleDateFormat(format).format(messageDate);
 	}
 }

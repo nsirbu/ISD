@@ -13,7 +13,7 @@ import com.udp.io.Log4j;
 
 /**
  *
- * @author Nicolaej
+ * @author Nicolae
  * 
  *         All methods concerning the access to the database.
  */
@@ -59,17 +59,6 @@ public class DBQuery {
 	 */
 	public static ArrayList<Message> getAllData() {
 		String sqlQuery = "SELECT * FROM sensor_data";
-
-		return getDataSet(sqlQuery);
-	}
-
-	/**
-	 * Get all entries from the database by date.
-	 * 
-	 * @return a list with objects of <code>Message</code> class
-	 */
-	public static ArrayList<Message> getAllDataByParameter(String date) {
-		String sqlQuery = "SELECT * FROM sensor_data where DATE(timeReceived)='" + date + "'";
 
 		return getDataSet(sqlQuery);
 	}
@@ -153,7 +142,7 @@ public class DBQuery {
 			stmt.setInt(3, receivedMessage.getLightSensorVal());
 			stmt.setBoolean(4, receivedMessage.getPirSensorVal());
 			affectedRows = stmt.executeUpdate();
-			
+
 			stmt.close();
 			dbConnection.close();
 		} catch (Exception e) {
@@ -173,9 +162,9 @@ public class DBQuery {
 	 *            the state of the sensor that interests us, true or false
 	 * @return how many motions was detected
 	 */
-	public static int getMotionActivityForDay(String date, boolean pirSensorVal) {
-		String sqlQuery = "SELECT COUNT(*) FROM sensor_data where DATE(timeReceived)='" + date + "' and pirSensorVal='"
-				+ pirSensorVal + "' and isHeartbeat='false'";
+	public static int getMotionActivityForDay(String date_1, String date_2, boolean pirSensorVal) {
+		String sqlQuery = "SELECT COUNT(*) FROM sensor_data where timeReceived BETWEEN '" + date_1 + "' AND '" + date_2
+				+ "' and pirSensorVal='" + pirSensorVal + "' and isHeartbeat='false'";
 		int count = 0;
 
 		try {

@@ -1,12 +1,12 @@
 package com.rest.api;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import com.settings.ConfigurationsManager;
 import com.udp.helper.Constants;
 import com.udp.io.Log4j;
+import com.udp.server.Server;
 
 /**
  * 
@@ -31,7 +32,7 @@ import com.udp.io.Log4j;
  */
 @Path("/settings")
 public class SensorConfiguration {
-
+	
 	ConfigurationsManager configManager = new ConfigurationsManager();
 	static Logger log = Log4j.initLog4j(SensorConfiguration.class);
 
@@ -91,7 +92,12 @@ public class SensorConfiguration {
 		if (HBFrequency >= 0) {
 			configManager.setConfigValue("HBFrequency", HBFrequency + "");
 			
-			sendConfigurationToArduino(HBFrequency);			
+			try {
+				Server s = Server.getInstance();
+				s.respondToClient(HBFrequency + "", InetAddress.getByName(Constants.ARDUINO_IP), Constants.ARDUINO_PORT);
+			} catch (SocketException | UnknownHostException e) {
+				log.error("Error sending configuration data to Arduino.");
+			}			
 			
 			return Response.status(200).build();
 		} else {
@@ -120,30 +126,6 @@ public class SensorConfiguration {
 		}
 
 		return builder.toString();
-	}
-	
-	/**
-	 * Send a UDP message to the Arduino board with the value for the heartbeat
-	 * frequency.
-	 * 
-	 * @param HBFrequency
-	 *            the value of the heartbeat frequency to set on the Arduino
-	 *            board
-	 */
-	public static void sendConfigurationToArduino(int HBFrequency) {
-		String valueToArduino = HBFrequency + "";
-
-		byte[] message = valueToArduino.getBytes();
-		try {
-			InetAddress address = InetAddress.getByName(Constants.ARDUINO_IP);
-			DatagramPacket packet = new DatagramPacket(message, message.length, address, Constants.ARDUINO_PORT);
-
-			DatagramSocket socket = new DatagramSocket();
-			socket.send(packet);
-			socket.close();
-		} catch (IOException e) {
-			log.error("Exception in sendConfigurationToArduino() function, SensorConfiguration class : " + e.getMessage());
-		}
 	}
 	
 	/**

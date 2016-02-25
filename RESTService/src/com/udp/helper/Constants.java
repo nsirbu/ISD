@@ -33,6 +33,10 @@ public class Constants {
     // ---------- HEARTBEAT CONSTANTS ----------------
     public static final boolean HEARTBEAT_IS_LATE = false;
     public static final boolean HEARTBEAT_OK	  = true;
+    
+    // ---------- MINIMUM TIME DELAY TO CHECK PRESENCE IN THE ROOM ---------
+    // If no motion detection after this period of milliseconds, we consider that there is no one in the room.
+    public static final int MINIMUM_DELAY_TO_CHECK_PRESENCE_IN_ROOM = 5000;
 
     // ---------- INITIALISATION BLOCK ----------------
     static {

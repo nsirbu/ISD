@@ -1,21 +1,19 @@
 package com.rest.api;
 
-import java.time.LocalDate;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.database.DBQuery;
 import com.model.Message;
 import com.settings.ConfigurationsManager;
+import com.udp.helper.Constants;
 import com.udp.helper.TimeHelper;
 import com.udp.io.Log4j;
 
@@ -39,11 +37,11 @@ public class SensorHistoryCriteria {
 	 *         was captured and 111 is the value of the light in lux
 	 * 
 	 */
-	public static JSONObject getLuminosityStatisticsForDay(String requiredDate) {
+	public static JSONObject getLuminosityStatisticsForDay(String date_1, String date_2) {
 		HashMap<String, Integer> luminosity = new HashMap<String, Integer>();
 		String detectedLuminosityAtTime = "";
 
-		ArrayList<Message> todayEntries = DBQuery.getAllDataByParameter(requiredDate);
+		ArrayList<Message> todayEntries = DBQuery.getAllDataBetweenTwoTimeValues(date_1, date_2);
 
 		Iterator<Message> itr = todayEntries.iterator();
 		while (itr.hasNext()) {
@@ -60,14 +58,16 @@ public class SensorHistoryCriteria {
 			Map.Entry<String, Integer> entry = it.next();
 			jsonObject.put(entry.getKey(), entry.getValue());
 		}
-		jsonObject.put("date", requiredDate);
+		
+		String formatedDate = TimeHelper.createDateTimeWithFormat("yyyy-MM-dd", date_1);
+		jsonObject.put("date", formatedDate);
 
 		return jsonObject;
 	}
 
 	/**
-	 * Remove from the map all the elements that are not equal with the max
-	 * value in the map.
+	 * Remove from the map all the elements that are not equal with the maximum
+	 * and the average value.
 	 * 
 	 * @param map
 	 *            the map to filter
@@ -91,7 +91,7 @@ public class SensorHistoryCriteria {
 	}
 
 	/**
-	 * Calculate the average of elements in the map.
+	 * Calculate the average value of the elements in the map.
 	 * 
 	 * @param map
 	 *            the map containing the elements to calculate
@@ -110,7 +110,7 @@ public class SensorHistoryCriteria {
 		try {
 			average = sum / counter;
 		} catch (Exception e) {
-			log.error("Exception in calculateAverage() function, SensorHistory class : " + e.getMessage());
+			log.error("Exception in calculateAverage() function, SensorHistoryCriteria class : " + e.getMessage());
 		}
 
 		return average;
@@ -118,7 +118,7 @@ public class SensorHistoryCriteria {
 
 	/**
 	 * Get the total time spent in the room between two dates, ie the whole time
-	 * when there was movement.
+	 * when there was motion.
 	 * 
 	 * @param date_1
 	 *            first calendar date indicating when to begin calculation
@@ -129,8 +129,8 @@ public class SensorHistoryCriteria {
 	public static long getTimeSpentInTheRoom(String date_1, String date_2) {
 		long timeSpent = 0;
 		ArrayList<Message> todayEntries = DBQuery.getAllDataBetweenTwoTimeValues(date_1, date_2);
-		Date l_date_1 = null;
-		Date l_date_2 = null;
+		String formatedDateOne = null;
+		String formatedDateTwo = null;
 		boolean readyForTimeDifferenceCalculation = false;
 		boolean isStartTimeSeted = false;
 
@@ -138,17 +138,21 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if (message.getPirSensorVal() && !isStartTimeSeted) {
-				l_date_1 = TimeHelper.getMessageTime("HH:mm:ss", message);
+				formatedDateOne = TimeHelper.getMessageTime("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = false;
 				isStartTimeSeted = true;
-			} else if (!message.getPirSensorVal() && !message.isHeartbeat()) {
-				l_date_2 = TimeHelper.getMessageTime("HH:mm:ss", message);
+			} else if (!message.getPirSensorVal() && !message.isHeartbeat() && isStartTimeSeted) {
+				formatedDateTwo = TimeHelper.getMessageTime("HH:mm:ss", message);
 				readyForTimeDifferenceCalculation = true;
 				isStartTimeSeted = false;
 			}
 
 			if (readyForTimeDifferenceCalculation) {
-				timeSpent += calculateTimeDifference(l_date_1, l_date_2);
+				try {
+					timeSpent += TimeHelper.getDifference("HH:mm:ss", formatedDateOne, formatedDateTwo);
+				} catch (ParseException e) {
+					log.error("Exception in getTimeSpentInTheRoom() function, SensorHistoryCriteria class : " + e.getMessage());
+				}
 			}
 		}
 
@@ -156,105 +160,19 @@ public class SensorHistoryCriteria {
 	}
 
 	/**
-	 * Calculate the time difference between two time values.
-	 * 
-	 * @param date_1
-	 *            first time value
-	 * @param date_2
-	 *            second time value
-	 * @return the time difference in milliseconds
-	 */
-	public static long calculateTimeDifference(Date date_1, Date date_2) {
-
-		return date_2.getTime() - date_1.getTime();
-	}
-
-	/**
-	 * Get the average value and the maximum value of the light for each day
-	 * during the last week.
-	 * 
-	 * @return a <code>JSONArray</code> containing the maximum and the average
-	 *         value of the light grouped by calendar date
-	 */
-	public static JSONArray getLuminosityStatisticsForLastWeek() {
-		JSONArray jsonArray = new JSONArray();
-
-		String currentDate = TimeHelper.getCurrentDate();
-		String sevenDaysAgoDate = TimeHelper.getXDayAgoDateCurrentDate(7);
-
-		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
-
-		for (LocalDate localDate : totalDates) {
-			JSONObject jsonObject = SensorHistoryCriteria.getLuminosityStatisticsForDay(localDate.toString());
-			jsonArray.put(jsonObject);
-		}
-
-		return jsonArray;
-	}
-
-	/**
-	 * Get all the calendar dates between two dates.
-	 * 
-	 * @param sevenDaysAgoDate
-	 *            the date from the past from which to start the identification
-	 *            of the dates
-	 * @param currentDate
-	 *            the today's date
-	 * @return a list with all the dates between the specified interval
-	 */
-	public static List<LocalDate> getDatesBetweenTwoDates(String sevenDaysAgoDate, String currentDate) {
-		LocalDate start = LocalDate.parse(sevenDaysAgoDate);
-		LocalDate end = LocalDate.parse(currentDate);
-		List<LocalDate> totalDates = new ArrayList<>();
-		while (!start.isAfter(end)) {
-			totalDates.add(start);
-			start = start.plusDays(1);
-		}
-
-		return totalDates;
-	}
-
-	/**
-	 * Get the number of the motion detection during a day.
+	 * Get the number of the motion detection during a time interval.
 	 * 
 	 * @param requiredDate
 	 *            day that interests us
 	 * @return the total number of motion detection
 	 */
-	public static JSONObject getMotionActivityForDay(String requiredDate) {
-		int todayActivity = DBQuery.getMotionActivityForDay(requiredDate, true);
-
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("date", requiredDate);
-		jsonObject.put("activity", todayActivity);
-
-		return jsonObject;
+	public static int getMotionActivityForDay(String date_1, String date_2) {
+		
+		return DBQuery.getMotionActivityForDay(date_1, date_2, true);
 	}
 
 	/**
-	 * Get the number of the motion detection for the last week grouped by day.
-	 * 
-	 * @return a <code>JSONArray</code> containing the total number of the
-	 *         motion detection grouped by calendar date
-	 */
-	public static JSONArray getMotionActivityForLastWeek() {
-		JSONArray jsonArray = new JSONArray();
-
-		String currentDate = TimeHelper.getCurrentDate();
-		String sevenDaysAgoDate = TimeHelper.getXDayAgoDateCurrentDate(7);
-
-		List<LocalDate> totalDates = getDatesBetweenTwoDates(sevenDaysAgoDate, currentDate);
-
-		for (LocalDate localDate : totalDates) {
-			JSONObject jsonObject = SensorHistoryCriteria.getMotionActivityForDay(localDate.toString());
-			jsonArray.put(jsonObject);
-		}
-
-		return jsonArray;
-	}
-
-	/**
-	 * Get the total time the light was on in the room between two time values.
+	 * Get the total time the light was turned on in the room between two time values.
 	 * 
 	 * @param date_1
 	 *            first calendar date indicating when to begin calculation
@@ -265,8 +183,8 @@ public class SensorHistoryCriteria {
 	public static long getTotalTimeLightOnInTheRoom(String date_1, String date_2) {
 		long timeSpent = 0;
 		ArrayList<Message> todayEntries = DBQuery.getAllDataBetweenTwoTimeValues(date_1, date_2);
-		Date l_date_1 = null;
-		Date l_date_2 = null;
+		String formatedDateOne = null;
+		String formatedDateTwo = null;
 		boolean readyForTimeDifferenceCalculation = false;
 		boolean isStartTimeSeted = false;
 
@@ -277,20 +195,136 @@ public class SensorHistoryCriteria {
 		while (itr.hasNext()) {
 			Message message = itr.next();
 			if ((message.getLightSensorVal() > lightThreshold) && !isStartTimeSeted) {
-				l_date_1 = TimeHelper.getMessageTime("HH:mm:ss", message);
+				formatedDateOne = TimeHelper.getMessageTime("HH:mm:ss", message);
 				isStartTimeSeted = true;
 				readyForTimeDifferenceCalculation = false;
 			} else if ((message.getLightSensorVal() < lightThreshold) && isStartTimeSeted) {
-				l_date_2 = TimeHelper.getMessageTime("HH:mm:ss", message);
+				formatedDateTwo = TimeHelper.getMessageTime("HH:mm:ss", message);
 				isStartTimeSeted = false;
 				readyForTimeDifferenceCalculation = true;
 			}
 
 			if (readyForTimeDifferenceCalculation) {
-				timeSpent += calculateTimeDifference(l_date_1, l_date_2);
+				try {
+					timeSpent += TimeHelper.getDifference("HH:mm:ss", formatedDateOne, formatedDateTwo);
+				} catch (ParseException e) {
+					log.error("Exception in getTotalTimeLightOnInTheRoom() function, SensorHistoryCriteria class : " + e.getMessage());
+				}
 			}
 		}
 
 		return timeSpent;
+	}
+	
+	/**
+	 * Check for someone presence in the room. First, check if the last entry in
+	 * the database has the pirSensorVal set and this is not a heartbeat
+	 * message. If so, then it verifies the time difference between this last
+	 * entry and the current time. If the time difference is less than the
+	 * specified constant in the configuration file, then there is motion in the
+	 * room. If the time difference is greater than the specified constant, then
+	 * it takes from the database the 2 last pairs of entries that show the
+	 * motion. Then it determines the time difference between the last but one
+	 * and the last motion and the time difference between the last motion and
+	 * the current time. If they are less that the specified constant then there
+	 * is motion in the room, if not - no motion. Every verified condition for
+	 * motion presence is accompanied by the light level checking, showing if
+	 * the light is turned on or off.
+	 * 
+	 * @return a <code>JSONObject</code> with the values for the motion and
+	 *         light status
+	 */
+	public static JSONObject checkForSomeoneInTheRoom() {
+		JSONObject jsonObject = new JSONObject();
+
+		String currentTime = TimeHelper.getCurrentTime();
+		Message lastMessage = DBQuery.getLastEntry();
+
+		if (lastMessage.getPirSensorVal()) {
+			long timeDiffBetweenLastMotionAndCurrentTime = 0;
+			try {
+				timeDiffBetweenLastMotionAndCurrentTime = TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S", currentTime,
+						lastMessage.getTimeReceived());
+			} catch (ParseException e) {
+				log.error("Exception in checkForSomeoneInTheRoom() function, SensorHistoryCriteria class : "
+						+ e.getMessage());
+			}
+
+			if (timeDiffBetweenLastMotionAndCurrentTime < Constants.MINIMUM_DELAY_TO_CHECK_PRESENCE_IN_ROOM) {
+				jsonObject = setLightStateInJSON(lastMessage);
+				jsonObject.put("isMotion", "yes");
+
+				return jsonObject;
+			}
+		} else {
+			ArrayList<Message> listWithMotionStartMoments = DBQuery.getDataSet(
+					"SELECT * FROM sensor_data where pirSensorVal=true and isHeartBeat=false ORDER BY id DESC LIMIT 2");
+			ArrayList<Message> listWithMotionEndMoments = DBQuery.getDataSet(
+					"SELECT * FROM sensor_data where pirSensorVal=false and isHeartBeat=false ORDER BY id DESC LIMIT 2");
+			long timeDiffBetweenLastButOneAndLastMotion = 0;
+			long timeDiffBetweenLastMotionAndCurrentTime = 0;
+			try {
+				timeDiffBetweenLastButOneAndLastMotion = TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S",
+						listWithMotionEndMoments.get(1).getTimeReceived(),
+						listWithMotionStartMoments.get(0).getTimeReceived());
+				timeDiffBetweenLastMotionAndCurrentTime = TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S",
+						listWithMotionEndMoments.get(0).getTimeReceived(), currentTime);
+
+				if (timeDiffBetweenLastButOneAndLastMotion > Constants.MINIMUM_DELAY_TO_CHECK_PRESENCE_IN_ROOM
+						&& timeDiffBetweenLastMotionAndCurrentTime > Constants.MINIMUM_DELAY_TO_CHECK_PRESENCE_IN_ROOM) {
+					jsonObject = setLightStateInJSON(lastMessage);
+					jsonObject.put("isMotion", "no");
+
+					return jsonObject;
+				} else {
+					jsonObject = setLightStateInJSON(lastMessage);
+					jsonObject.put("isMotion", "yes");
+
+					return jsonObject;
+				}
+			} catch (ParseException e) {
+				log.error("Exception in checkForSomeoneInTheRoom() function, SensorHistoryCriteria class : "
+						+ e.getMessage());
+			}
+		}
+
+		return jsonObject;
+	}
+	
+	/**
+	 * Check if the input value of the light is greater or less than the
+	 * threshold value form the configuration file.
+	 * 
+	 * @param valueToCompare
+	 * @return true or false
+	 */
+	public static boolean checkForLightOn(int valueToCompare) {
+		ConfigurationsManager configManager = new ConfigurationsManager();
+		int lightThreshold = Integer.parseInt(configManager.readConfigValue("lightThreshold"));
+		boolean lightStatus = false;
+
+		lightStatus = (valueToCompare < lightThreshold) ? false : true;
+
+		return lightStatus;
+	}
+	
+	/**
+	 * Check and set the light state in a <code>JSNOObject</code>.
+	 * 
+	 * @param lastMessage
+	 *            the message from which to test the light value
+	 * @return a <code>JSONObject</code> with <code>no</code> or
+	 *         <code>yes</code> value
+	 */
+	public static JSONObject setLightStateInJSON(Message lastMessage) {
+		JSONObject jsonObject = new JSONObject();
+
+		if (checkForLightOn(lastMessage.getLightSensorVal())) {
+			jsonObject.put("isLightOn", "yes");
+		} else {
+			jsonObject.put("isLightOn", "no");
+		}
+
+		return jsonObject;
 	}
 }

@@ -17,9 +17,9 @@ public class TimeTest {
 		String timeString4 = "2015-11-20 14:19:16.0";
 		
 		try {
-			assertEquals(5002, TimeHelper.getDifference(timeString2, timeString));
-			assertEquals(3998, TimeHelper.getDifference(timeString3, timeString2));
-			assertEquals(1000, TimeHelper.getDifference(timeString4, timeString3));
+			assertEquals(5002, TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S", timeString2, timeString));
+			assertEquals(3998, TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S", timeString3, timeString2));
+			assertEquals(1000, TimeHelper.getDifference("yyyy-MM-dd HH:mm:ss.S", timeString4, timeString3));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

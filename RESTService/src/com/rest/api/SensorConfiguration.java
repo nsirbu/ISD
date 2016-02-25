@@ -33,9 +33,6 @@ import com.udp.server.Server;
 @Path("/settings")
 public class SensorConfiguration {
 	
-	
-	
-
 	ConfigurationsManager configManager = new ConfigurationsManager();
 	static Logger log = Log4j.initLog4j(SensorConfiguration.class);
 

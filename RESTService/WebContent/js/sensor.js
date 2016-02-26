@@ -36,7 +36,7 @@ var ALERT_SUCCESS_CLASS = "alert alert-success alert-dismissible";
 
 // Alert boxes messages
 var OK_MESSAGE = "Everything is OK";
-var ERROR_MESSAGE = "The last message was late. The board is not sending messages "
+var ERROR_MESSAGE_IMAGE_PATH = "The last message was late. The board is not sending messages "
 		+ "in the specified interval";
 
 // ----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ function showHbNotification(status) {
 				ALERT_ERROR_CLASS);
 		$('#notification_icon').removeClass().addClass(ERROR_ICON);
 		$('#notification_title').html(ALERT_ERROR_TITLE);
-		$('#notification_text').html(ERROR_MESSAGE);
+		$('#notification_text').html(ERROR_MESSAGE_IMAGE_PATH);
 	}
 	if (status === SUCCESS_STATUS) {
 		$('#current_state_notification').removeClass().addClass(

@@ -10,6 +10,9 @@ public class Constants {
     // These paths are appended to the current user home directory
     public final static String JSON_FILE_PATH    = "/Desktop/Arduino/messages.json";
     public final static String TXT_LOG_FILE_PATH = "/Desktop/Arduino/log.txt";
+    
+  //----------- CONFIGURATION FILE PATH ------------------
+    public final static String CONFIGURATION_FILE_PATH    = "P:/config.xml";
 
     //----------- FileWriter CONSTANTS ---------------
     public static final boolean APPEND_TEXT = true;

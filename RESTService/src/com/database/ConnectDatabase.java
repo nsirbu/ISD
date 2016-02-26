@@ -1,5 +1,6 @@
 package com.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import com.settings.ConfigurationsManager;
+import com.udp.helper.Constants;
 import com.udp.io.Log4j;
 
 /**
@@ -24,6 +26,12 @@ public class ConnectDatabase {
 	 */
 	public static Connection connectToDB() {
 		ConfigurationsManager configReader = new ConfigurationsManager();
+		
+		File f = new File(Constants.CONFIGURATION_FILE_PATH);
+		if(!f.exists()) { 
+		    configReader.createConfigurationFile();
+		}
+		
 		String dbUser = configReader.readConfigValue("dbUser");
 		String dbPassword = configReader.readConfigValue("dbPassword");
 		String dbName = configReader.readConfigValue("dbName");

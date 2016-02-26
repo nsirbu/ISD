@@ -32,10 +32,8 @@ public class SensorHistoryCriteria {
 	 * 
 	 * @param requiredDate
 	 *            the calendar date that interest us to view the statistics
-	 * @return a map <code>HashMap<String, Integer></code> with data like
-	 *         "11:00:00-111" where 11:00:00 is the time when the light value
-	 *         was captured and 111 is the value of the light in lux
-	 * 
+	 * @return a <code>JSONObject</code> containing the date of the day, the
+	 *         average value and the maximum value of the light
 	 */
 	public static JSONObject getLuminosityStatisticsForDay(String date_1, String date_2) {
 		HashMap<String, Integer> luminosity = new HashMap<String, Integer>();

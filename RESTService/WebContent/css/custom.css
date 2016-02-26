@@ -20,81 +20,7 @@ to {
 }
 
 }
-@
--webkit-keyframes pulsate { 0% {
-	-webkit-transform: scale(0.1, 0.1);
-	opacity: 0.0;
-}
 
-50%
-{
-opacity
-
-
-
-
-:
-
-
- 
-
-
-1
-.0
-
-
-
-
-;
-}
-100%
-{
--webkit-transform
-
-
-
-
-:
-
-
- 
-
-
-scale
-
-
-
-
-(1
-.2
-,
-1
-.2
-
-
-
-
-);
-opacity
-
-
-
-
-:
-
-
- 
-
-
-0
-.0
-
-
-
-
-;
-}
-}
 p.joke {
 	color: #e6e6e6
 }
@@ -240,7 +166,9 @@ button.update_settings {
 	border-radius: 2px;
 	height: 35px;
 	border: 1px solid #ccc;
-	color: #000; background : #d3d6d9; transition : 0.7s all;
+	color: #000;
+	background: #d3d6d9;
+	transition: 0.7s all;
 	-webkit-transition: 0.7s all;
 	-moz-transition: 0.7s all;
 	transition: 0.7s all;
@@ -257,7 +185,8 @@ button.update_settings:hover {
 
 a#settings_info_button {
 	background: #337AB7;
-	color: #FFF; transition : 0.7s all;
+	color: #FFF;
+	transition: 0.7s all;
 	-webkit-transition: 0.7s all;
 	-moz-transition: 0.7s all;
 	transition: 0.7s all;
@@ -288,6 +217,10 @@ div#statistics_options {
 /* Text before the statistics dropdown */
 p#statistic_select {
 	display: inline-block;
+}
+
+.ct-chart {
+	background: url('../img/howto.png')
 }
 
 #dropDown_statistics.btn-default {
@@ -330,6 +263,19 @@ p#statistic_select {
 .date {
 	margin: 20px;
 }
+
+.form-group {
+	display: inline-block;
+}
+
+#dtpickerStart, #dtpickerEnd, #hrpickerStart, #hrpickerEnd {
+	width: 200px;
+}
+
+p#statistic_description {
+	text-align: left;
+}
+
 /*----------------- RESOURCES & CONTACTS ------------------*/
 a.mail_links {
 	-webkit-transition: 0.7s all ease;

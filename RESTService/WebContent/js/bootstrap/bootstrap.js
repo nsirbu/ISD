@@ -1962,7 +1962,7 @@ if (typeof jQuery === 'undefined') {
 
     if (activeTarget && scrollTop < offsets[0]) {
       this.activeTarget = null
-      return this.clear()
+      return this.clearInputs()
     }
 
     for (i = offsets.length; i--;) {
@@ -1976,7 +1976,7 @@ if (typeof jQuery === 'undefined') {
   ScrollSpy.prototype.activate = function (target) {
     this.activeTarget = target
 
-    this.clear()
+    this.clearInputs()
 
     var selector = this.selector +
       '[data-target="' + target + '"],' +

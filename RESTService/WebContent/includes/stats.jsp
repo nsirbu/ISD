@@ -30,45 +30,65 @@
 					<li><a data-chart="light_levels">Light levels statistic</a></li>
 					<li><a data-chart="activity_chart">Activity statistic</a></li>
 					<li><a data-chart="light_duration">"Light on" statistic</a></li>
-					<li><a href="#">Awesome statistic</a></li>
-					<li><a href="#">Awesomer statistic</a></li>
+					<li><a data-chart="time_spent">"Time spent" statistic</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="row collapse" id="statDescription">
 			<div class="col-lg-6">
-				<div class="ct-chart ct-perfect-fourth"></div>
+				<div class="ct-chart ct-perfect-fourth">
+					<h3>How to use it?</h3>
+					<ol>
+						<li>Choose the appropriate interval by selecting the
+							start/end dates</li>
+						<li>That's it</li>
+					</ol>
+				</div>
 			</div>
 			<div>
-				<div class="col-lg-6">
-					<h3 class="text-center">Select the period</h3>
-					<hr class="primary">
+				<div class="col-lg-6 text-center">
+					<h4 class="text-center">Date period</h4>
 					<div class="form-group">
 						<div class='input-group date' id='dtpickerStart'>
 							<input type='text' class="form-control" placeholder="Start date"
-								id="dtpicker_start_date" /> <span
-								class="input-group-addon"> <span class="fa fa-calendar"></span>
+								id="dtpicker_start_date" /> <span class="input-group-addon">
+								<span class="fa fa-calendar"></span>
 							</span>
 						</div>
+					</div>
+					<div class="form-group">
 						<div class='input-group date' id='dtpickerEnd'>
 							<input type='text' class="form-control" placeholder="End date"
-								id="dtpicker_end_date"/> <span
-								class="input-group-addon"> <span class="fa fa-calendar"></span>
+								id="dtpicker_end_date" /> <span class="input-group-addon">
+								<span class="fa fa-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<h4 class="text-center">Hour interval</h4>
+					<div class="form-group">
+						<div class='input-group date' id='hrpickerStart'>
+							<input type='text' class="form-control" placeholder="From"
+								id="dtpicker_start_hour" /> <span class="input-group-addon">
+								<span class="fa fa-clock-o"></span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class='input-group date' id='hrpickerEnd'>
+							<input type='text' class="form-control" placeholder="To"
+								id="dtpicker_end_hour" /> <span class="input-group-addon">
+								<span class="fa fa-clock-o"></span>
 							</span>
 						</div>
 					</div>
 					<h3 class="text-center">Description</h3>
 					<hr class="primary">
-					<p id="statistic_description">Lorem ipsum dolor sit amet, usu
-						illud audire an, at oratio tollit sit. Delenit meliore
-						suscipiantur id has. Ex ius aliquip referrentur, vix an modo
-						numquam inermis. No imperdiet disputando vis, clita ornatus
-						qualisque et qui. Legimus veritus referrentur id nam. Id vim
-						eligendi incorrupte necessitatibus, per et causae intellegebat.Vim
-						justo paulo consequuntur no, in has tamquam facilis philosophia.
-						In mel tota prima justo, quem enim erat mei ei, at probo velit
-						quaerendum nec.</p>
+					<p id="statistic_description">
+						You will see here the description of the statistic you've
+						selected. If you see this text, there was an error. Try refreshing
+						the browser, hope it will help.<i class="fa fa-frown-o"></i>
+					</p>
 				</div>
 			</div>
 		</div>

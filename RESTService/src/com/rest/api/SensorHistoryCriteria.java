@@ -148,6 +148,7 @@ public class SensorHistoryCriteria {
 			if (readyForTimeDifferenceCalculation) {
 				try {
 					timeSpent += TimeHelper.getDifference("HH:mm:ss", formatedDateOne, formatedDateTwo);
+					readyForTimeDifferenceCalculation = false;
 				} catch (ParseException e) {
 					log.error("Exception in getTimeSpentInTheRoom() function, SensorHistoryCriteria class : " + e.getMessage());
 				}
@@ -205,6 +206,7 @@ public class SensorHistoryCriteria {
 			if (readyForTimeDifferenceCalculation) {
 				try {
 					timeSpent += TimeHelper.getDifference("HH:mm:ss", formatedDateOne, formatedDateTwo);
+					readyForTimeDifferenceCalculation = false;
 				} catch (ParseException e) {
 					log.error("Exception in getTotalTimeLightOnInTheRoom() function, SensorHistoryCriteria class : " + e.getMessage());
 				}
